@@ -1,18 +1,27 @@
-#include"Dxlib.h"
+#include"Utility/Application.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR pCmdLine, _In_ int nShowCmd)
 {
-	//ウィンドウモードで起動
-	ChangeWindowMode(TRUE);
-
-	//Dxライブラリの初期化
-	if (DxLib_Init() == -1)
+	try
 	{
-		return -1;
+		Application application;
+
+		//初期化処理
+		application.WakeUp();
+
+		//実行処理
+		application.Run();
+
+		//終了時処理
+		application.Shutdown();
+	}
+	catch (std::string error_log)
+	{
+		//エラー内容を出力する
+		//Log.txtにエラー内容を追加する
+		ErrorLogFmtAdd(error_log.c_str());
+		return D_FAILURE;
 	}
 
-	//Dxライブラリ使用の終了処理
-	DxLib_End();
-
-	return 0;
+	return D_SUCCESS;
 }
