@@ -1,6 +1,6 @@
 #include"InGameScene.h"
 #include"../../Utility/InputManager.h"
-#include"../../Resource/ResourceManager.h"
+#include"../../Objects/GameObjectManager.h"
 
 InGameScene::InGameScene()
 {
@@ -17,7 +17,11 @@ InGameScene::~InGameScene()
 
 void InGameScene::Initialize()
 {
+	//GameObjectManagerインスタンス取得
+	object_manager = new GameObjectManager();
 
+	//プライヤー生成
+	player = object_manager->CreateGameObject<Player>(Vector2D(160, 360));
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
@@ -27,6 +31,21 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 	//入力情報の更新
 	input->Update();
+
+	// 生成するオブジェクトの確認
+	object_manager->CheckCreateObject();
+	// 破棄するオブジェクトの確認
+	object_manager->CheckDestroyObject();
+	// 現在のオブジェクトリストを取得
+	scene_objects_list = object_manager->GetObjectList();
+
+	// リスト内のオブジェクトを更新する
+	for (GameObject* obj : scene_objects_list)
+	{
+		obj->Update(delta_second);
+	}
+
+
 
 	//インゲームシーンへ遷移
 	if (input->GetKeyUp(KEY_INPUT_SPACE))
@@ -45,6 +64,15 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 void InGameScene::Draw() const
 {
+	// 背景描画
+	DrawBox(0, 0, D_WIN_MAX_X, D_WIN_MAX_Y, GetColor(0, 0, 100), TRUE);
+
+	// オブジェクト描画
+	for (GameObject* obj : scene_objects_list)
+	{
+		obj->Draw(screen_offset, false);
+	}
+
 	DrawFormatString(10, 10, GetColor(255, 255, 255), "インゲームシーン");
 }
 

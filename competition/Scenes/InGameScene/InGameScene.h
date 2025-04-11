@@ -1,9 +1,18 @@
 #pragma once
 #include"../SceneBase.h"
+#include"../../Objects/GameObject.h"
+
+#include"../../Objects/Character/Player/Player.h"
 
 class InGameScene : public SceneBase
 {
 protected:
+
+public:
+	class GameObjectManager* object_manager;
+	class Player* player;
+
+	std::vector<GameObject*> scene_objects_list;
 
 public:
 	InGameScene();
