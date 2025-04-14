@@ -15,6 +15,7 @@ protected:
 public:
 	class GameObjectManager* object_manager;
 	class Player* player;
+	class Shot* shot;
 
 	std::vector<GameObject*> scene_objects_list;
 
