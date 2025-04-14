@@ -3,6 +3,10 @@
 #include"../../Objects/GameObject.h"
 
 #include"../../Objects/Character/Player/Player.h"
+//#include"../../Objects/Character/Enemy/"
+//#include"../../Objects/Character/Enemy/"
+#include"../../Objects/Shot/PlayerShot/PlayerShot.h"
+#include"../../Objects/Shot/EnemyShot/EnemyShot.h"
 
 class InGameScene : public SceneBase
 {

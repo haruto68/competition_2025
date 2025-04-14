@@ -22,6 +22,10 @@ void InGameScene::Initialize()
 
 	//プライヤー生成
 	player = object_manager->CreateGameObject<Player>(Vector2D(160, 360));
+
+
+	// Test用生成
+	object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 200));
 }
 
 eSceneType InGameScene::Update(const float& delta_second)

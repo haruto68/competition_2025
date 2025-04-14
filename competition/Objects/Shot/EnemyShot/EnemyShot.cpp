@@ -11,7 +11,7 @@ EnemyShot::EnemyShot() :
 	// À•W
 	// ƒRƒŠƒWƒ‡ƒ“Ý’è
 	collision.is_blocking = true;
-	collision.box_size = Vector2D(0, 0);
+	collision.box_size = Vector2D(10, 10);
 	collision.object_type = eObjectType::ePlayerShot;
 	collision.hit_object_type.push_back(eObjectType::eEnemy);
 	// ‰æ‘œÝ’è
@@ -42,6 +42,8 @@ void EnemyShot::Update(float delta_seconds)
 void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	__super::Draw(0.0f, this->flip_flag);
+
+	DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(0, 255, 0), TRUE);
 }
 
 void EnemyShot::Finalize()
