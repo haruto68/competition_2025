@@ -3,6 +3,10 @@
 #include"../../Objects/GameObject.h"
 
 #include"../../Objects/Character/Player/Player.h"
+//#include"../../Objects/Character/Enemy/"
+//#include"../../Objects/Character/Enemy/"
+#include"../../Objects/Shot/PlayerShot/PlayerShot.h"
+#include"../../Objects/Shot/EnemyShot/EnemyShot.h"
 
 class InGameScene : public SceneBase
 {
@@ -11,6 +15,7 @@ protected:
 public:
 	class GameObjectManager* object_manager;
 	class Player* player;
+	class Shot* shot;
 
 	std::vector<GameObject*> scene_objects_list;
 

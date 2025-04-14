@@ -97,17 +97,17 @@ void Player::Movement(float delta_seconds)
 		direction.y = -1.0f;
 		flip_flag = FALSE;
 	}
-	else if (input->GetKey(KEY_INPUT_DOWN) || input->GetKey(KEY_INPUT_S))	//‰ºˆÚ“®
+	if (input->GetKey(KEY_INPUT_DOWN) || input->GetKey(KEY_INPUT_S))	//‰ºˆÚ“®
 	{
 		direction.y = 1.0f;
 		flip_flag = FALSE;
 	}
-	else if (input->GetKey(KEY_INPUT_LEFT) || input->GetKey(KEY_INPUT_A))	//¶ˆÚ“®
+	if (input->GetKey(KEY_INPUT_LEFT) || input->GetKey(KEY_INPUT_A))	//¶ˆÚ“®
 	{
 		direction.x = -1.0f;
 		flip_flag = FALSE;
 	}
-	else if (input->GetKey(KEY_INPUT_RIGHT) || input->GetKey(KEY_INPUT_D))	//‰EˆÚ“®
+	if (input->GetKey(KEY_INPUT_RIGHT) || input->GetKey(KEY_INPUT_D))	//‰EˆÚ“®
 	{
 		direction.x = 1.0f;
 		flip_flag = FALSE;

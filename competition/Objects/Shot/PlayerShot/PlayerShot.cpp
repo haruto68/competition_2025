@@ -9,6 +9,7 @@ PlayerShot::PlayerShot() :
 	ResourceManager* rm = ResourceManager::GetInstance();
 
 	// 座標
+	location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
 	// コリジョン設定
 	collision.is_blocking = true;
 	collision.box_size = Vector2D(0, 0);
@@ -42,6 +43,9 @@ void PlayerShot::Update(float delta_seconds)
 void PlayerShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	__super::Draw(0.0f, this->flip_flag);
+
+	DrawBox(location.x - 15, location.y - 15, location.x + 15, location.y + 15, GetColor(0, 255, 255), TRUE);
+
 }
 
 void PlayerShot::Finalize()
@@ -81,6 +85,25 @@ void PlayerShot::Movement(float delta_seconds)
 
 	// 入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
+
+	//Gキーで弾を発射する
+	if (input->GetKey(KEY_INPUT_G))
+	{
+		direction = 1.0f;
+		flip_flag = FALSE;
+	}
+
+	//移動方向によって、X座標の移動量の加減を行う
+	if (direction != 0.0f)
+	{
+		velocity.x += 0.5 * direction;
+	}
+
+	//位置座標を加速度分減らす
+	while ((location.x + velocity.x) <= (D_WIN_MAX_X)-(collision.box_size.x / 2.0f))
+	{
+		location += velocity * speed * delta_seconds;
+	}
 }
 
 void PlayerShot::Animation()
