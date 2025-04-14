@@ -1,8 +1,7 @@
 #include"EnemyShot.h"
 #include"../../../Utility/InputManager.h"
 
-EnemyShot::EnemyShot() :
-	screen_velocity(0.0f)
+EnemyShot::EnemyShot()
 {
 
 	//リソース管理インスタンス取得
@@ -43,7 +42,27 @@ void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	__super::Draw(0.0f, this->flip_flag);
 
-	DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(0, 255, 0), TRUE);
+
+	switch (shot_type)
+	{
+	case ePlayer1:
+		break;
+	case ePlayer2:
+		break;
+	case ePlayer3:
+		break;
+	case eEnemy1:
+		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(150, 0, 0), TRUE);
+		break;
+	case eEnemy2:
+		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(0, 150, 0), TRUE);
+		break;
+	case eEnemy3:
+		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(0, 0, 150), TRUE);
+		break;
+	default:
+		break;
+	}
 }
 
 void EnemyShot::Finalize()
@@ -79,10 +98,34 @@ void EnemyShot::Movement(float delta_seconds)
 	// 移動スピード
 	float speed = 200.0f;
 	// 移動方向
-	float direction = 0.0f;
+	Vector2D direction = 0.0f;
 
-	// 入力機能インスタンス取得
-	InputManager* input = InputManager::GetInstance();
+
+	switch (shot_type)
+	{
+	case ePlayer1:
+		break;
+	case ePlayer2:
+		break;
+	case ePlayer3:
+		break;
+	case eEnemy1:
+		velocity.x = -1.0f;
+		break;
+	case eEnemy2:
+		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(0, 150, 0), TRUE);
+		break;
+	case eEnemy3:
+		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(0, 0, 150), TRUE);
+		break;
+	default:
+		break;
+	}
+
+	
+	//位置座標を加速度分減らす
+	location += velocity * speed * delta_seconds;
+
 }
 
 void EnemyShot::Animation()

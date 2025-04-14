@@ -2,7 +2,10 @@
 #include"../../Utility/InputManager.h"
 #include"../../Objects/GameObjectManager.h"
 
-InGameScene::InGameScene()
+InGameScene::InGameScene() :
+	object_manager(),
+	player(),
+	shot()
 {
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
@@ -23,9 +26,11 @@ void InGameScene::Initialize()
 	//プライヤー生成
 	player = object_manager->CreateGameObject<Player>(Vector2D(160, 360));
 
-
 	// Test用生成
-	object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 200));
+	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 200));
+	shot->SetShotType(eEnemy1);
+	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 400));
+	shot->SetShotType(eEnemy2);
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
