@@ -14,6 +14,7 @@ Enemy1::~Enemy1()
 void Enemy1::Initialize()
 {
 	box_size = Vector2D(150.0f, 50.0f);
+	speed = 200.0f;
 }
 
 void Enemy1::Update(float delta_seconds)
@@ -46,7 +47,12 @@ void Enemy1::Movement(float delta_seconds)
 {
 	/*float speed = 200.0f;*/
 	//location.y -= 1.0f * speed * delta_seconds;
-	/*location.y -= speed = 200.0f;*/
+	location.y -= 1.0f*speed*delta_seconds;
+	if (location.y <= 0||location.y>=720)
+	{
+		speed *= -1;
+		
+	}
 }
 
 void Enemy1::Animation()
