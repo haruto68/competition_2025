@@ -54,7 +54,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		obj->Update(delta_second);
 	}
 
-
+	player->SetObjectList(object_manager);
 
 	//ƒCƒ“ƒQ[ƒ€ƒV[ƒ“‚Ö‘JˆÚ
 	if (input->GetKeyUp(KEY_INPUT_SPACE))

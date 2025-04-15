@@ -42,6 +42,8 @@ void PlayerShot::Update(float delta_seconds)
 void PlayerShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	__super::Draw(0.0f, this->flip_flag);
+
+	DrawCircle(location.x, location.y, 5, GetColor(255, 255, 255), TRUE);
 }
 
 void PlayerShot::Finalize()
@@ -79,8 +81,10 @@ void PlayerShot::Movement(float delta_seconds)
 	// 移動方向
 	float direction = 0.0f;
 
-	// 入力機能インスタンス取得
-	InputManager* input = InputManager::GetInstance();
+	velocity.x = 1.0f;
+
+	//位置座標を加速度分減らす
+	location += velocity * speed * delta_seconds;
 }
 
 void PlayerShot::Animation()

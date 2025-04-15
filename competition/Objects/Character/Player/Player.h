@@ -1,6 +1,7 @@
 #pragma once
 
 #include"../Character.h"
+#include"../../Shot/PlayerShot/PlayerShot.h"
 
 class Player : public Character
 {
@@ -8,6 +9,8 @@ protected:
 
 private:
 	float screen_velocity;		// ƒXƒNƒŠ[ƒ“ˆÚ“®—Ê
+
+	class GameObjectManager* object_manager;
 
 public:
 	Player();
@@ -28,4 +31,9 @@ public:
 
 	void Movement(float);
 	void Animation();
+
+	void SetObjectList(GameObjectManager* object_manager)
+	{
+		this->object_manager = object_manager;
+	}
 };
