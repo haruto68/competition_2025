@@ -4,6 +4,7 @@
 
 #include"../../Objects/Character/Player/Player.h"
 #include"../../Objects/Character/Enemy/Enemy1/Enemy1.h"
+#include"../../Objects/Character/Enemy/Enemy3/Enemy3.h"
 //#include"../../Objects/Character/Enemy/"
 #include"../../Objects/Shot/PlayerShot/PlayerShot.h"
 #include"../../Objects/Shot/EnemyShot/EnemyShot.h"
