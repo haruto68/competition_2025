@@ -6,6 +6,4 @@ class EnemyBase : public Character
 {
 protected:
 
-private:
-
 };
