@@ -132,6 +132,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="Objects\Character\Enemy\Enemy2\Enemy2.cpp" />
+    <ClCompile Include="Objects\Character\Enemy\Enemy3\Enemy3.cpp" />
+    <ClCompile Include="Objects\Character\Enemy\Enemy1\Enemy1.cpp" />
     <ClCompile Include="Objects\Character\Enemy\EnemyBase.cpp" />
     <ClCompile Include="Objects\Character\Player\Player.cpp" />
     <ClCompile Include="Objects\Collision.cpp" />
@@ -151,7 +154,10 @@
     <ClCompile Include="Utility\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Objects\Character\Enemy\Enemy2\Enemy2.h" />
+    <ClInclude Include="Objects\Character\Enemy\Enemy3\Enemy3.h" />
     <ClInclude Include="Objects\Character\Character.h" />
+    <ClInclude Include="Objects\Character\Enemy\Enemy1\Enemy1.h" />
     <ClInclude Include="Objects\Character\Enemy\EnemyBase.h" />
     <ClInclude Include="Objects\Character\Player\Player.h" />
     <ClInclude Include="Objects\Character\Player\UserTemplate.h" />
