@@ -22,7 +22,6 @@ PlayerShot::PlayerShot() :
 	z_layer = 2;
 	// 可動性設定
 	is_mobility = true;
-
 }
 
 PlayerShot::~PlayerShot()
@@ -47,8 +46,7 @@ void PlayerShot::Update(float delta_seconds)
 void PlayerShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	__super::Draw(0.0f, this->flip_flag);
-
-	DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, Color, TRUE);
+	DrawBox(location.x - 5, location.y - 5, location.x + 5 +, location.y + 5, Color, TRUE);
 }
 
 void PlayerShot::Finalize()
@@ -82,7 +80,7 @@ void PlayerShot::SetVelocity(Vector2D velocity)
 void PlayerShot::Movement(float delta_seconds)
 {
 	// 移動スピード
-	float speed = 200.0f;
+	float speed = 800.0f;
 	// 移動方向
 	float direction = 0.0f;
 
@@ -93,10 +91,12 @@ void PlayerShot::Movement(float delta_seconds)
 		velocity.x = 1.0f;
 		break;
 	case ePlayer2:
-		Color = GetColor(0, 255, 255);
-		velocity.x += 0.5f;
+		Color = GetColor(255, 0, 255);
+		velocity.x += 0.00045f;
 		break;
 	case ePlayer3:
+		Color = GetColor(200, 200, 200);
+		velocity.x = 1.0f;
 		break;
 	}
 

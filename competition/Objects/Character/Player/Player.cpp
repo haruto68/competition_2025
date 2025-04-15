@@ -4,7 +4,9 @@
 
 
 Player::Player() : 
-	screen_velocity(0.0f)
+	screen_velocity(0.0f),
+	shot_timer(0.0f),
+	SHOT_INTERVAL(0.1f)
 {
 
 	//リソース管理インスタンス取得
@@ -43,13 +45,24 @@ void Player::Update(float delta_seconds)
 
 	Animation();
 
+	if (shot_timer > 0.0f)
+	{
+		shot_timer -= delta_seconds;
+	}
+
 	//入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
 
-	if (input->GetKeyDown(KEY_INPUT_B))
+	if (CheckHitKey(KEY_INPUT_B) && shot_timer <= 0.0f)
 	{
 		Shot* shot = object_manager->CreateGameObject<PlayerShot>(this->location);
 		shot->SetShotType(ePlayer1);
+
+		shot_timer = SHOT_INTERVAL;
+	}
+	if (input->GetButtonDown(KEY_INPUT_C))
+	{
+		
 	}
 }
 

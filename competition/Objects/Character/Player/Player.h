@@ -12,6 +12,10 @@ private:
 
 	class GameObjectManager* object_manager;
 
+	float shot_timer;
+	const float SHOT_INTERVAL;
+	int shotmode[];
+
 public:
 	Player();
 	~Player();
