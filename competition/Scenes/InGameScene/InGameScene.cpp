@@ -4,8 +4,7 @@
 
 InGameScene::InGameScene() :
 	object_manager(),
-	player(),
-	shot()
+	player()
 {
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
@@ -27,10 +26,15 @@ void InGameScene::Initialize()
 	player = object_manager->CreateGameObject<Player>(Vector2D(160, 360));
 
 	// Test用生成
+	Shot* shot;
 	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 200));
 	shot->SetShotType(eEnemy1);
 	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 400));
 	shot->SetShotType(eEnemy2);
+	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 600));
+	shot->SetShotType(eEnemy3);
+	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 300));
+	shot->SetShotType(eEnemy3);
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
@@ -40,6 +44,9 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 	//入力情報の更新
 	input->Update();
+
+	//PlayerにGameObjectManagerインスタンスを渡す
+	player->SetObjectList(object_manager);
 
 	// 生成するオブジェクトの確認
 	object_manager->CheckCreateObject();
@@ -52,9 +59,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 	for (GameObject* obj : scene_objects_list)
 	{
 		obj->Update(delta_second);
+		obj->SetPlayerLocation(player->GetLocation());
 	}
-
-	player->SetObjectList(object_manager);
 
 	//インゲームシーンへ遷移
 	if (input->GetKeyUp(KEY_INPUT_SPACE))

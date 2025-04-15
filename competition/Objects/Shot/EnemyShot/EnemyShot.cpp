@@ -3,7 +3,8 @@
 
 EnemyShot::EnemyShot() :
 	screen_velocity(0.0),
-	birth_count(0)
+	birth_count(800),
+	old_velocity(0.0f)
 {
 
 	//リソース管理インスタンス取得
@@ -54,13 +55,13 @@ void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	case ePlayer3:
 		break;
 	case eEnemy1:
-		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(150, 0, 0), TRUE);
+		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(200, 0, 0), TRUE);
 		break;
 	case eEnemy2:
-		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(0, 150, 0), TRUE);
+		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(0, 200, 0), TRUE);
 		break;
 	case eEnemy3:
-		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(0, 0, 150), TRUE);
+		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(0, 0, 200), TRUE);
 		break;
 	default:
 		break;
@@ -110,28 +111,27 @@ void EnemyShot::Movement(float delta_seconds)
 		break;
 	case eEnemy2:
 		velocity.x = -0.5f;
+		birth_count++;
+		if (shot_type == eEnemy2 && birth_count > 800)
+		{
+			birth_count = 0;
+			if (velocity.y < 0)
+				velocity.y = 1.5f;
+			else
+				velocity.y = -1.5f;
+		}
 		break;
 	case eEnemy3:
-		velocity.x = -1.0f;
+		if(location.x > old_player_location.x)
+		{
+			velocity = Tracking(location, old_player_location);
+			old_velocity = velocity;
+		}
+		else
+			velocity = old_velocity;
 		break;
 	default:
 		break;
-	}
-
-	birth_count++;
-
-	if (shot_type == eEnemy2 && birth_count > 10)
-	{
-		birth_count = 0;
-
-		if (velocity.y < 0)
-		{
-			velocity.y = 1.0f;
-		}
-		else
-		{
-			velocity.y = -1.0f;
-		}
 	}
 
 	

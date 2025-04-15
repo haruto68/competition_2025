@@ -11,6 +11,8 @@ private:
 
 	int birth_count;
 
+	Vector2D old_velocity;
+
 public:
 	EnemyShot();
 	~EnemyShot();
