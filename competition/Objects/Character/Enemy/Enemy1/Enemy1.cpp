@@ -44,8 +44,9 @@ void Enemy1::OnHitCollision(GameObject* hit_object)
 
 void Enemy1::Movement(float delta_seconds)
 {
-	float speed = 200.0f;
+	/*float speed = 200.0f;*/
 	//location.y -= 1.0f * speed * delta_seconds;
+	/*location.y -= speed = 200.0f;*/
 }
 
 void Enemy1::Animation()
