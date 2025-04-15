@@ -1,7 +1,9 @@
 #include"EnemyShot.h"
 #include"../../../Utility/InputManager.h"
 
-EnemyShot::EnemyShot()
+EnemyShot::EnemyShot() :
+	screen_velocity(0.0),
+	birth_count(0)
 {
 
 	//リソース管理インスタンス取得
@@ -103,23 +105,33 @@ void EnemyShot::Movement(float delta_seconds)
 
 	switch (shot_type)
 	{
-	case ePlayer1:
-		break;
-	case ePlayer2:
-		break;
-	case ePlayer3:
-		break;
 	case eEnemy1:
 		velocity.x = -1.0f;
 		break;
 	case eEnemy2:
-		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(0, 150, 0), TRUE);
+		velocity.x = -0.5f;
 		break;
 	case eEnemy3:
-		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(0, 0, 150), TRUE);
+		velocity.x = -1.0f;
 		break;
 	default:
 		break;
+	}
+
+	birth_count++;
+
+	if (shot_type == eEnemy2 && birth_count > 10)
+	{
+		birth_count = 0;
+
+		if (velocity.y < 0)
+		{
+			velocity.y = 1.0f;
+		}
+		else
+		{
+			velocity.y = -1.0f;
+		}
 	}
 
 	

@@ -9,6 +9,8 @@ protected:
 private:
 	float screen_velocity;		// ƒXƒNƒŠ[ƒ“ˆÚ“®—Ê
 
+	int birth_count;
+
 public:
 	EnemyShot();
 	~EnemyShot();

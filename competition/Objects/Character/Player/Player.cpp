@@ -2,6 +2,7 @@
 #include"../../../Utility/InputManager.h"
 #include"UserTemplate.h"
 
+
 Player::Player() : 
 	screen_velocity(0.0f)
 {
@@ -41,6 +42,15 @@ void Player::Update(float delta_seconds)
 	Movement(delta_seconds);
 
 	Animation();
+
+	//入力機能インスタンス取得
+	InputManager* input = InputManager::GetInstance();
+
+	if (input->GetKeyDown(KEY_INPUT_B))
+	{
+		Shot* shot = object_manager->CreateGameObject<PlayerShot>(this->location);
+		shot->SetShotType(ePlayer1);
+	}
 }
 
 void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const

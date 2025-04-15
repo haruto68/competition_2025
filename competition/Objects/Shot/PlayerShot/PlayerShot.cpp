@@ -98,7 +98,7 @@ void PlayerShot::Movement(float delta_seconds)
 		break;
 	case ePlayer3:
 		break;
-	}	
+	}
 
 	//ˆÊ’uÀ•W‚ğ‰Á‘¬“x•ªŒ¸‚ç‚·
 	location += velocity * speed * delta_seconds;
