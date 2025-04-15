@@ -3,7 +3,7 @@
 #include"../../Objects/GameObject.h"
 
 #include"../../Objects/Character/Player/Player.h"
-//#include"../../Objects/Character/Enemy/"
+#include"../../Objects/Character/Enemy/Enemy1/Enemy1.h"
 //#include"../../Objects/Character/Enemy/"
 #include"../../Objects/Shot/PlayerShot/PlayerShot.h"
 #include"../../Objects/Shot/EnemyShot/EnemyShot.h"
@@ -16,6 +16,7 @@ public:
 	class GameObjectManager* object_manager;
 	class Player* player;
 	class Shot* shot;
+	class Enemy1* enemy1;
 
 	std::vector<GameObject*> scene_objects_list;
 

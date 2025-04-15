@@ -3,6 +3,8 @@
 
 class Enemy1 : public EnemyBase
 {
+private:
+    Vector2D box_size;
 public:
     Enemy1();
     ~Enemy1();
