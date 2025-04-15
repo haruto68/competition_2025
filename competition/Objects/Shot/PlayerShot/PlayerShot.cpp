@@ -46,7 +46,7 @@ void PlayerShot::Update(float delta_seconds)
 void PlayerShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	__super::Draw(0.0f, this->flip_flag);
-	DrawBox(location.x - 5, location.y - 5, location.x + 5 +, location.y + 5, Color, TRUE);
+	DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, Color, TRUE);
 }
 
 void PlayerShot::Finalize()
