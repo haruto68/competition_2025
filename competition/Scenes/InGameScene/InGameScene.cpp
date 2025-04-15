@@ -32,7 +32,7 @@ void InGameScene::Initialize()
 	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 400));
 	shot->SetShotType(eEnemy2);
 	// ‰¼‚É¶¬‚·‚é‚Æ‚«‚Í‚±‚Ì‰º‚É
-	enemy1 = object_manager->CreateGameObject<Enemy1>(Vector2D(1000, 400));
+	object_manager->CreateGameObject<Enemy1>(Vector2D(1000, 400));
 }
 
 eSceneType InGameScene::Update(const float& delta_second)

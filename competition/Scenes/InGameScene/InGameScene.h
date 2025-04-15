@@ -16,7 +16,6 @@ public:
 	class GameObjectManager* object_manager;
 	class Player* player;
 	class Shot* shot;
-	class Enemy1* enemy1;
 
 	std::vector<GameObject*> scene_objects_list;
 
