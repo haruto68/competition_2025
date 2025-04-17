@@ -2,6 +2,7 @@
 
 #include"Collision.h"
 
+
 class GameObject
 {
 protected:
@@ -27,5 +28,7 @@ public:
 	const Collision& GetCollision() const;
 	const unsigned char GetZLayer() const;
 	const bool GetMobility() const;
+	bool AttakFlg;
+	bool GetAttakFlg();
 
 };

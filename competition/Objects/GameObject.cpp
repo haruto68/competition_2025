@@ -2,6 +2,7 @@
 #include"GameObject.h"
 #include"GameObjectManager.h"
 
+
 GameObject::GameObject() :
 	location(0.0f),
 	image(NULL),
@@ -42,6 +43,9 @@ void GameObject::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	// オフセット値を基に画像の描画を行う
 	Vector2D graph_location = this->location + screen_offset;
 	DrawRotaGraphF(graph_location.x, graph_location.y, SIZE, 0.0, image, TRUE, flip_flag);
+
+	
+
 }
 
 /// <summary>
@@ -81,3 +85,8 @@ const bool GameObject::GetMobility() const
 {
 	return is_mobility;
 }
+
+//bool GameObject::GetAttakFlg()
+//{
+//	return GetAttakFlg;
+//}
