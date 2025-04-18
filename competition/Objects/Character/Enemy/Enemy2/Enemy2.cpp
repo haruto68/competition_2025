@@ -1,6 +1,6 @@
 #include "Enemy2.h"
 
-Enemy2::Enemy2() : speed(200.0f)
+Enemy2::Enemy2() : speed(200.0f), bounce(800)
 {
 }
 
@@ -44,15 +44,23 @@ void Enemy2::OnHitCollision(GameObject*)
 
 void Enemy2::Movement(float delta_seconds)
 {
-	/*float speed = 200.0f;*/
-	//location.y -= 1.0f * speed * delta_seconds;
-	location.y -= 1.0f * speed * delta_seconds;
-	if (location.y <= 0 || location.y >= 720)
-	{
-		speed *= -1;
+	velocity.x = -0.5f;
+	bounce++;
 
+	if (bounce > 800)
+	{
+		bounce = 0;
+		if (velocity.y <= 0)
+		{
+			velocity.y = 0.5f;
+		}
+		else
+		{
+			velocity.y = -0.5f;
+		}
 	}
 
+	location += velocity * speed * delta_seconds;
 }
 
 void Enemy2::Animation()

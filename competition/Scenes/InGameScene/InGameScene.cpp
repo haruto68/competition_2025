@@ -4,12 +4,19 @@
 
 InGameScene::InGameScene() :
 	object_manager(),
-	player()
+	player(),
+	back_ground_image(0),
+	back_ground_location(0)
 {
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
 
 	//画像取得
+	back_ground_image = rm->GetImages("Resource/Images/back_ground/universe_space02.png")[0];
+
+	back_ground_location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
+
+	screen_offset.x = -0.05f;
 }
 
 InGameScene::~InGameScene()
@@ -24,6 +31,8 @@ void InGameScene::Initialize()
 
 	//プライヤー生成
 	player = object_manager->CreateGameObject<Player>(Vector2D(160, 360));
+	//PlayerにGameObjectManagerインスタンスを渡す
+	player->SetObjectList(object_manager);
 
 	// Test用生成
 	Shot* shot;
@@ -36,21 +45,30 @@ void InGameScene::Initialize()
 	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 300));
 	shot->SetShotType(eEnemy3);
 	// 仮に生成するときはこの下に
-	object_manager->CreateGameObject<Enemy1>(Vector2D(1000, 400));
-	object_manager->CreateGameObject<Enemy2>(Vector2D(500, 400));
+	EnemyBase* enemy;
+	enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1000, 400));
+	object_manager->CreateGameObject<Enemy2>(Vector2D(1000, 400));
+	enemy->SetObjectList(object_manager);
 	object_manager->CreateGameObject<Enemy3>(Vector2D(1000, 400));
+	enemy->SetObjectList(object_manager);
+
+
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
 {
+	//screen_offset -= 0.1f;
+	back_ground_location.x -= 0.05f;
+	if (back_ground_location.x <= -(D_WIN_MAX_X / 2))
+	{
+		back_ground_location.x = D_WIN_MAX_X / 2;
+	}
+
 	//入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
 
 	//入力情報の更新
 	input->Update();
-
-	//PlayerにGameObjectManagerインスタンスを渡す
-	player->SetObjectList(object_manager);
 
 	// 生成するオブジェクトの確認
 	object_manager->CheckCreateObject();
@@ -64,6 +82,20 @@ eSceneType InGameScene::Update(const float& delta_second)
 	{
 		obj->Update(delta_second);
 		obj->SetPlayerLocation(player->GetLocation());
+		if(obj->GetCollision().object_type != eObjectType::ePlayer)
+		{
+			obj->SetLocation(Vector2D(obj->GetLocation().x + screen_offset.x, obj->GetLocation().y));
+		}
+	}
+
+	// 画面外へでたオブジェクトを破壊する
+	for (GameObject* obj : scene_objects_list)
+	{
+		if (obj->GetLocation().x <= -50 || obj->GetLocation().x >= D_WIN_MAX_X + 50 ||
+			obj->GetLocation().y <= -50 || obj->GetLocation().y >= D_WIN_MAX_Y + 50)
+		{
+			object_manager->DestroyGameObject(obj);
+		}
 	}
 
 	//インゲームシーンへ遷移
@@ -83,16 +115,20 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 void InGameScene::Draw() const
 {
-	// 背景描画
-	DrawBox(0, 0, D_WIN_MAX_X, D_WIN_MAX_Y, GetColor(0, 0, 100), TRUE);
+	// 背景描画	
+	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
+	DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
 
+	int c = 0;
 	// オブジェクト描画
 	for (GameObject* obj : scene_objects_list)
 	{
 		obj->Draw(screen_offset, false);
+		c++;
 	}
 
-	DrawFormatString(10, 10, GetColor(255, 255, 255), "インゲームシーン");
+	SetFontSize(40);
+	DrawFormatString(10, 10, GetColor(255, 255, 255), "%d",c);
 }
 
 void InGameScene::Finalize()
@@ -104,3 +140,54 @@ eSceneType InGameScene::GetNowSceneType()const
 {
 	return eSceneType::eInGame;
 }
+
+//void InGameScene::spawn()
+//{
+//	/*int ramdom_l = GetRand(2);*/
+//	int ramdom_r = GetRand(2);
+//	int ramdom_y = GetRand(2);
+//
+//	// Y座標決定
+//	float Y_t = 170.0f + (float)(ramdom_y * 80);
+//	float Y_b = 170.0f + (3 * 80);
+//
+//	int num = rand() % 100 + 1;
+//
+//	// 右側に敵をスポーンさせる（90%の確率）
+//	if (num <= 90)
+//	{
+//		switch (ramdom_r)
+//		{
+//		case 0:
+//			object_manager->CreateGameObject<Enemy1>(Vector2D(620, Y_b));
+//			break;
+//		case 1:
+//			object_manager->CreateGameObject<Enemy2>(Vector2D(620, Y_t));
+//			break;
+//		case 2:
+//			object_manager->CreateGameObject<Enemy3>(Vector2D(620, Y_t));
+//			break;
+//		default:
+//			break;
+//		}
+//	}
+//
+//	//// 左側にもスポーンしたいならこっちも有効にする
+//	//if (num <= 75)
+//	//{
+//	//	switch (ramdom_l)
+//	//	{
+//	//	case 0:
+//	//		object_manager->CreateGameObject<Enemy1>(Vector2D(30, Y_b));
+//	//		break;
+//	//	case 1:
+//	//		object_manager->CreateGameObject<Enemy2>(Vector2D(30, Y_t));
+//	//		break;
+//	//	case 2:
+//	//		object_manager->CreateGameObject<Enemy3>(Vector2D(30, Y_t));
+//	//		break;
+//	//	default:
+//	//		break;
+//	//	}
+//	//}
+//}
