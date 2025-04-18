@@ -24,6 +24,8 @@ void InGameScene::Initialize()
 
 	//プライヤー生成
 	player = object_manager->CreateGameObject<Player>(Vector2D(160, 360));
+	//PlayerにGameObjectManagerインスタンスを渡す
+	player->SetObjectList(object_manager);
 
 	// Test用生成
 	Shot* shot;
@@ -36,9 +38,14 @@ void InGameScene::Initialize()
 	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 300));
 	shot->SetShotType(eEnemy3);
 	// 仮に生成するときはこの下に
-	object_manager->CreateGameObject<Enemy1>(Vector2D(1000, 400));
+	EnemyBase* enemy;
+	enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1000, 400));
 	object_manager->CreateGameObject<Enemy2>(Vector2D(1000, 400));
+	enemy->SetObjectList(object_manager);
 	object_manager->CreateGameObject<Enemy3>(Vector2D(1000, 400));
+	enemy->SetObjectList(object_manager);
+
+
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
@@ -48,9 +55,6 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 	//入力情報の更新
 	input->Update();
-
-	//PlayerにGameObjectManagerインスタンスを渡す
-	player->SetObjectList(object_manager);
 
 	// 生成するオブジェクトの確認
 	object_manager->CheckCreateObject();
