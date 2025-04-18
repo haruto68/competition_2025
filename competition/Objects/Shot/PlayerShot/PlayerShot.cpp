@@ -14,7 +14,7 @@ PlayerShot::PlayerShot() :
 	location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
 	// ƒRƒŠƒWƒ‡ƒ“Ý’è
 	collision.is_blocking = true;
-	collision.box_size = Vector2D(0, 0);
+	collision.box_size = Vector2D(5, 5);
 	collision.object_type = eObjectType::ePlayerShot;
 	collision.hit_object_type.push_back(eObjectType::eEnemy);
 	// ‰æ‘œÝ’è
@@ -46,7 +46,7 @@ void PlayerShot::Update(float delta_seconds)
 void PlayerShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	__super::Draw(0.0f, this->flip_flag);
-	DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, Color, TRUE);
+	DrawBox(location.x - 2.5, location.y - 2.5, location.x + 2.5, location.y + 2.5, Color, TRUE);
 }
 
 void PlayerShot::Finalize()
@@ -56,7 +56,14 @@ void PlayerShot::Finalize()
 
 void PlayerShot::OnHitCollision(GameObject* hit_object)
 {
+	//	if (hit_object == nullptr)
+	//		return;
 
+	//// “G‚Æ‚ÌÕ“Ë‚È‚çíœ
+	//if (hit_object->GetObjectType() == eObjectType::eEnemy)
+	//{
+	//	this->SetDestroy();
+	//}
 }
 
 Vector2D PlayerShot::GetScreenVelocity()

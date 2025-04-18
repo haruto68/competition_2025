@@ -36,7 +36,7 @@ Player::~Player()
 
 void Player::Initialize()
 {
-
+	
 }
 
 void Player::Update(float delta_seconds)
@@ -55,9 +55,9 @@ void Player::Update(float delta_seconds)
 
 	if (CheckHitKey(KEY_INPUT_B) && shot_timer <= 0.0f)
 	{
-		Shot* shot = object_manager->CreateGameObject<PlayerShot>(this->location);
+		PlayerShot* shot = object_manager->CreateGameObject<PlayerShot>(this->location);
 		shot->SetShotType(ePlayer1);
-
+		shot->SetPlayerStats(this->GetPlayerStats());
 		shot_timer = SHOT_INTERVAL;
 	}
 	if (input->GetButtonDown(KEY_INPUT_C))

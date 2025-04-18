@@ -1,6 +1,7 @@
 #pragma once
 
 #include"../Shot.h"
+#include "../../Character/Player/PlayerStats.h"
 
 class PlayerShot : public Shot
 {
@@ -10,6 +11,9 @@ private:
 	float screen_velocity;		// ƒXƒNƒŠ[ƒ“ˆÚ“®—Ê
 	int Color;
 	int Shotmode;
+	float attack_power;
+
+	struct PlayerStats player_stats;
 
 public:
 	PlayerShot();
@@ -31,4 +35,10 @@ public:
 	void Movement(float);
 	void Animation();
 	void ShotModeChange();
+
+	//
+	void SetPlayerStats(struct PlayerStats player_stats)
+	{
+		this->player_stats = player_stats;
+	}
 };
