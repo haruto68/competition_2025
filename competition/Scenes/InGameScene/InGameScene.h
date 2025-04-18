@@ -17,6 +17,8 @@ public:
 	class GameObjectManager* object_manager;
 	class Player* player;
 	//class Shot* shot;
+	int back_ground_image;
+	Vector2D back_ground_location;
 
 	std::vector<GameObject*> scene_objects_list;
 

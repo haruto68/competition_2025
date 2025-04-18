@@ -160,6 +160,7 @@
     <ClInclude Include="Objects\Character\Enemy\Enemy1\Enemy1.h" />
     <ClInclude Include="Objects\Character\Enemy\EnemyBase.h" />
     <ClInclude Include="Objects\Character\Player\Player.h" />
+    <ClInclude Include="Objects\Character\Player\PlayerStats.h" />
     <ClInclude Include="Objects\Character\Player\UserTemplate.h" />
     <ClInclude Include="Objects\Collision.h" />
     <ClInclude Include="Objects\GameObject.h" />
