@@ -7,7 +7,8 @@ GameObject::GameObject() :
 	location(0.0f),
 	image(NULL),
 	z_layer(0),
-	is_mobility(false)
+	is_mobility(false),
+	player_location(0.0f)
 {
 
 }
@@ -56,37 +57,68 @@ void GameObject::Finalize()
 
 }
 
+//当たり判定通知処理
 void GameObject::OnHitCollision(GameObject* hit_object)
 {
 
 }
 
+//座標取得処理
 const Vector2D& GameObject::GetLocation() const
 {
 	return location;
 }
 
+//座標設定処理
 void GameObject::SetLocation(const Vector2D location)
 {
 	this->location = location;
 }
 
+//コリジョン取得処理
 const Collision& GameObject::GetCollision() const
 {
 	return collision;
 }
 
+//レイヤー取得処理
 const unsigned char GameObject::GetZLayer() const
 {
 	return z_layer;
 }
 
+//可動性取得処理
 const bool GameObject::GetMobility() const
 {
 	return is_mobility;
 }
 
-//bool GameObject::GetAttakFlg()
-//{
-//	return GetAttakFlg;
-//}
+//プレイヤー座標設定処理
+void GameObject::SetPlayerLocation(Vector2D location)
+{
+	if (player_location.x == 0.0f && player_location.y == 0.0f)
+	{
+		old_player_location = location;
+	}
+	player_location = location;
+}
+
+//AがBを追尾する処理
+Vector2D GameObject::Tracking(Vector2D A, Vector2D B)
+{
+	Vector2D velocity;	//加速度
+	float distance;		//距離
+
+	velocity.x = A.x - B.x;
+	velocity.y = A.y - B.y;
+
+	distance = sqrt(pow(velocity.x, 2.0) + pow(velocity.y, 2.0));
+
+	velocity.x /= distance;
+	velocity.y /= distance;
+
+	velocity *= -1;
+
+	return velocity;
+
+}

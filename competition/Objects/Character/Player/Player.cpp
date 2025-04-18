@@ -2,8 +2,11 @@
 #include"../../../Utility/InputManager.h"
 #include"UserTemplate.h"
 
+
 Player::Player() : 
-	screen_velocity(0.0f)
+	screen_velocity(0.0f),
+	shot_timer(0.0f),
+	SHOT_INTERVAL(0.1f)
 {
 
 	//リソース管理インスタンス取得
@@ -41,6 +44,26 @@ void Player::Update(float delta_seconds)
 	Movement(delta_seconds);
 
 	Animation();
+
+	if (shot_timer > 0.0f)
+	{
+		shot_timer -= delta_seconds;
+	}
+
+	//入力機能インスタンス取得
+	InputManager* input = InputManager::GetInstance();
+
+	if (CheckHitKey(KEY_INPUT_B) && shot_timer <= 0.0f)
+	{
+		Shot* shot = object_manager->CreateGameObject<PlayerShot>(this->location);
+		shot->SetShotType(ePlayer1);
+
+		shot_timer = SHOT_INTERVAL;
+	}
+	if (input->GetButtonDown(KEY_INPUT_C))
+	{
+		
+	}
 }
 
 void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const

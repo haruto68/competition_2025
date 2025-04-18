@@ -8,6 +8,8 @@ protected:
 
 private:
 	float screen_velocity;		// ƒXƒNƒŠ[ƒ“ˆÚ“®—Ê
+	int Color;
+	int Shotmode;
 
 public:
 	PlayerShot();
@@ -28,4 +30,5 @@ public:
 
 	void Movement(float);
 	void Animation();
+	void ShotModeChange();
 };

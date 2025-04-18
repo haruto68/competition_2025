@@ -9,6 +9,10 @@ protected:
 private:
 	float screen_velocity;		// ƒXƒNƒŠ[ƒ“ˆÚ“®—Ê
 
+	int birth_count;
+
+	Vector2D old_velocity;
+
 public:
 	EnemyShot();
 	~EnemyShot();
