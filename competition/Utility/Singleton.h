@@ -9,7 +9,7 @@
 #define D_WIN_MAX_Y		float(720.0)	// スクリーンサイズ（高さ）
 #define D_COLOR_BIT		float(32.0)		// カラービット
 
-#define SIZE			float(1.5)		// 画像倍率
+#define SIZE			float(1.0)		// 画像倍率
 
 class Singleton
 {

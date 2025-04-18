@@ -2,6 +2,7 @@
 
 #include"../Character.h"
 #include"../../Shot/PlayerShot/PlayerShot.h"
+#include"PlayerStats.h"
 
 class Player : public Character
 {
@@ -14,7 +15,8 @@ private:
 
 	float shot_timer;
 	const float SHOT_INTERVAL;
-	int shotmode[];
+
+	PlayerStats player_stats = {};
 
 public:
 	Player();
@@ -39,5 +41,16 @@ public:
 	void SetObjectList(GameObjectManager* object_manager)
 	{
 		this->object_manager = object_manager;
+	}
+
+	void SetPlayerStats(float attack, int life, int level)
+	{
+		player_stats.attack_power = attack;
+		player_stats.life_count = life;
+		player_stats.player_level = level;
+	}
+	PlayerStats GetPlayerStats() const
+	{
+		return player_stats;
 	}
 };
