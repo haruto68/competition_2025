@@ -6,6 +6,8 @@ class Enemy1 : public EnemyBase
 private:
     Vector2D box_size;
     float speed;
+
+
 public:
     Enemy1();
     ~Enemy1();
@@ -20,5 +22,6 @@ public:
 public:
     void Movement(float);
     void Animation();
+   /* void Attak();*/
 
 };
