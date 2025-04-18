@@ -31,6 +31,8 @@ void InGameScene::Initialize()
 
 	//プライヤー生成
 	player = object_manager->CreateGameObject<Player>(Vector2D(160, 360));
+	//PlayerにGameObjectManagerインスタンスを渡す
+	player->SetObjectList(object_manager);
 
 	// Test用生成
 	Shot* shot;
@@ -48,6 +50,9 @@ void InGameScene::Initialize()
 	object_manager->CreateGameObject<Enemy2>(Vector2D(1000, 400));
 	enemy->SetObjectList(object_manager);
 	object_manager->CreateGameObject<Enemy3>(Vector2D(1000, 400));
+	enemy->SetObjectList(object_manager);
+
+
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
@@ -64,9 +69,6 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 	//入力情報の更新
 	input->Update();
-
-	//PlayerにGameObjectManagerインスタンスを渡す
-	player->SetObjectList(object_manager);
 
 	// 生成するオブジェクトの確認
 	object_manager->CheckCreateObject();
@@ -138,3 +140,54 @@ eSceneType InGameScene::GetNowSceneType()const
 {
 	return eSceneType::eInGame;
 }
+
+//void InGameScene::spawn()
+//{
+//	/*int ramdom_l = GetRand(2);*/
+//	int ramdom_r = GetRand(2);
+//	int ramdom_y = GetRand(2);
+//
+//	// Y座標決定
+//	float Y_t = 170.0f + (float)(ramdom_y * 80);
+//	float Y_b = 170.0f + (3 * 80);
+//
+//	int num = rand() % 100 + 1;
+//
+//	// 右側に敵をスポーンさせる（90%の確率）
+//	if (num <= 90)
+//	{
+//		switch (ramdom_r)
+//		{
+//		case 0:
+//			object_manager->CreateGameObject<Enemy1>(Vector2D(620, Y_b));
+//			break;
+//		case 1:
+//			object_manager->CreateGameObject<Enemy2>(Vector2D(620, Y_t));
+//			break;
+//		case 2:
+//			object_manager->CreateGameObject<Enemy3>(Vector2D(620, Y_t));
+//			break;
+//		default:
+//			break;
+//		}
+//	}
+//
+//	//// 左側にもスポーンしたいならこっちも有効にする
+//	//if (num <= 75)
+//	//{
+//	//	switch (ramdom_l)
+//	//	{
+//	//	case 0:
+//	//		object_manager->CreateGameObject<Enemy1>(Vector2D(30, Y_b));
+//	//		break;
+//	//	case 1:
+//	//		object_manager->CreateGameObject<Enemy2>(Vector2D(30, Y_t));
+//	//		break;
+//	//	case 2:
+//	//		object_manager->CreateGameObject<Enemy3>(Vector2D(30, Y_t));
+//	//		break;
+//	//	default:
+//	//		break;
+//	//	}
+//	//}
+//}

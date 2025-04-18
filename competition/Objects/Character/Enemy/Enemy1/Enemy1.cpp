@@ -22,6 +22,15 @@ void Enemy1::Update(float delta_seconds)
 	Movement(delta_seconds);
 	Animation();
 
+	//入力機能インスタンス取得
+	InputManager* input = InputManager::GetInstance();
+
+	if (CheckHitKey(KEY_INPUT_V))
+	{
+		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
+		shot->SetShotType(eEnemy3);
+	}
+
 }
 
 void Enemy1::Draw(const Vector2D& screeen_offset, bool file_flag) const
