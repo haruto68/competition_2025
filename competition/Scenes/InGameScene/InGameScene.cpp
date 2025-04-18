@@ -37,7 +37,7 @@ void InGameScene::Initialize()
 	shot->SetShotType(eEnemy3);
 	// ‰¼‚É¶¬‚·‚é‚Æ‚«‚Í‚±‚Ì‰º‚É
 	object_manager->CreateGameObject<Enemy1>(Vector2D(1000, 400));
-	object_manager->CreateGameObject<Enemy2>(Vector2D(500, 400));
+	object_manager->CreateGameObject<Enemy2>(Vector2D(1000, 400));
 	object_manager->CreateGameObject<Enemy3>(Vector2D(1000, 400));
 }
 
