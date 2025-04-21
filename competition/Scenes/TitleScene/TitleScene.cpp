@@ -46,6 +46,23 @@ eSceneType TitleScene::Update(const float& delta_second)
 void TitleScene::Draw() const
 {
 	DrawFormatString(10, 10, GetColor(255, 255, 255), "タイトルシーン");
+	// タイトルの大見出し
+	DrawBox(50, 20, 1230, 420, 0xffffff, TRUE);
+	DrawFormatString(50, 50, 0x000000, "ゲームの名前(仮)");
+
+	/*シーン選択*/
+	// Startボタン(ゲームメインに遷移する)
+	DrawBox(480, 435, 800, 510, 0xffffff, TRUE);		
+	DrawFormatString(480, 450, 0x000000, "Game Start");
+
+	// Helpボタン(ヘルプ画面に遷移する)
+	DrawBox(480, 525, 800, 600, 0xffffff, TRUE);		
+	DrawFormatString(480, 540, 0x000000, "Help");
+
+	// Rankingボタン(ランキング画面に遷移する)←これを作らなくてエンドにしても良き
+	DrawBox(480, 615, 800, 690, 0xffffff, TRUE);		
+	DrawFormatString(480, 630, 0x000000, "Ranking");
+
 }
 
 void TitleScene::Finalize()
