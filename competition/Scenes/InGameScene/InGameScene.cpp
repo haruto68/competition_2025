@@ -43,11 +43,16 @@ void InGameScene::Initialize()
 	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 300));
 	shot->SetShotType(eEnemy3);
 	// 仮に生成するときはこの下に
-	EnemyBase* enemy;
+	EnemyBase* enemy;/*
 	enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1000, 400));
 	object_manager->CreateGameObject<Enemy2>(Vector2D(1000, 400));
 	enemy->SetObjectList(object_manager);
-	object_manager->CreateGameObject<Enemy3>(Vector2D(1000, 400));
+	object_manager->CreateGameObject<Enemy3>(Vector2D(1000, 400));*/
+
+
+	//スポーンカウント
+	spawn_timer = 0.0f;
+
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
@@ -67,6 +72,14 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 	//PlayerにGameObjectManagerインスタンスを渡す
 	player->SetObjectList(object_manager);
+
+
+	spawn_timer += delta_second;
+	if (spawn_timer >= 1.0f) // 1秒ごとにスポーン
+	{
+		Spawn();
+		spawn_timer = 0.0f;
+	}
 
 	// 生成するオブジェクトの確認
 	object_manager->CheckCreateObject();
@@ -102,6 +115,11 @@ eSceneType InGameScene::Update(const float& delta_second)
 		return eSceneType::eResult;
 	}
 
+
+
+
+
+
 	//ゲームを終了
 	if (input->GetKeyUp(KEY_INPUT_ESCAPE))
 	{
@@ -109,6 +127,11 @@ eSceneType InGameScene::Update(const float& delta_second)
 	}
 
 	return GetNowSceneType();
+
+
+
+	
+	
 }
 
 void InGameScene::Draw() const
@@ -137,4 +160,74 @@ void InGameScene::Finalize()
 eSceneType InGameScene::GetNowSceneType()const
 {
 	return eSceneType::eInGame;
+}
+
+void InGameScene::Spawn()        //敵の自動生成
+{
+	int ramdom_l = GetRand(2);
+	int ramdom_r = GetRand(2);
+
+	/*int ramdom_x = GetRand(1);*/
+	/*float X1 = 0;*/
+	int flip = FALSE;
+
+	/*switch (ramdom_x)
+	{
+	case 0:
+		X1 = 0.0f; flip = FALSE;
+		break;
+	case 1:
+		X1 = 640.0f; flip = TRUE;
+		break;
+
+	default:
+		break;
+	}*/
+
+	int ramdom_y = GetRand(2);
+	float Y_t = 170 + (float)(ramdom_y * 80);
+	float Y_b = 170 + (3 * 80);
+
+	int num = rand() % 100 + 1;
+	/*if (num <= 75)
+	{
+		switch (ramdom_l)
+		{
+		case 0:
+			CreateObject<Enemy>(Vector2D(30, Y_b), flip = FALSE,0.0f);
+			break;
+		case 1:
+			CreateObject<Enemy2>(Vector2D(30, Y_t), flip = FALSE,0.0f);
+			break;
+		case 2:
+			CreateObject<Enemy3>(Vector2D(30, Y_t), flip = FALSE,0.0f);
+			break;
+		default:
+			break;
+		}
+	}*/
+
+	if (num <= 90)
+	{
+
+		EnemyBase* enemy;
+		switch (ramdom_r)
+		{
+		case 0:
+			enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(620, Y_b));
+			enemy->SetObjectList(object_manager);
+			break;
+		case 1:
+			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(620, Y_b));
+			enemy->SetObjectList(object_manager);
+			break;
+		case 2:
+			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(620, Y_b));
+			enemy->SetObjectList(object_manager);
+			break;
+		default:
+			break;
+		}
+	}
+
 }
