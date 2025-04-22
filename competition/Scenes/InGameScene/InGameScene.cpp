@@ -214,15 +214,15 @@ void InGameScene::Spawn()        //“G‚ÌŽ©“®¶¬
 		switch (ramdom_r)
 		{
 		case 0:
-			enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(620, Y_b));
+			enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, Y_b));
 			enemy->SetObjectList(object_manager);
 			break;
 		case 1:
-			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(620, Y_b));
+			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, Y_b));
 			enemy->SetObjectList(object_manager);
 			break;
 		case 2:
-			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(620, Y_b));
+			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, Y_b));
 			enemy->SetObjectList(object_manager);
 			break;
 		default:

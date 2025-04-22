@@ -22,6 +22,4 @@ public:
 public:
     void Movement(float);
     void Animation();
-    /* void Attak();*/
-
 };
