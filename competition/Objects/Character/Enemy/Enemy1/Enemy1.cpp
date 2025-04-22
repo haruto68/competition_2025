@@ -25,10 +25,16 @@ void Enemy1::Update(float delta_seconds)
 	//入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
 
-	if (CheckHitKey(KEY_INPUT_V))
+	//時間経過
+	shot_timer += delta_seconds;
+
+	if (shot_timer>=shot_cooldown)
 	{
 		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
 		shot->SetShotType(eEnemy3);
+
+		//タイマーリセット
+		shot_timer = 0.0f;
 	}
 
 }
@@ -56,11 +62,11 @@ void Enemy1::Movement(float delta_seconds)
 {
 	/*float speed = 200.0f;*/
 	//location.y -= 1.0f * speed * delta_seconds;
-	location.y -= 1.0f*speed*delta_seconds;
-	if (location.y <= 0||location.y>=720)
+	location.y -= 1.0f * speed * delta_seconds;
+	if (location.y <= 0 || location.y >= 720)
 	{
 		speed *= -1;
-		
+
 	}
 }
 

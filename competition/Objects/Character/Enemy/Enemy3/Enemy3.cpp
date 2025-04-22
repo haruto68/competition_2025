@@ -40,6 +40,7 @@ void Enemy3::OnHitCollision(GameObject*)
 
 void Enemy3::Movement(float delta_seconds)
 {
+	/*location.x -= 1.0f * speed * delta_seconds;*/
 	location.x -= 1.0f * speed * delta_seconds;
 	if (location.x <= 640 || location.x >= 1280)
 	{
@@ -47,6 +48,8 @@ void Enemy3::Movement(float delta_seconds)
 
 	}
 }
+
+
 
 void Enemy3::Animation()
 {

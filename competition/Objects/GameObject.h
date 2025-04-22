@@ -2,7 +2,6 @@
 
 #include"Collision.h"
 
-
 class GameObject
 {
 protected:
@@ -30,6 +29,7 @@ public:
 	const Collision& GetCollision() const;		//コリジョン取得処理
 	const unsigned char GetZLayer() const;		//レイヤー取得処理
 	const bool GetMobility() const;				//可動性取得処理
+
 
 	void SetPlayerLocation(Vector2D location);	//プレイヤー座標設定処理
 	Vector2D Tracking(Vector2D A, Vector2D B);	//AがBを追尾する処理

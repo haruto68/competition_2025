@@ -47,5 +47,8 @@ public:
 public:
 	virtual eSceneType GetNowSceneType() const override;
 
-	/*void spawn();*/
+	void Spawn();
+	
+	float spawn_timer;
+
 };
