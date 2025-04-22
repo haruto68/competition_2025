@@ -6,17 +6,31 @@ InGameScene::InGameScene() :
 	object_manager(),
 	player(),
 	back_ground_image(0),
-	back_ground_location(0)
+	back_ground_location(0),
+	planets_image(),
+	pla1(),
+	pla2()
 {
+	SetDrawMode(DX_DRAWMODE_BILINEAR);
+
+	screen_offset.x = -0.02f;
+
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
 
-	//画像取得
+	//背景
 	back_ground_image = rm->GetImages("Resource/Images/back_ground/universe_space02.png")[0];
-
 	back_ground_location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
 
-	screen_offset.x = -0.05f;
+	// 惑星
+	planets_image[0] = rm->GetImages("Resource/Images/Planets/Planet1.png")[0];
+	planets_image[1] = rm->GetImages("Resource/Images/Planets/Planet2.png")[0];
+	planets_image[2] = rm->GetImages("Resource/Images/Planets/Planet3.png")[0];
+	planets_image[3] = rm->GetImages("Resource/Images/Planets/Planet4.png")[0];
+	// 惑星1
+	pla1 = { D_WIN_MAX_X * 1.2,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
+	// 惑星2
+	pla1 = { D_WIN_MAX_X * 0.7,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
 }
 
 InGameScene::~InGameScene()
@@ -51,17 +65,27 @@ void InGameScene::Initialize()
 	enemy->SetObjectList(object_manager);
 	object_manager->CreateGameObject<Enemy3>(Vector2D(1000, 400));
 	enemy->SetObjectList(object_manager);
-
-
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
 {
-	//screen_offset -= 0.1f;
-	back_ground_location.x -= 0.05f;
+	float speed = 1000;
+	// 背景ループ
+	back_ground_location.x -= 0.05f * delta_second * speed;
 	if (back_ground_location.x <= -(D_WIN_MAX_X / 2))
-	{
 		back_ground_location.x = D_WIN_MAX_X / 2;
+	speed = 300;
+	// 惑星ループ1
+	pla1.x -= 0.5 * delta_second * speed;
+	if (pla1.x <= -(D_WIN_MAX_X / 2))
+	{
+		pla1 = { D_WIN_MAX_X * 1.2,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
+	}
+	// 惑星ループ2
+	pla2.x -= 0.5 * delta_second * speed;
+	if (pla2.x <= -(D_WIN_MAX_X / 2))
+	{
+		pla2 = { D_WIN_MAX_X * 1.2,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
 	}
 
 	//入力機能インスタンス取得
@@ -119,6 +143,13 @@ void InGameScene::Draw() const
 	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
 	DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
 
+	int bright = 125;
+	// 惑星描画
+	SetDrawBright(bright, bright, bright);
+	DrawRotaGraphF(pla1.x, pla1.y, pla1.size, pla1.angle, pla1.image, TRUE);
+	DrawRotaGraphF(pla2.x, pla2.y, 0.5, 0.0, pla2.image, TRUE);
+	SetDrawBright(255, 255, 255);
+
 	int c = 0;
 	// オブジェクト描画
 	for (GameObject* obj : scene_objects_list)
@@ -128,7 +159,7 @@ void InGameScene::Draw() const
 	}
 
 	SetFontSize(40);
-	DrawFormatString(10, 10, GetColor(255, 255, 255), "%d",c);
+	DrawFormatString(10, 10, GetColor(255, 255, 255), "%d", c);
 }
 
 void InGameScene::Finalize()
