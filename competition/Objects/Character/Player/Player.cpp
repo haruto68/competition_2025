@@ -108,7 +108,8 @@ void Player::Movement(float delta_seconds)
 	// 移動方向
 	Vector2D direction = 0.0f;
 	// 減速
-	float slow = 0.005f;
+	float slow = 0.005f;//滑る
+	slow = 1.0f;//滑らない
 
 	// 入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();

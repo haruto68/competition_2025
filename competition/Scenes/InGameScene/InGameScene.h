@@ -9,6 +9,15 @@
 #include"../../Objects/Shot/PlayerShot/PlayerShot.h"
 #include"../../Objects/Shot/EnemyShot/EnemyShot.h"
 
+struct Planet
+{
+	float x;
+	float y;
+	double size;
+	double angle;
+	int image;
+};
+
 class InGameScene : public SceneBase
 {
 protected:
@@ -19,6 +28,9 @@ public:
 	//class Shot* shot;
 	int back_ground_image;
 	Vector2D back_ground_location;
+	int planets_image[4];
+	Planet pla1;
+	Planet pla2;
 
 	std::vector<GameObject*> scene_objects_list;
 
