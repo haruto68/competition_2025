@@ -45,7 +45,24 @@ eSceneType ResultScene::Update(const float& delta_second)
 
 void ResultScene::Draw() const
 {
-	DrawFormatString(10, 10, GetColor(255, 255, 255), "リザルトシーン");
+		DrawFormatString(10, 10, GetColor(255, 255, 255), "リザルトシーン");
+		/*		リザルト画面案*/
+		// ランク
+		DrawBox(50, 20, 615, 550, 0xffffff, TRUE);
+		DrawFormatString(50, 270, 0x000000, "スコアランク");
+
+		// スコア結果
+		DrawBox(665, 20, 1230, 550, 0xffffff, TRUE);
+		DrawFormatString(665, 270, 0x000000, "スコア結果");
+
+		// エンドボタン
+		DrawBox(25, 600, 325, 700, 0xffffff, TRUE);
+		DrawFormatString(25, 630, 0xff0000, "End");
+
+		// ネクストぼタン
+		DrawBox(955, 600, 1255, 700, 0xffffff, TRUE);
+		DrawFormatString(955, 630, 0x0000ff, "Next");
+	
 }
 
 void ResultScene::Finalize()

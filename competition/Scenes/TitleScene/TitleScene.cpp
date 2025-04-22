@@ -45,7 +45,7 @@ eSceneType TitleScene::Update(const float& delta_second)
 
 void TitleScene::Draw() const
 {
-	DrawFormatString(10, 10, GetColor(255, 255, 255), "タイトルシーン");
+	// DrawFormatString(10, 10, GetColor(255, 255, 255), "タイトルシーン");
 	// タイトルの大見出し
 	DrawBox(50, 20, 1230, 420, 0xffffff, TRUE);
 	DrawFormatString(50, 175, 0x000000, "ゲームの名前(仮)");
