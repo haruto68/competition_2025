@@ -12,6 +12,7 @@ enum class eSceneType
 	eTitle,
 	eInGame,
 	eResult,
+	eRanking,
 	eExit
 };
 
