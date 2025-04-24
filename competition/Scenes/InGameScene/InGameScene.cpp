@@ -3,7 +3,7 @@
 #include"../../Objects/GameObjectManager.h"
 
 InGameScene::InGameScene() :
-	object_manager(),
+	object_manager(nullptr),
 	player(),
 	back_ground_image(0),
 	back_ground_location(0),
@@ -28,9 +28,9 @@ InGameScene::InGameScene() :
 	planets_image[2] = rm->GetImages("Resource/Images/Planets/Planet3.png")[0];
 	planets_image[3] = rm->GetImages("Resource/Images/Planets/Planet4.png")[0];
 	// 惑星1
-	pla1 = { D_WIN_MAX_X * 1.2,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
+	pla1 = { D_WIN_MAX_X * 1.5,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
 	// 惑星2
-	pla1 = { D_WIN_MAX_X * 0.7,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
+	pla1 = { D_WIN_MAX_X * 1.0,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
 }
 
 InGameScene::~InGameScene()
@@ -47,15 +47,9 @@ void InGameScene::Initialize()
 	player = object_manager->CreateGameObject<Player>(Vector2D(160, 360));
 
 	// Test用生成
-	Shot* shot;
-	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 200));
-	shot->SetShotType(eEnemy1);
-	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 400));
-	shot->SetShotType(eEnemy2);
-	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 600));
-	shot->SetShotType(eEnemy3);
-	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 300));
-	shot->SetShotType(eEnemy3);
+	object_manager->CreateGameObject<ExperiencePoints>(Vector2D(800, 360));
+	object_manager->CreateGameObject<ExperiencePoints>(Vector2D(900, 300));
+	object_manager->CreateGameObject<ExperiencePoints>(Vector2D(900, 420));
 	//スポーンカウント
 	spawn_timer = 0.0f;
 }
@@ -72,13 +66,13 @@ eSceneType InGameScene::Update(const float& delta_second)
 	pla1.x -= 0.5 * delta_second * speed;
 	if (pla1.x <= -(D_WIN_MAX_X / 2))
 	{
-		pla1 = { D_WIN_MAX_X * 1.2,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
+		pla1 = { D_WIN_MAX_X * 1.5,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
 	}
 	// 惑星ループ2
 	pla2.x -= 0.5 * delta_second * speed;
 	if (pla2.x <= -(D_WIN_MAX_X / 2))
 	{
-		pla2 = { D_WIN_MAX_X * 1.2,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
+		pla2 = { D_WIN_MAX_X * 1.5,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
 	}
 
 	//入力機能インスタンス取得
@@ -87,8 +81,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	//入力情報の更新
 	input->Update();
 
-	//PlayerにGameObjectManagerインスタンスを渡す
-	player->SetObjectList(object_manager);
+	
 
 
 	spawn_timer += delta_second;
@@ -109,10 +102,17 @@ eSceneType InGameScene::Update(const float& delta_second)
 	for (GameObject* obj : scene_objects_list)
 	{
 		obj->Update(delta_second);
+		// プライヤー座標受け渡し
 		obj->SetPlayerLocation(player->GetLocation());
+		// オブジェクトをスクロールと一緒に動かす処理
 		if(obj->GetCollision().object_type != eObjectType::ePlayer)
 		{
 			obj->SetLocation(Vector2D(obj->GetLocation().x + screen_offset.x, obj->GetLocation().y));
+		}
+		// 
+		if (obj->CheckInstance() == nullptr)
+		{
+			obj->SetInstance(object_manager);
 		}
 	}
 
@@ -193,7 +193,7 @@ void InGameScene::Spawn()        //敵の自動生成
 
 	/*int ramdom_x = GetRand(1);*/
 	/*float X1 = 0;*/
-	int flip = FALSE;
+	/*int flip = FALSE;*/
 
 	/*switch (ramdom_x)
 	{
@@ -213,24 +213,7 @@ void InGameScene::Spawn()        //敵の自動生成
 	float Y_b = 170 + (3 * 80);
 
 	int num = rand() % 100 + 1;
-	/*if (num <= 75)
-	{
-		switch (ramdom_l)
-		{
-		case 0:
-			CreateObject<Enemy>(Vector2D(30, Y_b), flip = FALSE,0.0f);
-			break;
-		case 1:
-			CreateObject<Enemy2>(Vector2D(30, Y_t), flip = FALSE,0.0f);
-			break;
-		case 2:
-			CreateObject<Enemy3>(Vector2D(30, Y_t), flip = FALSE,0.0f);
-			break;
-		default:
-			break;
-		}
-	}*/
-
+	
 	if (num <= 90)
 	{
 
@@ -239,19 +222,27 @@ void InGameScene::Spawn()        //敵の自動生成
 		{
 		case 0:
 			enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, Y_b));
-			enemy->SetObjectList(object_manager);
 			break;
 		case 1:
 			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, Y_b));
-			enemy->SetObjectList(object_manager);
 			break;
 		case 2:
 			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, Y_b));
-			enemy->SetObjectList(object_manager);
 			break;
 		default:
 			break;
 		}
 	}
+
+	/*if (CheckHitKey(KEY_INPUT_1)) {
+		auto enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, Y_b));
+	}
+	else if (CheckHitKey(KEY_INPUT_2)) {
+		auto enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, Y_b));
+	}
+	else if (CheckHitKey(KEY_INPUT_3)) {
+		auto enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, Y_b));
+	}*/
+
 
 }

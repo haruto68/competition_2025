@@ -140,6 +140,7 @@
     <ClCompile Include="Objects\Collision.cpp" />
     <ClCompile Include="Objects\GameObject.cpp" />
     <ClCompile Include="Objects\GameObjectManager.cpp" />
+    <ClCompile Include="Objects\Item\ExperiencePoints\ExperiencePoints.cpp" />
     <ClCompile Include="Objects\Shot\EnemyShot\EnemyShot.cpp" />
     <ClCompile Include="Objects\Shot\PlayerShot\PlayerShot.cpp" />
     <ClCompile Include="Resource\ResourceManager.cpp" />
@@ -166,7 +167,8 @@
     <ClInclude Include="Objects\Collision.h" />
     <ClInclude Include="Objects\GameObject.h" />
     <ClInclude Include="Objects\GameObjectManager.h" />
-    <ClInclude Include="Objects\Item.h" />
+    <ClInclude Include="Objects\Item\ExperiencePoints\ExperiencePoints.h" />
+    <ClInclude Include="Objects\Item\Item.h" />
     <ClInclude Include="Objects\Shot\EnemyShot\EnemyShot.h" />
     <ClInclude Include="Objects\Shot\PlayerShot\PlayerShot.h" />
     <ClInclude Include="Objects\Shot\Shot.h" />

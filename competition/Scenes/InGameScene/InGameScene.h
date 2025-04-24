@@ -8,6 +8,7 @@
 #include"../../Objects/Character/Enemy/Enemy3/Enemy3.h"
 #include"../../Objects/Shot/PlayerShot/PlayerShot.h"
 #include"../../Objects/Shot/EnemyShot/EnemyShot.h"
+#include"../../Objects/Item/ExperiencePoints/ExperiencePoints.h"
 
 struct Planet
 {
