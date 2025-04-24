@@ -3,7 +3,7 @@
 #include"../../Objects/GameObjectManager.h"
 
 InGameScene::InGameScene() :
-	object_manager(),
+	object_manager(nullptr),
 	player(),
 	back_ground_image(0),
 	back_ground_location(0),
@@ -81,8 +81,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	//入力情報の更新
 	input->Update();
 
-	//PlayerにGameObjectManagerインスタンスを渡す
-	player->SetObjectList(object_manager);
+	
 
 
 	spawn_timer += delta_second;
@@ -103,10 +102,17 @@ eSceneType InGameScene::Update(const float& delta_second)
 	for (GameObject* obj : scene_objects_list)
 	{
 		obj->Update(delta_second);
+		// プライヤー座標受け渡し
 		obj->SetPlayerLocation(player->GetLocation());
+		// オブジェクトをスクロールと一緒に動かす処理
 		if(obj->GetCollision().object_type != eObjectType::ePlayer)
 		{
 			obj->SetLocation(Vector2D(obj->GetLocation().x + screen_offset.x, obj->GetLocation().y));
+		}
+		// 
+		if (obj->CheckInstance() == nullptr)
+		{
+			obj->SetInstance(object_manager);
 		}
 	}
 
@@ -216,15 +222,12 @@ void InGameScene::Spawn()        //敵の自動生成
 		{
 		case 0:
 			enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, Y_b));
-			enemy->SetObjectList(object_manager);
 			break;
 		case 1:
 			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, Y_b));
-			enemy->SetObjectList(object_manager);
 			break;
 		case 2:
 			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, Y_b));
-			enemy->SetObjectList(object_manager);
 			break;
 		default:
 			break;
@@ -233,15 +236,12 @@ void InGameScene::Spawn()        //敵の自動生成
 
 	/*if (CheckHitKey(KEY_INPUT_1)) {
 		auto enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, Y_b));
-		enemy->SetObjectList(object_manager);
 	}
 	else if (CheckHitKey(KEY_INPUT_2)) {
 		auto enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, Y_b));
-		enemy->SetObjectList(object_manager);
 	}
 	else if (CheckHitKey(KEY_INPUT_3)) {
 		auto enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, Y_b));
-		enemy->SetObjectList(object_manager);
 	}*/
 
 
