@@ -47,15 +47,9 @@ void InGameScene::Initialize()
 	player = object_manager->CreateGameObject<Player>(Vector2D(160, 360));
 
 	// Test用生成
-	Shot* shot;
-	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 200));
-	shot->SetShotType(eEnemy1);
-	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 400));
-	shot->SetShotType(eEnemy2);
-	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 600));
-	shot->SetShotType(eEnemy3);
-	shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1000, 300));
-	shot->SetShotType(eEnemy3);
+	object_manager->CreateGameObject<ExperiencePoints>(Vector2D(800, 360));
+	object_manager->CreateGameObject<ExperiencePoints>(Vector2D(900, 300));
+	object_manager->CreateGameObject<ExperiencePoints>(Vector2D(900, 420));
 	//スポーンカウント
 	spawn_timer = 0.0f;
 }

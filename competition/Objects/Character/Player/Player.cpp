@@ -80,7 +80,7 @@ void Player::Finalize()
 
 void Player::OnHitCollision(GameObject* hit_object)
 {
-
+	
 }
 
 Vector2D Player::GetScreenVelocity()

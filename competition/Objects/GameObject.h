@@ -6,6 +6,7 @@ class GameObject
 {
 protected:
 	Vector2D location;				//座標
+	float speed;
 	Collision collision;			//コリジョン
 	int image;						//画像
 	unsigned char z_layer;			//レイヤー
