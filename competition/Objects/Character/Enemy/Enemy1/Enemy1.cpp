@@ -30,7 +30,8 @@ Enemy1::~Enemy1()
 
 void Enemy1::Initialize()
 {
-	
+	velocity.y = -1.0f;
+	velocity.x = -0.5f;
 }
 
 void Enemy1::Update(float delta_seconds)
@@ -61,7 +62,7 @@ void Enemy1::Draw(const Vector2D& screeen_offset, bool file_flag) const
 	Vector2D t1 = location - (collision.box_size / 2.0f);
 	Vector2D br = location + (collision.box_size / 2.0f);
 	DrawBoxAA(t1.x, t1.y, br.x, br.y, GetColor(255, 255, 255), TRUE);
-	DrawString(t1.x, t1.y, "Enemy1", GetColor(0, 0, 0), TRUE);
+	DrawString(t1.x, t1.y, "1", GetColor(0, 0, 0), TRUE);
 }
 
 void Enemy1::Finalize()
@@ -71,19 +72,25 @@ void Enemy1::Finalize()
 
 void Enemy1::OnHitCollision(GameObject* hit_object)
 {
-
+	if (hit_object->GetCollision().object_type == eObjectType::ePlayerShot)
+	{
+		
+	}
 }
 
 void Enemy1::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
-	
-	location.y -= 1.0f * speed * delta_seconds;
-	if (location.y <= 0 || location.y >= 720)
-	{
-		speed *= -1;
 
+	if ((location.y + velocity.y) <= collision.box_size.y || (location.y + velocity.y) >= (720 - collision.box_size.y))
+	{
+		if (velocity.y < 0)
+			velocity.y = 1.0f;
+		else
+			velocity.y = -1.0f;
 	}
+
+	location += velocity * speed * delta_seconds;
 }
 
 void Enemy1::Animation()

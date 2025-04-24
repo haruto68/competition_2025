@@ -4,9 +4,7 @@
 class Enemy2 : public EnemyBase
 {
 private:
-    //Vector2D box_size;
-   /* float speed;*/
-    int bounce;
+
 public:
     Enemy2();
     ~Enemy2();

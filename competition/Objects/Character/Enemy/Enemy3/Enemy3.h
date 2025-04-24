@@ -3,7 +3,8 @@
 class Enemy3: public EnemyBase
 {
 private:
-  
+    Vector2D old_velocity;
+
 public:
     Enemy3();
     ~Enemy3();

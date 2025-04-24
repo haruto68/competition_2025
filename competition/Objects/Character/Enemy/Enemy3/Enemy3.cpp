@@ -11,8 +11,7 @@ Enemy3::Enemy3()
 	collision.object_type = eObjectType::eEnemy;					//オブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayer);		//ぶつかるオブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayerShot);	//ぶつかるオブジェクトのタイプ
-	// 初期スピード
-	// speed=200.0f;
+	
 	// 画像設定
 	// レイヤー設定
 	z_layer = 2;
@@ -28,7 +27,7 @@ Enemy3::~Enemy3()
 void Enemy3::Initialize()
 {
 	
-	/*speed = 200.0f;*/
+	speed = 200.0f;
 }
 
 void Enemy3::Update(float delta_seconds)
@@ -43,7 +42,7 @@ void Enemy3::Draw(const Vector2D& screeen_offset, bool file_flag) const
 	Vector2D t1 = location - (collision.box_size / 2.0f);
 	Vector2D br = location + (collision.box_size / 2.0f);
 	DrawBoxAA(t1.x, t1.y, br.x, br.y, GetColor(255, 255, 255), TRUE);
-	DrawString(t1.x, t1.y, "Enemy1", GetColor(0, 0, 0), TRUE);
+	DrawString(t1.x, t1.y, "3", GetColor(0, 0, 0), TRUE);
 }
 
 void Enemy3::Finalize()
@@ -51,20 +50,22 @@ void Enemy3::Finalize()
 	
 }
 
-void Enemy3::OnHitCollision(GameObject*)
+void Enemy3::OnHitCollision(GameObject* hit_object)
 {
 }
 
 void Enemy3::Movement(float delta_seconds)
 {
-	float speed = 200.0f;
-	/*location.x -= 1.0f * speed * delta_seconds;*/
-	location.x -= 1.0f * speed * delta_seconds;
-	if (location.x <= 640 || location.x >= 1280)
-	{
-		speed *= -1;
 
+	if (location.x > old_player_location.x)
+	{
+		velocity = Tracking(location, old_player_location)*2;
+		old_velocity = velocity;
 	}
+	else
+		velocity = old_velocity;
+
+	location += velocity * speed * delta_seconds;
 }
 
 
