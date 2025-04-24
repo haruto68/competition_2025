@@ -56,7 +56,10 @@ void PlayerShot::Finalize()
 
 void PlayerShot::OnHitCollision(GameObject* hit_object)
 {
-
+	if (hit_object->GetCollision().object_type == eObjectType::eEnemy)
+	{
+		
+	}
 }
 
 Vector2D PlayerShot::GetScreenVelocity()

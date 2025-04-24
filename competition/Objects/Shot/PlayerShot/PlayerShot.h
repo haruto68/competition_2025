@@ -36,7 +36,6 @@ public:
 	void Animation();
 	void ShotModeChange();
 
-	//
 	void SetPlayerStats(struct PlayerStats player_stats)
 	{
 		this->player_stats = player_stats;
