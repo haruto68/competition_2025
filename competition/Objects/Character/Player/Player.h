@@ -38,6 +38,9 @@ public:
 	void Movement(float);
 	void Animation();
 
+	void AddExperience(int exp);
+	void LevelUp();
+
 	void SetObjectList(GameObjectManager* object_manager)
 	{
 		this->object_manager = object_manager;
