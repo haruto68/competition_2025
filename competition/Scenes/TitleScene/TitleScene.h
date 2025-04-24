@@ -5,6 +5,8 @@ class TitleScene : public SceneBase
 {
 protected:
 
+private:
+	int menu_num;		// メニューカーソル番号
 public:
 	TitleScene();
 	~TitleScene();

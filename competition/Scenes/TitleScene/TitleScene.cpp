@@ -2,7 +2,7 @@
 #include"../../Utility/InputManager.h"
 #include"../../Resource/ResourceManager.h"
 
-TitleScene::TitleScene()
+TitleScene::TitleScene() : menu_num(0)
 {
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
@@ -40,6 +40,42 @@ eSceneType TitleScene::Update(const float& delta_second)
 		return eSceneType::eExit;
 	}
 
+	// カーソル上移動
+	if (input->GetKeyDown(KEY_INPUT_W))
+	{
+		menu_num--;
+		if (menu_num < 0)
+		{
+			menu_num = 2;
+		}
+	}
+
+	// カーソル下移動
+	if (input->GetKeyDown(KEY_INPUT_S))
+	{
+		menu_num++;
+		if (menu_num > 2)
+		{
+			menu_num = 0;
+		}
+	}
+
+	// カーソル決定(決定した画面に移動する)
+	if (input->GetKeyDown(KEY_INPUT_1))
+	{
+		switch (menu_num)
+		{
+			case 0:
+				return eSceneType::eInGame;
+				break;
+			case 1:
+				// return eSceneType::eInGame;
+				break;
+			case 2:
+				return eSceneType::eRanking;
+				break;
+		}
+	}
 	return GetNowSceneType();
 }
 
@@ -59,10 +95,27 @@ void TitleScene::Draw() const
 	DrawBox(480, 525, 800, 600, 0xffffff, TRUE);		
 	DrawFormatString(480, 540, 0x000000, "Help");
 
-	// Rankingボタン(ランキング画面に遷移する)←これを作らなくてエンドにしても良き
+	// Rankingボタン(ランキング画面に遷移する)
 	DrawBox(480, 615, 800, 690, 0xffffff, TRUE);		
 	DrawFormatString(480, 630, 0x000000, "Ranking");
 
+	DrawFormatString(900, 500, 0xFFFFFF, "シーンの番号 %d", menu_num);
+
+	// 仮カーソルUI	時間があれば治します。
+	switch (menu_num)
+	{
+		case 0:
+			DrawCircle(465, 473, 7, 0xff0000, TRUE);
+			break;
+		case 1:
+			DrawCircle(465, 563, 7, 0xff0000, TRUE);
+			break;
+		case 2:
+			DrawCircle(465, 653, 7, 0xff0000, TRUE);
+			break;
+		default:
+			break;
+	}
 }
 
 void TitleScene::Finalize()
