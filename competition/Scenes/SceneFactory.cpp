@@ -3,6 +3,7 @@
 
 #include"TitleScene/TitleScene.h"
 #include"InGameScene/InGameScene.h"
+#include"RankingScene/RankingScene.h"
 #include"ResultScene/ResultScene.h"
 
 SceneBase* SceneFactory::CreateScene(eSceneType scene)
@@ -16,6 +17,9 @@ SceneBase* SceneFactory::CreateScene(eSceneType scene)
 		return new InGameScene();
 	case eSceneType::eResult:
 		return new ResultScene();
+		break;
+	case eSceneType::eRanking:
+		return new RankingScene();
 		break;
 	case eSceneType::eExit:
 		break;
