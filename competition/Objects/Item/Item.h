@@ -5,7 +5,6 @@
 
 enum eItemType
 {
-	eNone,
 	eExp
 };
 
