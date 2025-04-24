@@ -187,7 +187,7 @@ void InGameScene::Spawn()        //ìGÇÃé©ìÆê∂ê¨
 
 	/*int ramdom_x = GetRand(1);*/
 	/*float X1 = 0;*/
-	int flip = FALSE;
+	/*int flip = FALSE;*/
 
 	/*switch (ramdom_x)
 	{
@@ -207,24 +207,7 @@ void InGameScene::Spawn()        //ìGÇÃé©ìÆê∂ê¨
 	float Y_b = 170 + (3 * 80);
 
 	int num = rand() % 100 + 1;
-	/*if (num <= 75)
-	{
-		switch (ramdom_l)
-		{
-		case 0:
-			CreateObject<Enemy>(Vector2D(30, Y_b), flip = FALSE,0.0f);
-			break;
-		case 1:
-			CreateObject<Enemy2>(Vector2D(30, Y_t), flip = FALSE,0.0f);
-			break;
-		case 2:
-			CreateObject<Enemy3>(Vector2D(30, Y_t), flip = FALSE,0.0f);
-			break;
-		default:
-			break;
-		}
-	}*/
-
+	
 	if (num <= 90)
 	{
 
@@ -247,5 +230,19 @@ void InGameScene::Spawn()        //ìGÇÃé©ìÆê∂ê¨
 			break;
 		}
 	}
+
+	/*if (CheckHitKey(KEY_INPUT_1)) {
+		auto enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, Y_b));
+		enemy->SetObjectList(object_manager);
+	}
+	else if (CheckHitKey(KEY_INPUT_2)) {
+		auto enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, Y_b));
+		enemy->SetObjectList(object_manager);
+	}
+	else if (CheckHitKey(KEY_INPUT_3)) {
+		auto enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, Y_b));
+		enemy->SetObjectList(object_manager);
+	}*/
+
 
 }

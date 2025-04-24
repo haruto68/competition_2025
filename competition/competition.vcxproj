@@ -145,6 +145,7 @@
     <ClCompile Include="Objects\Shot\PlayerShot\PlayerShot.cpp" />
     <ClCompile Include="Resource\ResourceManager.cpp" />
     <ClCompile Include="Scenes\InGameScene\InGameScene.cpp" />
+    <ClCompile Include="Scenes\RankingScene\RankingScene.cpp" />
     <ClCompile Include="Scenes\ResultScene\ResultScene.cpp" />
     <ClCompile Include="Scenes\SceneFactory.cpp" />
     <ClCompile Include="Scenes\SceneManager.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Objects\Shot\Shot.h" />
     <ClInclude Include="Resource\ResourceManager.h" />
     <ClInclude Include="Scenes\InGameScene\InGameScene.h" />
+    <ClInclude Include="Scenes\RankingScene\RankingScene.h" />
     <ClInclude Include="Scenes\ResultScene\ResultScene.h" />
     <ClInclude Include="Scenes\SceneBase.h" />
     <ClInclude Include="Scenes\SceneFactory.h" />

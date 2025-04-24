@@ -60,9 +60,9 @@ void Player::Update(float delta_seconds)
 		shot->SetPlayerStats(this->GetPlayerStats());
 		shot_timer = SHOT_INTERVAL;
 	}
-	if (input->GetButtonDown(KEY_INPUT_C))
+	if (input->GetButtonDown(KEY_INPUT_L))
 	{
-		
+		AddExperience(20);
 	}
 }
 
@@ -71,6 +71,10 @@ void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	__super::Draw(0.0f, this->flip_flag);
 
 	DrawBox(location.x - 10, location.y - 10, location.x + 10, location.y + 10, GetColor(255, 0, 0), TRUE);
+	SetFontSize(20);
+	DrawFormatString(5, 50, GetColor(255, 255, 255), "現在のプレイヤーレベル：%d", player_stats.player_level);
+	DrawFormatString(5, 70, GetColor(255, 255, 255), "累積プレイヤーレベル：%d", player_stats.current_exp);
+	DrawFormatString(5, 90, GetColor(255, 255, 255), "次のレベルアップに必要なEXP：%d", player_stats.next_level_exp);
 }
 
 void Player::Finalize()
@@ -216,4 +220,28 @@ void Player::Movement(float delta_seconds)
 void Player::Animation()
 {
 
+}
+
+void Player::AddExperience(int exp)
+{
+	player_stats.current_exp += exp;
+
+	// レベルアップチェック
+	while (player_stats.current_exp >= player_stats.next_level_exp)
+	{
+		player_stats.current_exp -= player_stats.next_level_exp;
+		LevelUp();
+	}
+}
+
+void Player::LevelUp()
+{	// 入力機能インスタンス取得
+	player_stats.player_level++;
+	player_stats.next_level_exp += 50; 
+
+	// 成長内容（例：攻撃力とスピード倍率を強化）
+	//player_stats.attack_power += 1.0f;
+	//player_stats.speed_multiplier += 0.05f;
+
+	
 }

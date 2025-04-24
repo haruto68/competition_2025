@@ -56,14 +56,7 @@ void PlayerShot::Finalize()
 
 void PlayerShot::OnHitCollision(GameObject* hit_object)
 {
-	//	if (hit_object == nullptr)
-	//		return;
 
-	//// �G�Ƃ̏Փ˂Ȃ�폜
-	//if (hit_object->GetObjectType() == eObjectType::eEnemy)
-	//{
-	//	this->SetDestroy();
-	//}
 }
 
 Vector2D PlayerShot::GetScreenVelocity()
