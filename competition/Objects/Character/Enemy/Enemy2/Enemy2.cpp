@@ -27,12 +27,12 @@ void Enemy2::Initialize()
 {
 	//　仮敵2のサイズ(大きさ)
 	collision.box_size = Vector2D(20.0f, 20.0f);
-	//box_size = Vector2D(20.0f, 20.0f);
+	//box_size = Vector2D(20.0fs, 20.0f);
 	// 仮テキの速さ
 	speed = 200.0f;
 
 	//画像読み込み
-	LoadGraph("Resouce/Images/enemy/cannon.png");
+	image = LoadGraph("Resource/Images/enemy/cannon.png");
 }
 
 void Enemy2::Update(float delta_seconds)
@@ -43,8 +43,12 @@ void Enemy2::Update(float delta_seconds)
 
 void Enemy2::Draw(const Vector2D&, bool) const
 {
-
-	DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
+	
+	if (image != -1)
+	{
+		DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
+	}
+	
 
 	//// 仮(白い四角を描画する)
 	//Vector2D t1 = location - (collision.box_size / 2.0f);
@@ -65,7 +69,7 @@ void Enemy2::OnHitCollision(GameObject* hit_object)
 
 void Enemy2::Movement(float delta_seconds)
 {
-
+	
 	location += velocity * speed * delta_seconds;
 }
 
