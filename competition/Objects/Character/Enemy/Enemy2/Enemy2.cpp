@@ -1,7 +1,24 @@
 #include "Enemy2.h"
 
-Enemy2::Enemy2() : speed(200.0f), bounce(800)
+Enemy2::Enemy2() : bounce(800)
 {
+	//リソース管理インスタンス取得
+	ResourceManager* rm = ResourceManager::GetInstance();
+
+	// コリジョン設定
+	collision.is_blocking = true;
+	collision.box_size = Vector2D(20, 20);							//当たり判定の大きさ
+	collision.object_type = eObjectType::eEnemy;					//オブジェクトのタイプ
+	collision.hit_object_type.push_back(eObjectType::ePlayer);		//ぶつかるオブジェクトのタイプ
+	collision.hit_object_type.push_back(eObjectType::ePlayerShot);	//ぶつかるオブジェクトのタイプ
+	// 初期スピード
+	// speed=200.0f;
+	// 画像設定
+	// レイヤー設定
+	z_layer = 2;
+	// 可動性設定
+	is_mobility = true;
+
 }
 
 Enemy2::~Enemy2()
@@ -14,7 +31,7 @@ void Enemy2::Initialize()
 	collision.box_size = Vector2D(20.0f, 20.0f);
 	//box_size = Vector2D(20.0f, 20.0f);
 	// 仮テキの速さ
-	speed = 200.0f;
+	/*speed = 200.0f;*/
 }
 
 void Enemy2::Update(float delta_seconds)
@@ -60,7 +77,7 @@ void Enemy2::Movement(float delta_seconds)
 		}
 	}
 
-	location += velocity * speed * delta_seconds;
+	/*location += velocity * speed * delta_seconds;*/
 }
 
 void Enemy2::Animation()
