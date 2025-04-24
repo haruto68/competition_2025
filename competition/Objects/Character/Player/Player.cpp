@@ -60,7 +60,7 @@ void Player::Update(float delta_seconds)
 		shot->SetPlayerStats(this->GetPlayerStats());
 		shot_timer = SHOT_INTERVAL;
 	}
-	if (input->GetButtonDown(KEY_INPUT_L))
+	if (input->GetKeyDown(KEY_INPUT_L))
 	{
 		AddExperience(20);
 	}
@@ -238,6 +238,7 @@ void Player::LevelUp()
 {	// 入力機能インスタンス取得
 	player_stats.player_level++;
 	player_stats.next_level_exp += 50; 
+
 
 	// 成長内容（例：攻撃力とスピード倍率を強化）
 	//player_stats.attack_power += 1.0f;
