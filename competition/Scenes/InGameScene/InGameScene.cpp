@@ -28,9 +28,9 @@ InGameScene::InGameScene() :
 	planets_image[2] = rm->GetImages("Resource/Images/Planets/Planet3.png")[0];
 	planets_image[3] = rm->GetImages("Resource/Images/Planets/Planet4.png")[0];
 	// 惑星1
-	pla1 = { D_WIN_MAX_X * 1.2,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
+	pla1 = { D_WIN_MAX_X * 1.5,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
 	// 惑星2
-	pla1 = { D_WIN_MAX_X * 0.7,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
+	pla1 = { D_WIN_MAX_X * 1.0,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
 }
 
 InGameScene::~InGameScene()
@@ -66,13 +66,13 @@ eSceneType InGameScene::Update(const float& delta_second)
 	pla1.x -= 0.5 * delta_second * speed;
 	if (pla1.x <= -(D_WIN_MAX_X / 2))
 	{
-		pla1 = { D_WIN_MAX_X * 1.2,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
+		pla1 = { D_WIN_MAX_X * 1.5,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
 	}
 	// 惑星ループ2
 	pla2.x -= 0.5 * delta_second * speed;
 	if (pla2.x <= -(D_WIN_MAX_X / 2))
 	{
-		pla2 = { D_WIN_MAX_X * 1.2,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
+		pla2 = { D_WIN_MAX_X * 1.5,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
 	}
 
 	//入力機能インスタンス取得
