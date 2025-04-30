@@ -19,6 +19,5 @@ public:
 public:
     void Movement(float);
     void Animation();
-    int image;
 
 };

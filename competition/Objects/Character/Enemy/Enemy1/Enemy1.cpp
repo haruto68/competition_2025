@@ -32,6 +32,9 @@ void Enemy1::Initialize()
 {
 	velocity.y = -1.0f;
 	velocity.x = -0.5f;
+
+	//âÊëúì«Ç›çûÇ›
+	image = LoadGraph("Resource/Images/enemy/ship1.png");
 }
 
 void Enemy1::Update(float delta_seconds)
@@ -58,11 +61,15 @@ void Enemy1::Update(float delta_seconds)
 
 void Enemy1::Draw(const Vector2D& screeen_offset, bool file_flag) const
 {
+	if (image != -1)
+	{
+		DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
+	}
 	// âº(îíÇ¢éläpÇï`âÊÇ∑ÇÈ)
-	Vector2D t1 = location - (collision.box_size / 2.0f);
+	/*Vector2D t1 = location - (collision.box_size / 2.0f);
 	Vector2D br = location + (collision.box_size / 2.0f);
 	DrawBoxAA(t1.x, t1.y, br.x, br.y, GetColor(255, 255, 255), TRUE);
-	DrawString(t1.x, t1.y, "1", GetColor(0, 0, 0), TRUE);
+	DrawString(t1.x, t1.y, "1", GetColor(0, 0, 0), TRUE);*/
 }
 
 void Enemy1::Finalize()
