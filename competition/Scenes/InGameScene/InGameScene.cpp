@@ -9,7 +9,8 @@ InGameScene::InGameScene() :
 	back_ground_location(0),
 	planets_image(),
 	pla1(),
-	pla2()
+	pla2(),
+	spawn_timer(0)
 {
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
@@ -50,46 +51,33 @@ void InGameScene::Initialize()
 	object_manager->CreateGameObject<ExperiencePoints>(Vector2D(800, 360));
 	object_manager->CreateGameObject<ExperiencePoints>(Vector2D(900, 300));
 	object_manager->CreateGameObject<ExperiencePoints>(Vector2D(900, 420));
-	//スポーンカウント
-	spawn_timer = 0.0f;
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
 {
-	float speed = 1000;
-	// 背景ループ
-	back_ground_location.x -= 0.05f * delta_second * speed;
-	if (back_ground_location.x <= -(D_WIN_MAX_X / 2))
-		back_ground_location.x = D_WIN_MAX_X / 2;
-	speed = 300;
-	// 惑星ループ1
-	pla1.x -= 0.5 * delta_second * speed;
-	if (pla1.x <= -(D_WIN_MAX_X / 2))
-	{
-		pla1 = { D_WIN_MAX_X * 1.5,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
-	}
-	// 惑星ループ2
-	pla2.x -= 0.5 * delta_second * speed;
-	if (pla2.x <= -(D_WIN_MAX_X / 2))
-	{
-		pla2 = { D_WIN_MAX_X * 1.5,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
-	}
-
 	//入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
 
 	//入力情報の更新
 	input->Update();
 
-	
+	// 背景管理処理
+	BackGroundManager(delta_second);
 
+	// 敵生成管理処理
+	EnemyManager(delta_second);
 
-	spawn_timer += delta_second;
-	if (spawn_timer >= 1.0f) // 1秒ごとにスポーン
+	//当たり判定チェック処理
+	for (int a = 0; a < scene_objects_list.size(); a++)
 	{
-		Spawn();
-		spawn_timer = 0.0f;
+		for (int b = 0; b < scene_objects_list.size(); b++)
+		{
+			object_manager->HitCheck(scene_objects_list[a], scene_objects_list[b]);
+			object_manager->HitCheck(scene_objects_list[b], scene_objects_list[a]);
+		}
 	}
+
+
 
 	// 生成するオブジェクトの確認
 	object_manager->CheckCreateObject();
@@ -109,7 +97,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		{
 			obj->SetLocation(Vector2D(obj->GetLocation().x + screen_offset.x, obj->GetLocation().y));
 		}
-		// 
+		// オブジェクトマネージャーのインスタンス引き渡し
 		if (obj->CheckInstance() == nullptr)
 		{
 			obj->SetInstance(object_manager);
@@ -132,11 +120,6 @@ eSceneType InGameScene::Update(const float& delta_second)
 		return eSceneType::eResult;
 	}
 
-
-
-
-
-
 	//ゲームを終了
 	if (input->GetKeyUp(KEY_INPUT_ESCAPE))
 	{
@@ -144,11 +127,6 @@ eSceneType InGameScene::Update(const float& delta_second)
 	}
 
 	return GetNowSceneType();
-
-
-
-	
-	
 }
 
 void InGameScene::Draw() const
@@ -157,8 +135,8 @@ void InGameScene::Draw() const
 	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
 	DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
 
-	int bright = 125;
 	// 惑星描画
+	int bright = 125;
 	SetDrawBright(bright, bright, bright);
 	DrawRotaGraphF(pla1.x, pla1.y, pla1.size, pla1.angle, pla1.image, TRUE);
 	DrawRotaGraphF(pla2.x, pla2.y, 0.5, 0.0, pla2.image, TRUE);
@@ -184,6 +162,39 @@ void InGameScene::Finalize()
 eSceneType InGameScene::GetNowSceneType()const
 {
 	return eSceneType::eInGame;
+}
+
+void InGameScene::BackGroundManager(const float& delta_second)
+{
+	float speed = 1000;
+	// 背景ループ
+	back_ground_location.x -= 0.05f * delta_second * speed;
+	if (back_ground_location.x <= -(D_WIN_MAX_X / 2))
+		back_ground_location.x = D_WIN_MAX_X / 2;
+	speed = 300;
+	// 惑星ループ1
+	pla1.x -= 0.5 * delta_second * speed;
+	if (pla1.x <= -(D_WIN_MAX_X / 2))
+	{
+		pla1 = { D_WIN_MAX_X * 1.5,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
+	}
+	// 惑星ループ2
+	pla2.x -= 0.5 * delta_second * speed;
+	if (pla2.x <= -(D_WIN_MAX_X / 2))
+	{
+		pla2 = { D_WIN_MAX_X * 1.5,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
+	}
+}
+
+void InGameScene::EnemyManager(const float& delta_second)
+{
+	// 敵生成クールタイム
+	spawn_timer += delta_second;
+	if (spawn_timer >= 1.0f) // 1秒ごとにスポーン
+	{
+		Spawn();
+		spawn_timer = 0.0f;
+	}
 }
 
 void InGameScene::Spawn()        //敵の自動生成
