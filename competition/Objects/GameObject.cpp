@@ -4,6 +4,7 @@
 
 GameObject::GameObject() :
 	location(0.0f),
+	speed(0),
 	image(NULL),
 	z_layer(0),
 	is_mobility(false),
@@ -120,7 +121,7 @@ Vector2D GameObject::Tracking(Vector2D A, Vector2D B)
 
 }
 
-//
+//オブジェクトマネージャー設定処理
 const GameObjectManager* GameObject::CheckInstance() const
 {
 	return object_manager;

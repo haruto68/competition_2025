@@ -24,32 +24,35 @@ class InGameScene : public SceneBase
 protected:
 
 public:
-	class GameObjectManager* object_manager;
-	class Player* player;
-	//class Shot* shot;
-	int back_ground_image;
-	Vector2D back_ground_location;
-	int planets_image[4];
-	Planet pla1;
-	Planet pla2;
+	std::vector<GameObject*> scene_objects_list;//オブジェクトリスト
+	class GameObjectManager* object_manager;	// オブジェクトマネージャーインスタンス
+	class Player* player;						//プレイヤーインスタンス
 
-	std::vector<GameObject*> scene_objects_list;
+	int back_ground_image;						//背景画像
+	Vector2D back_ground_location;				//背景座標
+	int planets_image[4];						//惑星画像
+	Planet pla1;								//惑星1
+	Planet pla2;								//惑星2
 
-public:
-	InGameScene();
-	~InGameScene();
+	float spawn_timer;							//敵生成クールタイム
+
 
 public:
-	virtual void Initialize() override;
-	virtual eSceneType Update(const float& delta_second);
-	virtual void Draw() const override;
-	virtual void Finalize() override;
+	InGameScene();	//コンストラクタ
+	~InGameScene();	//デストラクタ
 
 public:
-	virtual eSceneType GetNowSceneType() const override;
+	virtual void Initialize() override;						//初期化処理
+	virtual eSceneType Update(const float& delta_second);	//更新処理
+	virtual void Draw() const override;						//描画処理
+	virtual void Finalize() override;						//終了処理
 
-	void Spawn();
-	
-	float spawn_timer;
+public:
+	virtual eSceneType GetNowSceneType() const override;	//現在シーン取得処理
 
+private:
+	void BackGroundManager(const float& delta_second);		//背景管理処理
+
+	void EnemyManager(const float& delta_second);			//敵生成管理処理
+	void Spawn();											//敵生成
 };
