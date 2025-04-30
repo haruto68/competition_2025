@@ -99,7 +99,7 @@ void Player::OnHitCollision(GameObject* hit_object)
 	case eEnemyShot:
 		break;
 	case eItem:
-		AddExperience(20);
+		AddExperience(1);
 		break;
 	default:
 		break;
