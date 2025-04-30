@@ -129,7 +129,7 @@ void TitleScene::Draw() const
 	if (menu_num == 1 && help == true)
 	{
 		DrawBox(0, 0, 1280, 720, 0xff00ff, TRUE);
-		DrawFormatString(0, 100, 0x000000, "一応ヘルプシーン");
+		DrawFormatString(0, 0, 0x000000, "一応ヘルプシーン");
 		DrawFormatString(0, 100, 0x000000, "操作説明及び敵やオブジェクトの詳細説明");
 		DrawFormatString(0, 200, 0x000000, "WASDキーで移動");
 		DrawFormatString(0, 300, 0x000000, "Bボタンで弾の発射");
