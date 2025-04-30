@@ -79,9 +79,26 @@ void Enemy1::Finalize()
 
 void Enemy1::OnHitCollision(GameObject* hit_object)
 {
-	if (hit_object->GetCollision().object_type == eObjectType::ePlayerShot)
+	eObjectType type = hit_object->GetCollision().object_type;
+
+	switch (type)
 	{
-		
+	case eNone:
+		break;
+	case ePlayer:
+		break;
+	case eEnemy:
+		break;
+	case ePlayerShot:
+		object_manager->CreateGameObject< ExperiencePoints>(this->location);
+		object_manager->DestroyGameObject(this);
+		break;
+	case eEnemyShot:
+		break;
+	case eItem:
+		break;
+	default:
+		break;
 	}
 }
 
