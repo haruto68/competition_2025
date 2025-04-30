@@ -84,7 +84,26 @@ void Player::Finalize()
 
 void Player::OnHitCollision(GameObject* hit_object)
 {
-	
+	eObjectType type = hit_object->GetCollision().object_type;
+
+	switch (type)
+	{
+	case eNone:
+		break;
+	case ePlayer:
+		break;
+	case eEnemy:
+		break;
+	case ePlayerShot:
+		break;
+	case eEnemyShot:
+		break;
+	case eItem:
+		AddExperience(20);
+		break;
+	default:
+		break;
+	}
 }
 
 Vector2D Player::GetScreenVelocity()
