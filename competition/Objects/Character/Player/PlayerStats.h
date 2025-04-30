@@ -2,11 +2,10 @@
 
 struct PlayerStats
 {
-	float base_speed;
-	float attack_power;
-	int life_count;
-	int player_level;
-	float speed_multiplier;
+	float attack_power = 1.0f;
+	float move_speed = 0.0f;
+	int life_count = 3;
+	int player_level = 1;
 
 	// ŒoŒ±’lŠÖ˜A
 	int current_exp = 0;
