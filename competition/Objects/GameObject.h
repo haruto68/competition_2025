@@ -14,6 +14,9 @@ protected:
 	Vector2D player_location;		//プレイヤー座標
 	Vector2D old_player_location;	//生成時プレイヤー座標
 
+	// オブジェクトマネージャーのインスタンス
+	class GameObjectManager* object_manager;
+
 public:
 	GameObject();
 	~GameObject();
@@ -35,4 +38,6 @@ public:
 	void SetPlayerLocation(Vector2D location);	//プレイヤー座標設定処理
 	Vector2D Tracking(Vector2D A, Vector2D B);	//AがBを追尾する処理
 
+	const GameObjectManager* CheckInstance() const;	//インスタンス確認処理
+	void SetInstance(GameObjectManager* instance);	//インスタンス設定処理
 };

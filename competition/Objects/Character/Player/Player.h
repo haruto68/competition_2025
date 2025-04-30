@@ -11,8 +11,6 @@ protected:
 private:
 	float screen_velocity;		// ƒXƒNƒŠ[ƒ“ˆÚ“®—Ê
 
-	class GameObjectManager* object_manager;
-
 	float shot_timer;
 	const float SHOT_INTERVAL;
 
@@ -40,11 +38,6 @@ public:
 
 	void AddExperience(int exp);
 	void LevelUp();
-
-	void SetObjectList(GameObjectManager* object_manager)
-	{
-		this->object_manager = object_manager;
-	}
 
 	void SetPlayerStats(float attack, int life, int level)
 	{

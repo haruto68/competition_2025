@@ -60,7 +60,7 @@ void Player::Update(float delta_seconds)
 		shot->SetPlayerStats(this->GetPlayerStats());
 		shot_timer = SHOT_INTERVAL;
 	}
-	if (input->GetButtonDown(KEY_INPUT_L))
+	if (input->GetKeyDown(KEY_INPUT_L))
 	{
 		AddExperience(20);
 	}
@@ -108,7 +108,7 @@ void Player::SetVelocity(Vector2D velocity)
 void Player::Movement(float delta_seconds)
 {
 	// 移動スピード
-	float speed = 200.0f;
+	float speed = 200.0 + player_stats.move_speed;
 	// 移動方向
 	Vector2D direction = 0.0f;
 	// 減速
@@ -195,21 +195,25 @@ void Player::Movement(float delta_seconds)
 	if ((location.x + velocity.x) < (collision.box_size.x / 2.0f))
 	{
 		velocity.x = 0.0f;
+		location.x = 10.0f;
 	}
 	//右画面端
 	if ((location.x + velocity.x) >= (D_WIN_MAX_X) - (collision.box_size.x / 2.0f))
 	{
 		velocity.x = 0.0f;
+		location.x = 1270.0f;
 	}
 	//上画面端
 	if ((location.y + velocity.y) < (collision.box_size.y / 2.0f))
 	{
 		velocity.y = 0.0f;
+		location.y = 10.0f;
 	}
 	//下画面端
 	if ((location.y + velocity.y) >= (D_WIN_MAX_Y)-(collision.box_size.y / 2.0f))
 	{
 		velocity.y = 0.0f;
+		location.y = 710.0;
 	}
 
 
@@ -236,12 +240,10 @@ void Player::AddExperience(int exp)
 
 void Player::LevelUp()
 {	// 入力機能インスタンス取得
-	player_stats.player_level++;
-	player_stats.next_level_exp += 50; 
+	player_stats.player_level++;			//プレイヤーレベルアップ
+	player_stats.next_level_exp += 50;		//次のレベルアップに必要な経験値量の増加
 
-	// 成長内容（例：攻撃力とスピード倍率を強化）
-	//player_stats.attack_power += 1.0f;
-	//player_stats.speed_multiplier += 0.05f;
-
+	player_stats.attack_power += 1.0f;		// 弾の威力アップ
+	player_stats.move_speed += 30.0f;		// 移動速度アップ
 	
 }

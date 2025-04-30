@@ -4,10 +4,12 @@
 
 GameObject::GameObject() :
 	location(0.0f),
+	speed(0),
 	image(NULL),
 	z_layer(0),
 	is_mobility(false),
-	player_location(0.0f)
+	player_location(0.0f),
+	object_manager(nullptr)
 {
 
 }
@@ -117,4 +119,14 @@ Vector2D GameObject::Tracking(Vector2D A, Vector2D B)
 
 	return velocity;
 
+}
+
+//オブジェクトマネージャー設定処理
+const GameObjectManager* GameObject::CheckInstance() const
+{
+	return object_manager;
+}
+void GameObject::SetInstance(GameObjectManager* instance)
+{
+	object_manager = instance;
 }

@@ -14,8 +14,8 @@ EnemyShot::EnemyShot() :
 	// コリジョン設定
 	collision.is_blocking = true;
 	collision.box_size = Vector2D(10, 10);
-	collision.object_type = eObjectType::ePlayerShot;
-	collision.hit_object_type.push_back(eObjectType::eEnemy);
+	collision.object_type = eObjectType::eEnemyShot;
+	collision.hit_object_type.push_back(eObjectType::ePlayer);
 	// 画像設定
 	// レイヤー設定
 	z_layer = 2;
@@ -75,7 +75,26 @@ void EnemyShot::Finalize()
 
 void EnemyShot::OnHitCollision(GameObject* hit_object)
 {
+	eObjectType type = hit_object->GetCollision().object_type;
 
+	switch (type)
+	{
+	case eNone:
+		break;
+	case ePlayer:
+		object_manager->DestroyGameObject(this);
+		break;
+	case eEnemy:
+		break;
+	case ePlayerShot:
+		break;
+	case eEnemyShot:
+		break;
+	case eItem:
+		break;
+	default:
+		break;
+	}
 }
 
 Vector2D EnemyShot::GetScreenVelocity()
