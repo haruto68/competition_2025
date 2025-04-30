@@ -3,6 +3,7 @@
 #include"../Character.h"
 #include"../../Shot/EnemyShot/EnemyShot.h"
 #include"../../../Utility/InputManager.h"
+#include"../../Item/ExperiencePoints/ExperiencePoints.h"
 
 class EnemyBase : public Character
 {

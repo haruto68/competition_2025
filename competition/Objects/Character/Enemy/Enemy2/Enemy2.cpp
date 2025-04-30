@@ -65,6 +65,27 @@ void Enemy2::Finalize()
 
 void Enemy2::OnHitCollision(GameObject* hit_object)
 {
+	eObjectType type = hit_object->GetCollision().object_type;
+
+	switch (type)
+	{
+	case eNone:
+		break;
+	case ePlayer:
+		break;
+	case eEnemy:
+		break;
+	case ePlayerShot:
+		object_manager->CreateGameObject< ExperiencePoints>(this->location);
+		object_manager->DestroyGameObject(this);
+		break;
+	case eEnemyShot:
+		break;
+	case eItem:
+		break;
+	default:
+		break;
+	}
 }
 
 void Enemy2::Movement(float delta_seconds)
