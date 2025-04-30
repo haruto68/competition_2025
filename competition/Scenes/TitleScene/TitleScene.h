@@ -7,6 +7,8 @@ protected:
 
 private:
 	int menu_num;		// メニューカーソル番号
+	bool help;			// ヘルプが開かれてるかどうか?
+	bool is_button;		// ボタンが操作できるかどうか?
 public:
 	TitleScene();
 	~TitleScene();
