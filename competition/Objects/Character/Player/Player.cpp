@@ -60,10 +60,6 @@ void Player::Update(float delta_seconds)
 		shot->SetPlayerStats(this->GetPlayerStats());
 		shot_timer = SHOT_INTERVAL;
 	}
-	if (input->GetKeyDown(KEY_INPUT_L))
-	{
-		AddExperience(20);
-	}
 }
 
 void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const
@@ -99,7 +95,7 @@ void Player::OnHitCollision(GameObject* hit_object)
 	case eEnemyShot:
 		break;
 	case eItem:
-		AddExperience(1);
+		AddExperience(5);
 		break;
 	default:
 		break;
