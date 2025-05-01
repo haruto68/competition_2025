@@ -1,7 +1,8 @@
 #pragma once
 #include"../SceneBase.h"
-#include"../../Objects/GameObject.h"
+#include"../UI/LevelUpUI.h"
 
+#include"../../Objects/GameObject.h"
 #include"../../Objects/Character/Player/Player.h"
 #include"../../Objects/Character/Enemy/Enemy1/Enemy1.h"
 #include"../../Objects/Character/Enemy/Enemy2/Enemy2.h"
@@ -27,6 +28,7 @@ public:
 	std::vector<GameObject*> scene_objects_list;//オブジェクトリスト
 	class GameObjectManager* object_manager;	// オブジェクトマネージャーインスタンス
 	class Player* player;						//プレイヤーインスタンス
+	LevelUpUI* level_up_ui;						//
 
 	int back_ground_image;						//背景画像
 	Vector2D back_ground_location;				//背景座標
@@ -35,6 +37,7 @@ public:
 	Planet pla2;								//惑星2
 
 	float spawn_timer;							//敵生成クールタイム
+
 
 
 public:
