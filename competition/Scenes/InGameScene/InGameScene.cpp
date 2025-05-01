@@ -47,10 +47,11 @@ void InGameScene::Initialize()
 	//プライヤー生成
 	player = object_manager->CreateGameObject<Player>(Vector2D(160, 360));
 
+	//
+	level_up_ui = new LevelUpUI();
+	level_up_ui->Initialize();
+
 	// Test用生成
-	object_manager->CreateGameObject<ExperiencePoints>(Vector2D(800, 360));
-	object_manager->CreateGameObject<ExperiencePoints>(Vector2D(900, 300));
-	object_manager->CreateGameObject<ExperiencePoints>(Vector2D(900, 420));
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
@@ -60,6 +61,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 	//入力情報の更新
 	input->Update();
+
+	level_up_ui->Update(0);
 
 	// 背景管理処理
 	BackGroundManager(delta_second);
@@ -152,11 +155,13 @@ void InGameScene::Draw() const
 
 	SetFontSize(40);
 	DrawFormatString(10, 10, GetColor(255, 255, 255), "%d", c);
+
+	level_up_ui->Draw();
 }
 
 void InGameScene::Finalize()
 {
-
+	level_up_ui->Finalize();
 }
 
 eSceneType InGameScene::GetNowSceneType()const
