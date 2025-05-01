@@ -59,9 +59,9 @@ void ResultScene::Draw() const
 		DrawBox(25, 600, 325, 700, 0xffffff, TRUE);
 		DrawFormatString(25, 630, 0xff0000, "End");
 
-		// ネクストぼタン
+		// タイトルボタン
 		DrawBox(955, 600, 1255, 700, 0xffffff, TRUE);
-		DrawFormatString(955, 630, 0x0000ff, "Next");
+		DrawFormatString(955, 630, 0x0000ff, "Title");
 	
 }
 
