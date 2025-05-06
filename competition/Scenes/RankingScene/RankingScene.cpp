@@ -34,12 +34,19 @@ eSceneType RankingScene::Update(const float& delta_second)
 		return eSceneType::eExit;
 	}
 
+	// 2キーでタイトルに戻る
+	if (input->GetKeyUp(KEY_INPUT_2))
+	{
+		return eSceneType::eTitle;
+	}
+
 	return GetNowSceneType();
 }
 
 void RankingScene::Draw() const
 {
 	DrawFormatString(10, 10, GetColor(255, 255, 255), "ランキングシーン");
+	DrawFormatString(10, 110, GetColor(255, 255, 255), "2キーでタイトルに戻る");
 
 }
 

@@ -54,7 +54,26 @@ void ExperiencePoints::Finalize()
 
 void ExperiencePoints::OnHitCollision(GameObject* hit_object)
 {
+	eObjectType type = hit_object->GetCollision().object_type;
 
+	switch (type)
+	{
+	case eNone:
+		break;
+	case ePlayer:
+		object_manager->DestroyGameObject(this);
+		break;
+	case eEnemy:
+		break;
+	case ePlayerShot:
+		break;
+	case eEnemyShot:
+		break;
+	case eItem:
+		break;
+	default:
+		break;
+	}
 }
 
 void ExperiencePoints::Movement(float delta_seconds)
