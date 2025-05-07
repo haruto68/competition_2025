@@ -36,7 +36,8 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	
+	//画像読み込み
+	//image = LoadGraph("Resource/Images/player/.png");
 }
 
 void Player::Update(float delta_seconds)
@@ -65,6 +66,11 @@ void Player::Update(float delta_seconds)
 void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	__super::Draw(0.0f, this->flip_flag);
+
+	//if (image != -1)
+	//{
+	//	DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
+	//}
 
 	DrawBox(location.x - 10, location.y - 10, location.x + 10, location.y + 10, GetColor(255, 0, 0), TRUE);
 	SetFontSize(20);
@@ -258,7 +264,11 @@ void Player::LevelUp()
 	player_stats.player_level++;			//プレイヤーレベルアップ
 	player_stats.next_level_exp += 50;		//次のレベルアップに必要な経験値量の増加
 
-	player_stats.attack_power += 1.0f;		// 弾の威力アップ
+	AddPower(10);
 	player_stats.move_speed += 30.0f;		// 移動速度アップ
-	
+}
+
+void Player::AddPower(int power)
+{
+	player_stats.attack_power += power;
 }
