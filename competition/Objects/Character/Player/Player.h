@@ -16,6 +16,8 @@ private:
 
 	PlayerStats player_stats = {};
 
+	int image;
+
 public:
 	Player();
 	~Player();
@@ -38,6 +40,9 @@ public:
 
 	void AddExperience(int exp);
 	void LevelUp();
+	void SubtractLife();
+	void AddShield(int shield);
+	void AddPower(int power);
 
 	void SetPlayerStats(float attack, int life, int level)
 	{

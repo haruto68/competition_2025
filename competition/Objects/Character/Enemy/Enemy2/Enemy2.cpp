@@ -90,7 +90,9 @@ void Enemy2::OnHitCollision(GameObject* hit_object)
 
 void Enemy2::Movement(float delta_seconds)
 {
-	
+	//ç∂Ç…ìÆÇ©Ç∑
+	velocity.x = -1.0f;
+
 	location += velocity * speed * delta_seconds;
 }
 
