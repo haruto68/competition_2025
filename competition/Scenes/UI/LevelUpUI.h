@@ -6,9 +6,9 @@ class LevelUpUI
 {
 	bool draw_flag;
 
-	int window;
-	int table_01;
-	int header;
+	int window[3] = {};
+	int power[5] = {};
+	int power_icon[5] = {};
 
 public:
 	LevelUpUI();
