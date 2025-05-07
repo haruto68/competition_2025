@@ -25,7 +25,7 @@
     <ClCompile Include="Utility\Singleton.cpp" />
     <ClCompile Include="Utility\Vector2D.cpp" />
     <ClCompile Include="Scenes\UI\LevelUpUI.cpp" />
-    <ClCompile Include="Scenes\UI\HpUi.cpp" />
+    <ClCompile Include="Scenes\UI\HpUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Objects\Character\Enemy\Enemy2\Enemy2.h" />
@@ -57,6 +57,6 @@
     <ClInclude Include="Utility\Singleton.h" />
     <ClInclude Include="Utility\Vector2D.h" />
     <ClInclude Include="Scenes\UI\LevelUpUI.h" />
-    <ClInclude Include="Scenes\UI\HpUi.h" />
+    <ClInclude Include="Scenes\UI\HpUI.h" />
   </ItemGroup>
 </Project>
