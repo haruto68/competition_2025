@@ -39,6 +39,18 @@ void Enemy2::Update(float delta_seconds)
 {
 	Movement(delta_seconds);
 	Animation();
+
+	//時間経過
+	shot_timer += delta_seconds;
+
+	if (shot_timer >= shot_cooldown)
+	{
+		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
+		shot->SetShotType(eEnemy3);
+
+		//タイマーリセット
+		shot_timer = 0.0f;
+	}
 }
 
 void Enemy2::Draw(const Vector2D&, bool) const
@@ -92,7 +104,7 @@ void Enemy2::Movement(float delta_seconds)
 {
 	//左に動かす
 	velocity.x = -1.0f;
-
+	
 	location += velocity * speed * delta_seconds;
 }
 

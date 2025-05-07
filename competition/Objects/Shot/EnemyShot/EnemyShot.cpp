@@ -31,7 +31,12 @@ EnemyShot::~EnemyShot()
 
 void EnemyShot::Initialize()
 {
+	//âÊëúì«Ç›çûÇ›
+	image = LoadGraph("Resource/Images/enemy_shot/shot1.png");
 
+	image = LoadGraph("Resource/Images/enemy_shot/shot2.png");
+
+	image = LoadGraph("Resource/Images/enemy_shot/shot3.png");
 }
 
 void EnemyShot::Update(float delta_seconds)

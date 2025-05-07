@@ -238,6 +238,8 @@ void InGameScene::Spawn()        //敵の自動生成
 		break;
 	}*/
 
+	//うんちーーーー
+
 	int ramdom_y = GetRand(2);
 	float Y_t = 170 + (float)(ramdom_y * 80);
 	float Y_b = 170 + (3 * 80);

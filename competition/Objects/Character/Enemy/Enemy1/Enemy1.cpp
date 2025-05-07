@@ -51,7 +51,7 @@ void Enemy1::Update(float delta_seconds)
 	if (shot_timer>=shot_cooldown)
 	{
 		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
-		shot->SetShotType(eEnemy3);
+		shot->SetShotType(eEnemy1);
 
 		//タイマーリセット
 		shot_timer = 0.0f;
