@@ -10,8 +10,7 @@ InGameScene::InGameScene() :
 	planets_image(),
 	pla1(),
 	pla2(),
-	spawn_timer(0),
-	level_up_flg()
+	spawn_timer(0)
 {
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
@@ -71,6 +70,18 @@ eSceneType InGameScene::Update(const float& delta_second)
 	// 敵生成管理処理
 	EnemyManager(delta_second);
 
+	//当たり判定チェック処理
+	for (int a = 0; a < scene_objects_list.size(); a++)
+	{
+		for (int b = 0; b < scene_objects_list.size(); b++)
+		{
+			object_manager->HitCheck(scene_objects_list[a], scene_objects_list[b]);
+			object_manager->HitCheck(scene_objects_list[b], scene_objects_list[a]);
+		}
+	}
+
+
+
 	// 生成するオブジェクトの確認
 	object_manager->CheckCreateObject();
 	// 破棄するオブジェクトの確認
@@ -96,16 +107,6 @@ eSceneType InGameScene::Update(const float& delta_second)
 		}
 	}
 
-	//当たり判定チェック処理
-	for (int a = 0; a < scene_objects_list.size(); a++)
-	{
-		for (int b = 0; b < scene_objects_list.size(); b++)
-		{
-			object_manager->HitCheck(scene_objects_list[a], scene_objects_list[b]);
-			object_manager->HitCheck(scene_objects_list[b], scene_objects_list[a]);
-		}
-	}
-
 	// 画面外へでたオブジェクトを破壊する
 	for (GameObject* obj : scene_objects_list)
 	{
@@ -113,18 +114,6 @@ eSceneType InGameScene::Update(const float& delta_second)
 			obj->GetLocation().y <= -50 || obj->GetLocation().y >= D_WIN_MAX_Y + 50)
 		{
 			object_manager->DestroyGameObject(obj);
-		}
-	}
-
-	if (input->GetKeyUp(KEY_INPUT_L))
-	{
-		if (level_up_flg)
-		{
-			level_up_flg = false;
-		}
-		else
-		{
-			level_up_flg = true;
 		}
 	}
 
@@ -167,10 +156,7 @@ void InGameScene::Draw() const
 	SetFontSize(40);
 	DrawFormatString(10, 10, GetColor(255, 255, 255), "%d", c);
 
-	if(level_up_flg)
-	{
-		level_up_ui->Draw();
-	}
+	level_up_ui->Draw();
 }
 
 void InGameScene::Finalize()

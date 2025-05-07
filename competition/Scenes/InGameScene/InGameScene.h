@@ -37,7 +37,7 @@ public:
 	Planet pla2;								//惑星2
 
 	float spawn_timer;							//敵生成クールタイム
-	bool level_up_flg;							//レベルアップフラグ
+
 
 
 public:
