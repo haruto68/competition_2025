@@ -38,7 +38,7 @@ public:
 	void Movement(float);
 	void Animation();
 
-	void AddExperience(int exp);
+	void AddExperience(float exp);
 	void LevelUp();
 	void SubtractLife();
 	void AddShield(int shield);
@@ -54,4 +54,7 @@ public:
 	{
 		return player_stats;
 	}
+	void CheckLevelUp();
+
+	void StatsUp(ePowerUp powerup);
 };

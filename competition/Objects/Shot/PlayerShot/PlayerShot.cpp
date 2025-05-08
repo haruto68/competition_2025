@@ -56,9 +56,25 @@ void PlayerShot::Finalize()
 
 void PlayerShot::OnHitCollision(GameObject* hit_object)
 {
-	if (hit_object->GetCollision().object_type == eObjectType::eEnemy)
+	eObjectType type = hit_object->GetCollision().object_type;
+
+	switch (type)
 	{
-		
+	case eNone:
+		break;
+	case ePlayer:
+		break;
+	case eEnemy:
+		object_manager->DestroyGameObject(this);
+		break;
+	case ePlayerShot:
+		break;
+	case eEnemyShot:
+		break;
+	case eItem:
+		break;
+	default:
+		break;
 	}
 }
 
