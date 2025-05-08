@@ -34,4 +34,5 @@ public:
 	void Animation();
 
 	int image;
+	int shot_image[3];
 };
