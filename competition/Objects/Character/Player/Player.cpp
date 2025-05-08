@@ -265,7 +265,6 @@ void Player::LevelUp()
 	player_stats.next_level_exp += 50;		//次のレベルアップに必要な経験値量の増加
 
 	AddPower(10);
-	player_stats.move_speed += 30.0f;		// 移動速度アップ
 }
 
 void Player::StatsUp(ePowerUp powerup)
