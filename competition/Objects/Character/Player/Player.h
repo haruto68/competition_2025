@@ -54,4 +54,7 @@ public:
 	{
 		return player_stats;
 	}
+	void CheckLevelUp();
+
+	void StatsUp(ePowerUp powerup);
 };

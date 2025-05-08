@@ -6,7 +6,7 @@
 Player::Player() : 
 	screen_velocity(0.0f),
 	shot_timer(0.0f),
-	SHOT_INTERVAL(.0f)
+	SHOT_INTERVAL(0.3f)
 {
 
 	//リソース管理インスタンス取得
@@ -54,7 +54,7 @@ void Player::Update(float delta_seconds)
 	//入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
 
-	if (InputManager::GetInstance()->GetButton(13) || CheckHitKey(KEY_INPUT_B) && shot_timer <= 0.0f)
+	if ((InputManager::GetInstance()->GetButton(13) || CheckHitKey(KEY_INPUT_B)) && shot_timer <= 0.0f)
 	{
 		PlayerShot* shot = object_manager->CreateGameObject<PlayerShot>(this->location);
 		shot->SetShotType(ePlayer1);
@@ -267,6 +267,25 @@ void Player::LevelUp()
 	AddPower(10);
 	player_stats.move_speed += 30.0f;		// 移動速度アップ
 }
+
+void Player::StatsUp(ePowerUp powerup)
+{
+	switch (powerup)
+	{
+	case ePowerUp::eHp:
+		player_stats.life_count += 1.0f;		// HP残量アップ
+		break;
+	case ePowerUp::eDamage:
+		player_stats.attack_power += 1.0f;		// 攻撃力アップ
+		break;
+	case ePowerUp::eSpeed:
+		player_stats.move_speed += 500.0f;		// 移動速度アップ
+		break;
+	default:
+		break;
+	}
+}
+
 
 void Player::AddPower(int power)
 {
