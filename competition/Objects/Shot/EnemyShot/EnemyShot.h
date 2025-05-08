@@ -32,4 +32,7 @@ public:
 
 	void Movement(float);
 	void Animation();
+
+	int image;
+	int shot_image[3];
 };

@@ -31,7 +31,12 @@ EnemyShot::~EnemyShot()
 
 void EnemyShot::Initialize()
 {
+	//‰æ‘œ“Ç‚Ýž‚Ý
+	shot_image[0] = LoadGraph("Resource/Images/enemy_shot/shot1.png");
 
+	shot_image[1] = LoadGraph("Resource/Images/enemy_shot/shot2.png");
+
+	shot_image[2] = LoadGraph("Resource/Images/enemy_shot/shot3.png");
 }
 
 void EnemyShot::Update(float delta_seconds)
@@ -45,6 +50,7 @@ void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	__super::Draw(0.0f, this->flip_flag);
 
+	int image_to_draw = -1;
 
 	switch (shot_type)
 	{
@@ -55,17 +61,24 @@ void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	case ePlayer3:
 		break;
 	case eEnemy1:
-		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(200, 0, 0), TRUE);
+		image_to_draw = shot_image[0];
 		break;
 	case eEnemy2:
-		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(0, 200, 0), TRUE);
+		image_to_draw = shot_image[1];
 		break;
 	case eEnemy3:
-		DrawBox(location.x - 5, location.y - 5, location.x + 5, location.y + 5, GetColor(0, 0, 200), TRUE);
+		image_to_draw = shot_image[2];
 		break;
 	default:
 		break;
 	}
+
+	if (image_to_draw != -1)
+	{
+		/*DrawGraph(location.x, location.y, image_to_draw, TRUE);*/
+		DrawRotaGraph(location.x, location.y, 0.05, 0, image_to_draw,TRUE);
+	}
+	
 }
 
 void EnemyShot::Finalize()

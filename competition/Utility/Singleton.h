@@ -11,6 +11,8 @@
 
 #define SIZE			float(1.0)		// ‰æ‘œ”{—¦
 
+#define ƒÎ    (3.141592653589793)		//‰~Žü—¦
+
 class Singleton
 {
 protected:

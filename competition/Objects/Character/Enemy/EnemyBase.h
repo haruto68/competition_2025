@@ -13,5 +13,6 @@ public:
 	float shot_cooldown = 2.0f;    //クールタイム
 
 	int image;
+	float radian = 0;
 
 };

@@ -43,7 +43,7 @@ void Enemy3::Draw(const Vector2D& screeen_offset, bool file_flag) const
 {
 	if (image != -1)
 	{
-		DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
+		DrawRotaGraphF(location.x, location.y, 1.0f, radian + (-velocity.y / 2), image, TRUE);
 	}
 
 	// ‰¼(”’‚¢ŽlŠp‚ð•`‰æ‚·‚é)
