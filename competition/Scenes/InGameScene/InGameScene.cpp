@@ -5,13 +5,15 @@
 InGameScene::InGameScene() :
 	object_manager(nullptr),
 	player(),
+	level_up_ui(),
 	back_ground_image(0),
 	back_ground_location(0),
 	planets_image(),
 	pla1(),
 	pla2(),
 	spawn_timer(0),
-	level_up_flg()
+	level_up_flg(),
+	time_stop()
 {
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
@@ -46,7 +48,7 @@ void InGameScene::Initialize()
 	//GameObjectManagerインスタンス取得
 	object_manager = new GameObjectManager();
 
-	//プライヤー生成
+	//プレイヤー生成
 	player = object_manager->CreateGameObject<Player>(Vector2D(160, 360));
 
 	//
@@ -54,6 +56,8 @@ void InGameScene::Initialize()
 	level_up_ui->Initialize();
 
 	// Test用生成
+	hp_ui = new HpUI();
+	hp_ui->Initialize();
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
@@ -64,60 +68,105 @@ eSceneType InGameScene::Update(const float& delta_second)
 	//入力情報の更新
 	input->Update();
 
-	level_up_ui->Update(0);
+	//レベルアップUI更新処理
+	level_up_ui->Update(level_up_flg);
 
-	// 背景管理処理
-	BackGroundManager(delta_second);
 
-	// 敵生成管理処理
-	EnemyManager(delta_second);
-
-	// 生成するオブジェクトの確認
-	object_manager->CheckCreateObject();
-	// 破棄するオブジェクトの確認
-	object_manager->CheckDestroyObject();
-	// 現在のオブジェクトリストを取得
-	scene_objects_list = object_manager->GetObjectList();
-
-	// リスト内のオブジェクトを更新する
-	for (GameObject* obj : scene_objects_list)
+	// シーン内オブジェクト更新
+	if(!time_stop)
 	{
-		obj->Update(delta_second);
-		// プライヤー座標受け渡し
-		obj->SetPlayerLocation(player->GetLocation());
-		// オブジェクトをスクロールと一緒に動かす処理
-		if(obj->GetCollision().object_type != eObjectType::ePlayer)
+		// 背景管理処理
+		BackGroundManager(delta_second);
+
+		// 敵生成管理処理
+		EnemyManager(delta_second);
+
+		// 生成するオブジェクトの確認
+		object_manager->CheckCreateObject();
+		// 破棄するオブジェクトの確認
+		object_manager->CheckDestroyObject();
+		// 現在のオブジェクトリストを取得
+		scene_objects_list = object_manager->GetObjectList();
+
+		// リスト内のオブジェクトを更新する
+		for (GameObject* obj : scene_objects_list)
 		{
-			obj->SetLocation(Vector2D(obj->GetLocation().x + screen_offset.x, obj->GetLocation().y));
+			obj->Update(delta_second);
+			// プライヤー座標受け渡し
+			obj->SetPlayerLocation(player->GetLocation());
+			// オブジェクトをスクロールと一緒に動かす処理
+			if (obj->GetCollision().object_type != eObjectType::ePlayer)
+			{
+				obj->SetLocation(Vector2D(obj->GetLocation().x + screen_offset.x, obj->GetLocation().y));
+			}
+			// オブジェクトマネージャーのインスタンス引き渡し
+			if (obj->CheckInstance() == nullptr)
+			{
+				obj->SetInstance(object_manager);
+			}
 		}
-		// オブジェクトマネージャーのインスタンス引き渡し
-		if (obj->CheckInstance() == nullptr)
+
+		//当たり判定チェック処理
+		for (int a = 0; a < scene_objects_list.size(); a++)
 		{
-			obj->SetInstance(object_manager);
+			for (int b = 0; b < scene_objects_list.size(); b++)
+			{
+				object_manager->HitCheck(scene_objects_list[a], scene_objects_list[b]);
+				object_manager->HitCheck(scene_objects_list[b], scene_objects_list[a]);
+			}
+		}
+
+		// 画面外へでたオブジェクトを破壊する
+		for (GameObject* obj : scene_objects_list)
+		{
+			if (obj->GetLocation().x <= -50 || obj->GetLocation().x >= D_WIN_MAX_X + 50 ||
+				obj->GetLocation().y <= -50 || obj->GetLocation().y >= D_WIN_MAX_Y + 50)
+			{
+				object_manager->DestroyGameObject(obj);
+			}
+		}
+	}
+	else
+	{
+		if (input->GetKeyUp(KEY_INPUT_A) || input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
+		{
+			if (level_up_ui->cursor == 0)
+			{
+				level_up_ui->cursor = 2;
+			}
+			else if (level_up_ui->cursor == 1)
+			{
+				level_up_ui->cursor = 0;
+			}
+			else
+			{
+				level_up_ui->cursor = 1;
+			}
+		}
+		if (input->GetKeyUp(KEY_INPUT_D) || input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
+		{
+			if (level_up_ui->cursor == 0)
+			{
+				level_up_ui->cursor = 1;
+			}
+			else if (level_up_ui->cursor == 1)
+			{
+				level_up_ui->cursor = 2;
+			}
+			else
+			{
+				level_up_ui->cursor = 0;
+			}
+		}
+		if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A))
+		{
+
 		}
 	}
 
-	//当たり判定チェック処理
-	for (int a = 0; a < scene_objects_list.size(); a++)
-	{
-		for (int b = 0; b < scene_objects_list.size(); b++)
-		{
-			object_manager->HitCheck(scene_objects_list[a], scene_objects_list[b]);
-			object_manager->HitCheck(scene_objects_list[b], scene_objects_list[a]);
-		}
-	}
 
-	// 画面外へでたオブジェクトを破壊する
-	for (GameObject* obj : scene_objects_list)
-	{
-		if (obj->GetLocation().x <= -50 || obj->GetLocation().x >= D_WIN_MAX_X + 50 ||
-			obj->GetLocation().y <= -50 || obj->GetLocation().y >= D_WIN_MAX_Y + 50)
-		{
-			object_manager->DestroyGameObject(obj);
-		}
-	}
-
-	if (input->GetKeyUp(KEY_INPUT_L))
+	//レベルアップUI仮表示用
+	if (input->GetKeyUp(KEY_INPUT_L) || input->GetButtonDown(XINPUT_BUTTON_BACK))
 	{
 		if (level_up_flg)
 		{
@@ -127,10 +176,20 @@ eSceneType InGameScene::Update(const float& delta_second)
 		{
 			level_up_flg = true;
 		}
+		if (time_stop)
+		{
+			time_stop = false;
+		}
+		else
+		{
+			time_stop = true;
+		}
 	}
 
-	//インゲームシーンへ遷移
-	if (input->GetKeyUp(KEY_INPUT_SPACE))
+
+
+	//リザルトシーンへ遷移
+	if (input->GetKeyUp(KEY_INPUT_SPACE) || input->GetButtonDown(XINPUT_BUTTON_START))
 	{
 		return eSceneType::eResult;
 	}
@@ -172,6 +231,8 @@ void InGameScene::Draw() const
 	{
 		level_up_ui->Draw();
 	}
+	// プレイヤーのHPのテーブルHPバーの描画
+	hp_ui->Draw();
 }
 
 void InGameScene::Finalize()

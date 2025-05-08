@@ -1,4 +1,10 @@
 #pragma once
+enum ePowerUp
+{
+	eHp,
+	eDamage,
+	eSpeed
+};
 
 struct PlayerStats
 {
