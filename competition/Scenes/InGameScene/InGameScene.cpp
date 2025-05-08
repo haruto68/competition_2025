@@ -157,7 +157,9 @@ eSceneType InGameScene::Update(const float& delta_second)
 		}
 		if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A))
 		{
-
+			player->StatsUp(ePowerUp::eSpeed);
+			time_stop = false;
+			level_up_flg = false;
 		}
 	}
 
