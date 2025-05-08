@@ -6,7 +6,7 @@
 Player::Player() : 
 	screen_velocity(0.0f),
 	shot_timer(0.0f),
-	SHOT_INTERVAL(0.1f)
+	SHOT_INTERVAL(.0f)
 {
 
 	//リソース管理インスタンス取得
@@ -16,7 +16,7 @@ Player::Player() :
 	location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
 	// コリジョン設定
 	collision.is_blocking = true;
-	collision.box_size = Vector2D(20, 20);
+	collision.box_size = Vector2D(35, 40);
 	collision.object_type = eObjectType::ePlayer;
 	collision.hit_object_type.push_back(eObjectType::eEnemy);
 	collision.hit_object_type.push_back(eObjectType::eEnemyShot);
@@ -37,7 +37,7 @@ Player::~Player()
 void Player::Initialize()
 {
 	//画像読み込み
-	//image = LoadGraph("Resource/Images/player/.png");
+	image = LoadGraph("Resource/Images/player/player.png");
 }
 
 void Player::Update(float delta_seconds)
@@ -54,7 +54,7 @@ void Player::Update(float delta_seconds)
 	//入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
 
-	if (CheckHitKey(KEY_INPUT_B) && shot_timer <= 0.0f)
+	if (InputManager::GetInstance()->GetButton(13) || CheckHitKey(KEY_INPUT_B) && shot_timer <= 0.0f)
 	{
 		PlayerShot* shot = object_manager->CreateGameObject<PlayerShot>(this->location);
 		shot->SetShotType(ePlayer1);
@@ -67,12 +67,12 @@ void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	__super::Draw(0.0f, this->flip_flag);
 
-	//if (image != -1)
-	//{
-	//	DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
-	//}
+	if (image != -1)
+	{
+		DrawRotaGraphF(location.x, location.y, 2.0f, 0.0f, image, TRUE);
+	}
 
-	DrawBox(location.x - 10, location.y - 10, location.x + 10, location.y + 10, GetColor(255, 0, 0), TRUE);
+	//DrawBox(location.x - 10, location.y - 10, location.x + 10, location.y + 10, GetColor(255, 0, 0), TRUE);
 	SetFontSize(20);
 	DrawFormatString(5, 50, GetColor(255, 255, 255), "現在のプレイヤーレベル：%d", player_stats.player_level);
 	DrawFormatString(5, 70, GetColor(255, 255, 255), "累積プレイヤーレベル：%d", player_stats.current_exp);
@@ -136,27 +136,27 @@ void Player::Movement(float delta_seconds)
 	float slow = 0.005f;//滑る
 	slow = 1.0f;//滑らない
 
-	// 入力機能インスタンス取得
+	// 入力管理インスタンス取得
 	InputManager* input = InputManager::GetInstance();
-
+	Vector2D leftstick = InputManager::GetInstance()->GetLeftStick();
 
 	//入力状態によって移動方向を変更する
-	if (input->GetKey(KEY_INPUT_UP) || input->GetKey(KEY_INPUT_W))		//上移動
+	if (leftstick.y > 0.5f || input->GetKey(KEY_INPUT_UP) || input->GetKey(KEY_INPUT_W))		//上移動
 	{
 		direction.y = -1.0f;
 		flip_flag = FALSE;
 	}
-	if (input->GetKey(KEY_INPUT_DOWN) || input->GetKey(KEY_INPUT_S))	//下移動
+	if (leftstick.y < -0.5f || input->GetKey(KEY_INPUT_DOWN) || input->GetKey(KEY_INPUT_S))	//下移動
 	{
 		direction.y = 1.0f;
 		flip_flag = FALSE;
 	}
-	if (input->GetKey(KEY_INPUT_LEFT) || input->GetKey(KEY_INPUT_A))	//左移動
+	if (leftstick.x < -0.5f || input->GetKey(KEY_INPUT_LEFT) || input->GetKey(KEY_INPUT_A))	//左移動
 	{
 		direction.x = -1.0f;
 		flip_flag = FALSE;
 	}
-	if (input->GetKey(KEY_INPUT_RIGHT) || input->GetKey(KEY_INPUT_D))	//右移動
+	if (leftstick.x > 0.5f || input->GetKey(KEY_INPUT_RIGHT) || input->GetKey(KEY_INPUT_D))	//右移動
 	{
 		direction.x = 1.0f;
 		flip_flag = FALSE;
@@ -216,25 +216,25 @@ void Player::Movement(float delta_seconds)
 	if ((location.x + velocity.x) < (collision.box_size.x / 2.0f))
 	{
 		velocity.x = 0.0f;
-		location.x = 10.0f;
+		location.x = 20.0f;
 	}
 	//右画面端
 	if ((location.x + velocity.x) >= (D_WIN_MAX_X) - (collision.box_size.x / 2.0f))
 	{
 		velocity.x = 0.0f;
-		location.x = 1270.0f;
+		location.x = 1260.0f;
 	}
 	//上画面端
 	if ((location.y + velocity.y) < (collision.box_size.y / 2.0f))
 	{
 		velocity.y = 0.0f;
-		location.y = 10.0f;
+		location.y = 20.0f;
 	}
 	//下画面端
 	if ((location.y + velocity.y) >= (D_WIN_MAX_Y)-(collision.box_size.y / 2.0f))
 	{
 		velocity.y = 0.0f;
-		location.y = 710.0;
+		location.y = 700.0;
 	}
 
 
@@ -247,7 +247,7 @@ void Player::Animation()
 
 }
 
-void Player::AddExperience(int exp)
+void Player::AddExperience(float exp)
 {
 	player_stats.current_exp += exp;
 
