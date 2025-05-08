@@ -26,9 +26,9 @@ protected:
 
 public:
 	std::vector<GameObject*> scene_objects_list;//オブジェクトリスト
-	class GameObjectManager* object_manager;	// オブジェクトマネージャーインスタンス
+	class GameObjectManager* object_manager;	//オブジェクトマネージャーインスタンス
 	class Player* player;						//プレイヤーインスタンス
-	LevelUpUI* level_up_ui;						//
+	LevelUpUI* level_up_ui;						//レベルアップUI
 
 	int back_ground_image;						//背景画像
 	Vector2D back_ground_location;				//背景座標
@@ -38,6 +38,7 @@ public:
 
 	float spawn_timer;							//敵生成クールタイム
 	bool level_up_flg;							//レベルアップフラグ
+	bool time_stop;
 
 
 
