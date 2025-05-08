@@ -5,6 +5,8 @@
 class HpUI
 {
 private:
+	int hp_table;
+	int hp_bar;
 
 public:
 	HpUI();
@@ -12,7 +14,7 @@ public:
 
 public:
 	void Initialize();			//初期化処理
-	void Update(bool flag);		//更新処理
+	void Update();				//更新処理
 	void Draw() const;			//描画処理
 	void Finalize();			//終了処理
 };
