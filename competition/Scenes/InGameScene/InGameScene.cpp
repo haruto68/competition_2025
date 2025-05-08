@@ -5,6 +5,7 @@
 InGameScene::InGameScene() :
 	object_manager(nullptr),
 	player(),
+	level_up_ui(),
 	back_ground_image(0),
 	back_ground_location(0),
 	planets_image(),
@@ -65,7 +66,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	input->Update();
 
 	//レベルアップUI更新処理
-	level_up_ui->Update(0);
+	level_up_ui->Update(level_up_flg);
 
 
 	// シーン内オブジェクト更新
@@ -122,10 +123,47 @@ eSceneType InGameScene::Update(const float& delta_second)
 			}
 		}
 	}
+	else
+	{
+		if (input->GetKeyUp(KEY_INPUT_A) || input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
+		{
+			if (level_up_ui->cursor == 0)
+			{
+				level_up_ui->cursor = 2;
+			}
+			else if (level_up_ui->cursor == 1)
+			{
+				level_up_ui->cursor = 0;
+			}
+			else
+			{
+				level_up_ui->cursor = 1;
+			}
+		}
+		if (input->GetKeyUp(KEY_INPUT_D) || input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
+		{
+			if (level_up_ui->cursor == 0)
+			{
+				level_up_ui->cursor = 1;
+			}
+			else if (level_up_ui->cursor == 1)
+			{
+				level_up_ui->cursor = 2;
+			}
+			else
+			{
+				level_up_ui->cursor = 0;
+			}
+		}
+		if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A))
+		{
+
+		}
+	}
 
 
 	//レベルアップUI仮表示用
-	if (input->GetKeyUp(KEY_INPUT_L))
+	if (input->GetKeyUp(KEY_INPUT_L) || input->GetButtonDown(XINPUT_BUTTON_BACK))
 	{
 		if (level_up_flg)
 		{
@@ -147,8 +185,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 
 
-	//インゲームシーンへ遷移
-	if (input->GetKeyUp(KEY_INPUT_SPACE))
+	//リザルトシーンへ遷移
+	if (input->GetKeyUp(KEY_INPUT_SPACE) || input->GetButtonDown(XINPUT_BUTTON_START))
 	{
 		return eSceneType::eResult;
 	}
