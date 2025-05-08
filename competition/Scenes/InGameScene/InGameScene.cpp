@@ -53,6 +53,8 @@ void InGameScene::Initialize()
 	level_up_ui->Initialize();
 
 	// Test用生成
+	hp_ui = new HpUI();
+	hp_ui->Initialize();
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
@@ -171,6 +173,8 @@ void InGameScene::Draw() const
 	{
 		level_up_ui->Draw();
 	}
+	// プレイヤーのHPのテーブルHPバーの描画
+	hp_ui->Draw();
 }
 
 void InGameScene::Finalize()
