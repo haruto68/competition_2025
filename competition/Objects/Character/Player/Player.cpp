@@ -260,11 +260,9 @@ void Player::AddExperience(float exp)
 }
 
 void Player::LevelUp()
-{	// 入力機能インスタンス取得
+{	
 	player_stats.player_level++;			//プレイヤーレベルアップ
 	player_stats.next_level_exp += 50;		//次のレベルアップに必要な経験値量の増加
-
-	AddPower(10);
 }
 
 void Player::StatsUp(ePowerUp powerup)
@@ -278,15 +276,12 @@ void Player::StatsUp(ePowerUp powerup)
 		player_stats.attack_power += 1.0f;		// 攻撃力アップ
 		break;
 	case ePowerUp::eSpeed:
-		player_stats.move_speed += 500.0f;		// 移動速度アップ
+		player_stats.move_speed = Max(100.0f, player_stats.move_speed + 5.0f);		// 移動速度アップ
+		break;
+	case ePowerUp::eShotspeed:
+		SHOT_INTERVAL = Max(0.1f, SHOT_INTERVAL - 0.02f);  // 下限を0.02秒に制限
 		break;
 	default:
 		break;
 	}
-}
-
-
-void Player::AddPower(int power)
-{
-	player_stats.attack_power += power;
 }
