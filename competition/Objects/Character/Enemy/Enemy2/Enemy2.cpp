@@ -58,7 +58,16 @@ void Enemy2::Draw(const Vector2D&, bool) const
 	
 	if (image != -1)
 	{
-		DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
+		float angle;
+		if (trans == false)
+		{
+			angle = 0.0f;
+		}
+		else
+		{
+			angle = 3.14 / 1.0f;
+		}
+		DrawRotaGraphF(location.x, location.y, 1.0f, angle, image, TRUE);
 	}
 	
 
@@ -110,4 +119,9 @@ void Enemy2::Movement(float delta_seconds)
 
 void Enemy2::Animation()
 {
+}
+
+void Enemy2::SetTrans()
+{
+	trans = true;
 }

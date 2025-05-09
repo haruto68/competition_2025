@@ -4,7 +4,7 @@
 class Enemy2 : public EnemyBase
 {
 private:
-
+    bool trans = false;
 public:
     Enemy2();
     ~Enemy2();
@@ -19,5 +19,7 @@ public:
 public:
     void Movement(float);
     void Animation();
+    
+    void SetTrans();
 
 };
