@@ -14,7 +14,8 @@ InGameScene::InGameScene() :
 	spawn_timer(0),
 	player_old_level(1),
 	level_up_flg(),
-	time_stop()
+	time_stop(),
+	time_count(60)
 {
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
@@ -76,6 +77,11 @@ eSceneType InGameScene::Update(const float& delta_second)
 	// シーン内オブジェクト更新
 	if(!time_stop)
 	{
+		if(time_count >= 0.0f)
+		{
+			time_count -= (delta_second * 1.0f);
+		}
+
 		// 背景管理処理
 		BackGroundManager(delta_second);
 
@@ -236,8 +242,17 @@ void InGameScene::Draw() const
 		c++;
 	}
 
-	SetFontSize(40);
-	DrawFormatString(10, 10, GetColor(255, 255, 255), "%d", c);
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//UIゾーン
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100); 
+	DrawBox(0, 0, 1280, 80, GetColor(100, 0, 200), TRUE);
+	DrawBox(0, 680, 1280, 720, GetColor(100, 0, 200), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	
+	//タイムカウント
+	SetFontSize(70);
+	DrawFormatString(1100, 10, GetColor(255, 255, 255), "%.1f", time_count);
 
 	// プレイヤーのHPのテーブルHPバーの描画
 	hp_ui->Draw();
