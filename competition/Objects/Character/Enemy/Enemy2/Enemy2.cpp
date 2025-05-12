@@ -7,7 +7,7 @@ Enemy2::Enemy2()
 
 	// コリジョン設定
 	collision.is_blocking = true;
-	collision.box_size = Vector2D(20, 20);							//当たり判定の大きさ
+	collision.box_size = Vector2D(30, 30);							//当たり判定の大きさ
 	collision.object_type = eObjectType::eEnemy;					//オブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayer);		//ぶつかるオブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayerShot);	//ぶつかるオブジェクトのタイプ
@@ -58,7 +58,16 @@ void Enemy2::Draw(const Vector2D&, bool) const
 	
 	if (image != -1)
 	{
-		DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
+		float angle;
+		if (trans == false)
+		{
+			angle = 0.0f;
+		}
+		else
+		{
+			angle = 3.14 / 1.0f;
+		}
+		DrawRotaGraphF(location.x, location.y, 1.0f, angle, image, TRUE);
 	}
 	
 
@@ -110,4 +119,9 @@ void Enemy2::Movement(float delta_seconds)
 
 void Enemy2::Animation()
 {
+}
+
+void Enemy2::SetTrans()
+{
+	trans = true;
 }
