@@ -12,6 +12,7 @@ InGameScene::InGameScene() :
 	pla1(),
 	pla2(),
 	spawn_timer(0),
+	player_old_level(1),
 	level_up_flg(),
 	time_stop()
 {
@@ -128,6 +129,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	}
 	else
 	{
+		//カーソル左
 		if (input->GetKeyUp(KEY_INPUT_A) || input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
 		{
 			if (level_up_ui->cursor == 0)
@@ -143,6 +145,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 				level_up_ui->cursor = 1;
 			}
 		}
+		//カーソル右
 		if (input->GetKeyUp(KEY_INPUT_D) || input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
 		{
 			if (level_up_ui->cursor == 0)
@@ -158,9 +161,15 @@ eSceneType InGameScene::Update(const float& delta_second)
 				level_up_ui->cursor = 0;
 			}
 		}
+		//カーソル決定
 		if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A))
 		{
-
+			//強化内容取得
+			ePowerUp strengthen = level_up_ui->GetLottery();
+			//強化
+			player->StatsUp(strengthen);
+			time_stop = false;
+			level_up_flg = false;
 		}
 	}
 
@@ -169,23 +178,26 @@ eSceneType InGameScene::Update(const float& delta_second)
 	if (input->GetKeyUp(KEY_INPUT_L) || input->GetButtonDown(XINPUT_BUTTON_BACK))
 	{
 		if (level_up_flg)
-		{
 			level_up_flg = false;
-		}
 		else
-		{
 			level_up_flg = true;
-		}
 		if (time_stop)
-		{
 			time_stop = false;
-		}
 		else
-		{
 			time_stop = true;
-		}
 	}
-
+	if (player->GetPlayerStats().player_level != player_old_level)
+	{
+		if (level_up_flg)
+			level_up_flg = false;
+		else
+			level_up_flg = true;
+		if (time_stop)
+			time_stop = false;
+		else
+			time_stop = true;
+	}
+	player_old_level = player->GetPlayerStats().player_level;
 
 
 	//リザルトシーンへ遷移
@@ -227,12 +239,14 @@ void InGameScene::Draw() const
 	SetFontSize(40);
 	DrawFormatString(10, 10, GetColor(255, 255, 255), "%d", c);
 
-	if(level_up_flg)
-	{
-		level_up_ui->Draw();
-	}
 	// プレイヤーのHPのテーブルHPバーの描画
 	hp_ui->Draw();
+
+	//レベルアップUI描画
+	if (level_up_flg)
+	{
+		level_up_ui->Draw(player->GetPlayerStats());
+	}
 }
 
 void InGameScene::Finalize()
