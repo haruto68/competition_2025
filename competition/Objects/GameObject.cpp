@@ -9,6 +9,7 @@ GameObject::GameObject() :
 	z_layer(0),
 	is_mobility(false),
 	player_location(0.0f),
+	player_stats(),
 	object_manager(nullptr)
 {
 
@@ -100,6 +101,13 @@ void GameObject::SetPlayerLocation(Vector2D location)
 	}
 	player_location = location;
 }
+
+//プレイヤーステータス設定処理
+void GameObject::SetPlayerStats(PlayerStats stats)
+{
+	player_stats = stats;
+}
+
 
 //AがBを追尾する処理
 Vector2D GameObject::Tracking(Vector2D A, Vector2D B)

@@ -99,8 +99,10 @@ eSceneType InGameScene::Update(const float& delta_second)
 		for (GameObject* obj : scene_objects_list)
 		{
 			obj->Update(delta_second);
-			// プライヤー座標受け渡し
+			// プレイヤー座標受け渡し
 			obj->SetPlayerLocation(player->GetLocation());
+			//プレイヤーステータス受け渡し
+			obj->SetPlayerStats(player->GetPlayerStats());
 			// オブジェクトをスクロールと一緒に動かす処理
 			if (obj->GetCollision().object_type != eObjectType::ePlayer)
 			{
