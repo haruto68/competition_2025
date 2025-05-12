@@ -8,7 +8,7 @@ Enemy1::Enemy1()
 
 	// コリジョン設定
 	collision.is_blocking = true;
-	collision.box_size = Vector2D(20, 20);							//当たり判定の大きさ
+	collision.box_size = Vector2D(30, 30);							//当たり判定の大きさ
 	collision.object_type = eObjectType::eEnemy;					//オブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayer);		//ぶつかるオブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayerShot);	//ぶつかるオブジェクトのタイプ
@@ -106,8 +106,14 @@ void Enemy1::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
 
-	if ((location.y + velocity.y) <= collision.box_size.y || (location.y + velocity.y) >= (720 - collision.box_size.y))
+	if (location.y <= 95.0f)
 	{
+		velocity.y = 1.0f;
+	}
+
+	if ((location.y + velocity.y) <= collision.box_size.y || (location.y + velocity.y) >= (680 - collision.box_size.y))
+	{
+		
 		if (velocity.y < 0)
 			velocity.y = 1.0f;
 		else

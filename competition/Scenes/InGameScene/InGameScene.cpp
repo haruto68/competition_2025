@@ -317,7 +317,7 @@ void InGameScene::Spawn()        //“G‚ÌŽ©“®¶¬
 			enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));//ƒWƒOƒUƒO
 			break;
 		case 1:
-			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 680));//‘å–C
+			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//‘å–C
 			break;
 		case 2:
 			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 400));//“ÁUA^‚ñ’†
@@ -329,22 +329,22 @@ void InGameScene::Spawn()        //“G‚ÌŽ©“®¶¬
 			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 600));//“ÁUA‰º
 			break;
 		case 5:
-			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 130))->SetTrans();//‘å–CA‹t
+			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//‘å–CA‹t
 			break;
 		case 6:
-			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 130))->SetTrans();//‘å–CA‹t
-			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 680));//‘å–C
+			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//‘å–CA‹t
+			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//‘å–C
 			break;
 		default:
 			break;
 		}
 	}
 
-	/*if (CheckHitKey(KEY_INPUT_0)) {
+	if (CheckHitKey(KEY_INPUT_0)) {
 		auto enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));
 	}
 	else if (CheckHitKey(KEY_INPUT_1)) {
-		auto enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 680));
+		auto enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));
 	}
 	else if (CheckHitKey(KEY_INPUT_2)) {
 		auto enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 400));
@@ -356,12 +356,12 @@ void InGameScene::Spawn()        //“G‚ÌŽ©“®¶¬
 		auto enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 600));
 	}
 	else if (CheckHitKey(KEY_INPUT_5)) {
-		 object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 130))->SetTrans();
+		 object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();
 	}
 	else if (CheckHitKey(KEY_INPUT_6)) {
-		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 130))->SetTrans();
-		auto enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 680));
-	}*/
+		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();
+		auto enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));
+	}
 
 
 }

@@ -7,7 +7,7 @@ Enemy2::Enemy2()
 
 	// コリジョン設定
 	collision.is_blocking = true;
-	collision.box_size = Vector2D(20, 20);							//当たり判定の大きさ
+	collision.box_size = Vector2D(30, 30);							//当たり判定の大きさ
 	collision.object_type = eObjectType::eEnemy;					//オブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayer);		//ぶつかるオブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayerShot);	//ぶつかるオブジェクトのタイプ
