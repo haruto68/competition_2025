@@ -336,38 +336,38 @@ void InGameScene::Spawn()        //ìGÇÃé©ìÆê∂ê¨
 
 	int num = rand() % 100 + 1;
 	
-	if (num <= 99)
-	{
+	//if (num <= 99)
+	//{
 
-		EnemyBase* enemy;
-		switch (ramdom_r)
-		{
-		case 0:
-			enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));//ÉWÉOÉUÉO
-			break;
-		case 1:
-			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//ëÂñC
-			break;
-		case 2:
-			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 400));//ì¡çUÅAê^ÇÒíÜ
-			break;
-		case 3:
-			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 200));//ì¡çUÅAè„
-			break;
-		case 4:
-			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 600));//ì¡çUÅAâ∫
-			break;
-		case 5:
-			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//ëÂñCÅAãt
-			break;
-		case 6:
-			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//ëÂñCÅAãt
-			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//ëÂñC
-			break;
-		default:
-			break;
-		}
-	}
+	//	EnemyBase* enemy;
+	//	switch (ramdom_r)
+	//	{
+	//	case 0:
+	//		enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));//ÉWÉOÉUÉO
+	//		break;
+	//	case 1:
+	//		enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//ëÂñC
+	//		break;
+	//	case 2:
+	//		enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 400));//ì¡çUÅAê^ÇÒíÜ
+	//		break;
+	//	case 3:
+	//		enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 200));//ì¡çUÅAè„
+	//		break;
+	//	case 4:
+	//		enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 600));//ì¡çUÅAâ∫
+	//		break;
+	//	case 5:
+	//		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//ëÂñCÅAãt
+	//		break;
+	//	case 6:
+	//		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//ëÂñCÅAãt
+	//		enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//ëÂñC
+	//		break;
+	//	default:
+	//		break;
+	//	}
+	//}
 
 	if (CheckHitKey(KEY_INPUT_0)) {
 		auto enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));

@@ -15,4 +15,6 @@ public:
 	int image;
 	float radian = 0;
 
+	float hp;
+
 };
