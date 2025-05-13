@@ -216,25 +216,21 @@ void Player::Movement(float delta_seconds)
 	if ((location.x + velocity.x) < (collision.box_size.x / 2.0f))
 	{
 		velocity.x = 0.0f;
-		location.x = 20.0f;
 	}
 	//右画面端
 	if ((location.x + velocity.x) >= (D_WIN_MAX_X) - (collision.box_size.x / 2.0f))
 	{
 		velocity.x = 0.0f;
-		location.x = 1260.0f;
 	}
 	//上画面端
-	if ((location.y + velocity.y) < (collision.box_size.y / 2.0f))
+	if ((location.y + velocity.y) < (120) - (collision.box_size.y / 2.0f))
 	{
 		velocity.y = 0.0f;
-		location.y = 20.0f;
 	}
 	//下画面端
-	if ((location.y + velocity.y) >= (D_WIN_MAX_Y)-(collision.box_size.y / 2.0f))
+	if ((location.y + velocity.y) >= (680) - (collision.box_size.y / 2.0f))
 	{
 		velocity.y = 0.0f;
-		location.y = 700.0;
 	}
 
 

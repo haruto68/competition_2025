@@ -226,8 +226,10 @@ eSceneType InGameScene::Update(const float& delta_second)
 void InGameScene::Draw() const
 {
 	// îwåiï`âÊ	
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 175);
 	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
 	DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	// òfêØï`âÊ
 	int bright = 125;

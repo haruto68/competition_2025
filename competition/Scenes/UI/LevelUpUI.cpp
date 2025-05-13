@@ -15,10 +15,12 @@ LevelUpUI::LevelUpUI() :
 	power[0] = rm->GetImages("Resource/Images/LevelUpUi/Health.png")[0];
 	power[1] = rm->GetImages("Resource/Images/LevelUpUi/Damage.png")[0];
 	power[2] = rm->GetImages("Resource/Images/LevelUpUi/Speed.png")[0];
+	power[3] = rm->GetImages("Resource/Images/LevelUpUi/X100.png")[0];
 
 	power_icon[0] = rm->GetImages("Resource/Images/LevelUpUi/HP_Icon.png")[0];
 	power_icon[1] = rm->GetImages("Resource/Images/LevelUpUi/Damage_Icon.png")[0];
 	power_icon[2] = rm->GetImages("Resource/Images/LevelUpUi/Speed_Icon.png")[0];
+	power_icon[3] = rm->GetImages("Resource/Images/LevelUpUi/Close_BTN.png")[0];
 }
 
 LevelUpUI::~LevelUpUI()
@@ -36,27 +38,25 @@ void LevelUpUI::Update(bool flag)
 	//強化内容抽選会
 	if (old_flag != flag)
 	{
-		//抽選2
+		//抽選
 		int nums[3] = { 0,0,0 };
 		Lottery(nums);
 		for (int i = 0; i < 3; i++)
 		{
-			//抽選
-			int random = rand() % LOT_MAX;
-
-			//強化内容決定
-			//switch (random)
+			//抽選結果
 			switch (nums[i])
 			{
-			case LOT_HP:
+			case STATS_HP:
 				lot[i] = ePowerUp::eHp;
 				break;
-			case LOT_DAMAGE:
+			case STATS_DAMAGE:
 				lot[i] = ePowerUp::eDamage;
 				break;
-			case LOT_SPEED:
+			case STATS_SPEED:
 				lot[i] = ePowerUp::eSpeed;
 				break;
+			case WAPON_3WAY:
+				lot[i] = ePowerUp::eShotspeed;	//仮
 			default:
 				break;
 			}
@@ -78,12 +78,16 @@ void LevelUpUI::Draw(PlayerStats stats) const
 	int pluse_x = 120;
 
 	//外枠
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
 	DrawRotaGraph(pluse_x + 640, 360, 0.9, 0, window[0], 1, 0);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DrawRotaGraph(pluse_x + 640, 80, 1.0, 0, window[1], 1, 0);
 	//内枠
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawRotaGraph(pluse_x + 360, 400, 0.6 * choice_size[0], 0, window[2], 1, 0);
 	DrawRotaGraph(pluse_x + 640, 400, 0.6 * choice_size[1], 0, window[2], 1, 0);
 	DrawRotaGraph(pluse_x + 920, 400, 0.6 * choice_size[2], 0, window[2], 1, 0);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	//強化内容（文字）
 	DrawRotaGraph(pluse_x + 360, 440, 0.6 * choice_size[0], 0, lot_str[0], 1, 0);
 	DrawRotaGraph(pluse_x + 640, 440, 0.6 * choice_size[1], 0, lot_str[1], 1, 0);
@@ -95,7 +99,9 @@ void LevelUpUI::Draw(PlayerStats stats) const
 
 
 	//現在ステータス描画
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
 	DrawRotaGraph(70, 400, 0.4, 0, window[3], 1, 0);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	int font = 40;
 	SetFontSize(font);
 	DrawFormatString(10, 200 + (font * 0), GetColor(255, 255, 255), "Level  %d", stats.player_level);
