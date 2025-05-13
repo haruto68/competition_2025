@@ -6,7 +6,8 @@
 Player::Player() : 
 	screen_velocity(0.0f),
 	shot_timer(0.0f),
-	SHOT_INTERVAL(0.3f)
+	SHOT_INTERVAL(0.3f),
+	threeway_flag(false)
 {
 
 	//リソース管理インスタンス取得
@@ -59,6 +60,20 @@ void Player::Update(float delta_seconds)
 		PlayerShot* shot = object_manager->CreateGameObject<PlayerShot>(this->location);
 		shot->SetShotType(ePlayer1);
 		shot->SetPlayerStats(this->GetPlayerStats());
+
+		if (threeway_flag == true)
+		{
+			PlayerShot* angled_shot_up = object_manager->CreateGameObject<PlayerShot>(this->location);
+			angled_shot_up->SetShotType(ePlayer1);
+			angled_shot_up->SetPlayerStats(this->GetPlayerStats());
+			angled_shot_up->SetAngle(10.0f);
+
+			PlayerShot* angled_shot_down = object_manager->CreateGameObject<PlayerShot>(this->location);
+			angled_shot_down->SetShotType(ePlayer1);
+			angled_shot_down->SetPlayerStats(this->GetPlayerStats());
+			angled_shot_down->SetAngle(-10.0f);
+		}
+
 		shot_timer = SHOT_INTERVAL;
 	}
 }
@@ -277,6 +292,8 @@ void Player::StatsUp(ePowerUp powerup)
 	case ePowerUp::eShotspeed:
 		SHOT_INTERVAL = Max(0.1f, SHOT_INTERVAL - 0.02f);  // 下限を0.02秒に制限
 		break;
+	case ePowerUp::eThreeway:
+		threeway_flag = true;
 	default:
 		break;
 	}

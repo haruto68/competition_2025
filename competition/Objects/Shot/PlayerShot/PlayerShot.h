@@ -35,6 +35,7 @@ public:
 	void Movement(float);
 	void Animation();
 	void ShotModeChange();
+	void SetAngle(float degree);
 
 	void SetPlayerStats(struct PlayerStats player_stats)
 	{

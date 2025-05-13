@@ -5,7 +5,7 @@ enum ePowerUp
 	eDamage,
 	eSpeed,
 	eShotspeed,
-
+	eThreeway
 };
 
 struct PlayerStats

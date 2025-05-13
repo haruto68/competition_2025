@@ -266,6 +266,7 @@ void InGameScene::Draw() const
 	{
 		level_up_ui->Draw(player->GetPlayerStats());
 	}
+	
 }
 
 void InGameScene::Finalize()
@@ -304,7 +305,7 @@ void InGameScene::EnemyManager(const float& delta_second)
 {
 	// 敵生成クールタイム
 	spawn_timer += delta_second;
-	if (spawn_timer >= 1.0f) // 1秒ごとにスポーン
+	if (spawn_timer >= 2.0f) // 秒ごとにスポーン
 	{
 		Spawn();
 		spawn_timer = 0.0f;
@@ -342,7 +343,7 @@ void InGameScene::Spawn()        //敵の自動生成
 	
 	if (num <= 99)
 	{
-
+		  
 		EnemyBase* enemy;
 		switch (ramdom_r)
 		{
