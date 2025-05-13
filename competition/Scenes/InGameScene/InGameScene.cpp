@@ -264,9 +264,7 @@ void InGameScene::Draw() const
 	{
 		level_up_ui->Draw(player->GetPlayerStats());
 	}
-	SetFontSize(128);
-	DrawString(0, 150, "’ñ‹Ÿ SAGA", GetColor(255, 255, 255), TRUE);
-	SetFontSize(16);
+	
 }
 
 void InGameScene::Finalize()
