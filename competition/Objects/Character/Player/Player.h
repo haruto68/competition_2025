@@ -13,11 +13,13 @@ private:
 
 	float shot_timer;
 	float SHOT_INTERVAL;
+	float invincible_timer;
 
 	PlayerStats player_stats = {};
 
 	int image;
 	bool threeway_flag;
+	bool is_invincible;
 
 public:
 	Player();
