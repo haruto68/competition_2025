@@ -1,7 +1,8 @@
 #include"LevelUI.h"
 
 LevelUI::LevelUI() :
-	level_bar()
+	level_bar(),
+	level(0)
 {
 	// リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
@@ -36,4 +37,9 @@ void LevelUI::Draw() const
 void LevelUI::Finalize()
 {
 
+}
+
+void LevelUI::SetCurrentExp(int exp)
+{
+	level = exp;
 }

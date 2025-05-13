@@ -3,9 +3,7 @@
 #include"../../Resource/ResourceManager.h"
 
 class LevelUI
-{
-public:
-	float level;						// ƒŒƒxƒ‹‚Ì—Ê
+{	
 private:
 	std::vector<int> level_bar;			// ƒŒƒxƒ‹‘‰Á‚Ì‰æ‘œ
 public:
