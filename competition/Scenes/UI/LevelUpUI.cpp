@@ -56,7 +56,7 @@ void LevelUpUI::Update(bool flag)
 				lot[i] = ePowerUp::eSpeed;
 				break;
 			case WAPON_3WAY:
-				lot[i] = ePowerUp::eShotspeed;	//‰¼
+				lot[i] = ePowerUp::eThreeway;
 			default:
 				break;
 			}
