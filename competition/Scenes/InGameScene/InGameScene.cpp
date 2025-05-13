@@ -264,6 +264,9 @@ void InGameScene::Draw() const
 	{
 		level_up_ui->Draw(player->GetPlayerStats());
 	}
+	SetFontSize(128);
+	DrawString(0, 150, "’ñ‹Ÿ SAGA", GetColor(255, 255, 255), TRUE);
+	SetFontSize(16);
 }
 
 void InGameScene::Finalize()
@@ -302,7 +305,7 @@ void InGameScene::EnemyManager(const float& delta_second)
 {
 	// “G¶¬ƒN[ƒ‹ƒ^ƒCƒ€
 	spawn_timer += delta_second;
-	if (spawn_timer >= 1.0f) // 1•b‚²‚Æ‚ÉƒXƒ|[ƒ“
+	if (spawn_timer >= 2.0f) // •b‚²‚Æ‚ÉƒXƒ|[ƒ“
 	{
 		Spawn();
 		spawn_timer = 0.0f;
@@ -338,38 +341,38 @@ void InGameScene::Spawn()        //“G‚Ì©“®¶¬
 
 	int num = rand() % 100 + 1;
 	
-	//if (num <= 99)
-	//{
-
-	//	EnemyBase* enemy;
-	//	switch (ramdom_r)
-	//	{
-	//	case 0:
-	//		enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));//ƒWƒOƒUƒO
-	//		break;
-	//	case 1:
-	//		enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//‘å–C
-	//		break;
-	//	case 2:
-	//		enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 400));//“ÁUA^‚ñ’†
-	//		break;
-	//	case 3:
-	//		enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 200));//“ÁUAã
-	//		break;
-	//	case 4:
-	//		enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 600));//“ÁUA‰º
-	//		break;
-	//	case 5:
-	//		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//‘å–CA‹t
-	//		break;
-	//	case 6:
-	//		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//‘å–CA‹t
-	//		enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//‘å–C
-	//		break;
-	//	default:
-	//		break;
-	//	}
-	//}
+	if (num <= 99)
+	{
+		  
+		EnemyBase* enemy;
+		switch (ramdom_r)
+		{
+		case 0:
+			enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));//ƒWƒOƒUƒO
+			break;
+		case 1:
+			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//‘å–C
+			break;
+		case 2:
+			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 400));//“ÁUA^‚ñ’†
+			break;
+		case 3:
+			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 200));//“ÁUAã
+			break;
+		case 4:
+			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 600));//“ÁUA‰º
+			break;
+		case 5:
+			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//‘å–CA‹t
+			break;
+		case 6:
+			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//‘å–CA‹t
+			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//‘å–C
+			break;
+		default:
+			break;
+		}
+	}
 
 	if (CheckHitKey(KEY_INPUT_0)) {
 		auto enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));
