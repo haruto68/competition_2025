@@ -394,6 +394,9 @@ void InGameScene::Spawn()        //“G‚ÌŽ©“®¶¬
 		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();
 		auto enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));
 	}
+	if (CheckHitKey(KEY_INPUT_7)) {
+		auto enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));
+	}
 
 
 }
