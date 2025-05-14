@@ -20,6 +20,7 @@ protected:
 	int anime_count = 0;
 
 	eShotType shot_type;
+	int shot_power = 0;
 
 public:
 	bool flip_flag = false;
@@ -28,4 +29,9 @@ public:
 	{
 		shot_type = type;
 	}
+	void SetShowPower(int power)
+	{
+		shot_power = power;
+	}
+	
 };

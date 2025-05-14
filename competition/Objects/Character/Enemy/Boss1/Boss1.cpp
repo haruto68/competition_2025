@@ -1,6 +1,7 @@
 #include "Boss1.h"
 
-Boss1::Boss1()
+Boss1::Boss1() :
+	atack_pattern(0)
 {
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
@@ -43,14 +44,39 @@ void Boss1::Update(float delta_seconds)
 	//時間経過
 	shot_timer += delta_seconds;
 
-	if (shot_timer >= shot_cooldown)
+	EnemyShot* shot;
+	EnemyBase* enemy;
+
+	if (shot_timer >= 0.5f)
 	{
-		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
-		shot->SetShotType(eEnemy1);
+
+		switch (atack_pattern)
+		{
+		case 0:
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y));
+			shot->SetShotType(eEnemy1);
+			atack_pattern = 1;
+			break;
+		case 1:
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y + 150));
+			shot->SetShotType(eEnemy1);
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y - 150));
+			shot->SetShotType(eEnemy1);
+			atack_pattern = 2;
+			break;
+		case 2:
+			object_manager->CreateGameObject<Enemy3>(Vector2D(location.x, location.y + 150));
+			object_manager->CreateGameObject<Enemy3>(Vector2D(location.x, location.y - 150));
+			atack_pattern = 0;
+			break;
+		default:
+			break;
+		}
 
 		//タイマーリセット
 		shot_timer = 0.0f;
 	}
+
 }
 
 void Boss1::Draw(const Vector2D& screen_offset, bool flip_flag) const
