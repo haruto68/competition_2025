@@ -6,7 +6,6 @@ class LevelUI
 {	
 private:
 	int level;
-private:
 	std::vector<int> level_bar;			// レベル増加の画像
 public:
 	LevelUI();
@@ -18,5 +17,5 @@ public:
 	void Draw() const;			//描画処理
 	void Finalize();			//終了処理
 
-	void SetExperience(int);
+	void SetExperience(int);	// プレイヤーから増加されたレベル(累計)の取得処理
 };
