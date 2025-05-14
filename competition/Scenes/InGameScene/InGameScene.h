@@ -45,7 +45,8 @@ public:
 	int player_old_level;						//プレイヤー過去レベル
 	bool level_up_flg;							//レベルアップフラグ
 	bool time_stop;								//一時停止フラグ
-	float time_count;								//時間カウント
+	float time_count;							//時間カウント
+	bool boss_flag;
 
 
 
