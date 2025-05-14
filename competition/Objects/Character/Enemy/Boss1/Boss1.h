@@ -1,11 +1,12 @@
 #pragma once
 #include "../EnemyBase.h"
+#include "../Enemy3/Enemy3.h"
 
 
 class Boss1 : public EnemyBase
 {
 private:
-
+    int atack_pattern;
 
 
 public:
