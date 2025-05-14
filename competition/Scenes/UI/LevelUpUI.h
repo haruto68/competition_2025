@@ -4,11 +4,12 @@
 #include"../../Utility/InputManager.h"
 #include"../../Objects/Character/Player/PlayerStats.h"
 
-#define	LOT_MAX			(3)	//Å‘å’Š‘I”
+#define	LOT_MAX			(4)	//Å‘å’Š‘I”
 
-#define	LOT_HP			(0)
-#define LOT_DAMAGE		(1)
-#define LOT_SPEED		(2)
+#define	STATS_HP		(0)
+#define STATS_DAMAGE	(1)
+#define STATS_SPEED		(2)
+#define WAPON_3WAY		(3)
 
 class LevelUpUI
 {

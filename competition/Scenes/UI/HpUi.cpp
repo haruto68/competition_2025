@@ -28,7 +28,7 @@ void HpUI::Update()
 
 void HpUI::Draw() const
 {
-	// HPバー(プレイヤー)の描画
+	// HPバー(プレイヤー)の描画 テスト
 	DrawRotaGraph(200, 35, 1.0, 0, hp_table, 1, 0);
 	for (int i = 0; i < 11; i++)
 	{
