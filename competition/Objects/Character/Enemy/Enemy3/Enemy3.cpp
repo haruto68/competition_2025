@@ -31,6 +31,8 @@ void Enemy3::Initialize()
 
 	//‰æ‘œ“Ç‚Ýž‚Ý
 	image = LoadGraph("Resource/Images/enemy/ship.png");
+
+	hp = 3.0;
 }
 
 void Enemy3::Update(float delta_seconds)
@@ -71,8 +73,7 @@ void Enemy3::OnHitCollision(GameObject* hit_object)
 	case eEnemy:
 		break;
 	case ePlayerShot:
-		object_manager->CreateGameObject< ExperiencePoints>(this->location);
-		object_manager->DestroyGameObject(this);
+		hp -= player_stats.attack_power / 4;
 		break;
 	case eEnemyShot:
 		break;
@@ -80,6 +81,11 @@ void Enemy3::OnHitCollision(GameObject* hit_object)
 		break;
 	default:
 		break;
+	}
+	if (hp <= 0.0)
+	{
+		object_manager->CreateGameObject< ExperiencePoints>(this->location);
+		object_manager->DestroyGameObject(this);
 	}
 }
 
