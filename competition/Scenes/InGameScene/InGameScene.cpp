@@ -1,6 +1,9 @@
 #include"InGameScene.h"
 #include"../../Utility/InputManager.h"
 #include"../../Objects/GameObjectManager.h"
+#include"../../Objects/Character/Player/Player.h"
+
+
 
 InGameScene::InGameScene() :
 	object_manager(nullptr),
@@ -215,7 +218,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	player_old_level = player->GetPlayerStats().player_level;
 
 	//リザルトシーンへ遷移
-	if (input->GetKeyUp(KEY_INPUT_SPACE) || input->GetButtonDown(XINPUT_BUTTON_START))
+	if (input->GetKeyUp(KEY_INPUT_SPACE) || input->GetButtonDown(XINPUT_BUTTON_START)|| player->GetPlayerStats().life_count <= 0)
 	{
 		return eSceneType::eResult;
 	}
