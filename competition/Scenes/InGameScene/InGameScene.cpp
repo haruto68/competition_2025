@@ -60,6 +60,9 @@ void InGameScene::Initialize()
 	// Test用生成
 	hp_ui = new HpUI();
 	hp_ui->Initialize();
+
+	level_ui = new LevelUI();
+	level_ui->Initialize();
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
@@ -72,6 +75,9 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 	//レベルアップUI更新処理
 	level_up_ui->Update(level_up_flg);
+
+
+	level_ui->SetExperience(player->GetPlayerStats().current_exp);
 
 
 	// シーン内オブジェクト更新
@@ -205,8 +211,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 		else
 			time_stop = true;
 	}
-	player_old_level = player->GetPlayerStats().player_level;
 
+	player_old_level = player->GetPlayerStats().player_level;
 
 	//リザルトシーンへ遷移
 	if (input->GetKeyUp(KEY_INPUT_SPACE) || input->GetButtonDown(XINPUT_BUTTON_START))
@@ -260,6 +266,8 @@ void InGameScene::Draw() const
 
 	// プレイヤーのHPのテーブルHPバーの描画
 	hp_ui->Draw();
+	// レベルUIバーの描画
+	level_ui->Draw();
 
 	//レベルアップUI描画
 	if (level_up_flg)
@@ -272,6 +280,8 @@ void InGameScene::Draw() const
 void InGameScene::Finalize()
 {
 	level_up_ui->Finalize();
+	hp_ui->Finalize();
+	level_ui->Finalize();
 }
 
 eSceneType InGameScene::GetNowSceneType()const
@@ -395,6 +405,9 @@ void InGameScene::Spawn()        //敵の自動生成
 	else if (CheckHitKey(KEY_INPUT_6)) {
 		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();
 		auto enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));
+	}
+	if (CheckHitKey(KEY_INPUT_7)) {
+		auto enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));
 	}
 
 

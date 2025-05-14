@@ -2,6 +2,7 @@
 #include"../SceneBase.h"
 #include"../UI/LevelUpUI.h"
 #include"../UI/HpUI.h"
+#include"../UI/LevelUI.h"
 
 #include"../../Objects/GameObject.h"
 #include"../../Objects/Character/Player/Player.h"
@@ -30,7 +31,8 @@ public:
 	class GameObjectManager* object_manager;	//オブジェクトマネージャーインスタンス
 	class Player* player;						//プレイヤーインスタンス
 	LevelUpUI* level_up_ui;						//レベルアップUI
-	HpUI* hp_ui;
+	HpUI* hp_ui;								//HPUI
+	LevelUI* level_ui;							//レベルUI
 
 	int back_ground_image;						//背景画像
 	Vector2D back_ground_location;				//背景座標
