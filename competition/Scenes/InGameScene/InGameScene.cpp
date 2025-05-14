@@ -1,6 +1,7 @@
 #include"InGameScene.h"
 #include"../../Utility/InputManager.h"
 #include"../../Objects/GameObjectManager.h"
+#include "../../Objects/Character/Enemy/Boss1/Boss1.h"
 
 InGameScene::InGameScene() :
 	object_manager(nullptr),
@@ -63,6 +64,9 @@ void InGameScene::Initialize()
 
 	level_ui = new LevelUI();
 	level_ui->Initialize();
+	
+	
+	/*object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));*/
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
@@ -384,6 +388,12 @@ void InGameScene::Spawn()        //“G‚ÌŽ©“®¶¬
 		}
 	}
 
+	//if (time_count == 0)
+	//{
+	//	object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
+	//}
+
+
 	if (CheckHitKey(KEY_INPUT_0)) {
 		auto enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));
 	}
@@ -406,8 +416,8 @@ void InGameScene::Spawn()        //“G‚ÌŽ©“®¶¬
 		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();
 		auto enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));
 	}
-	if (CheckHitKey(KEY_INPUT_7)) {
-		auto enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));
+	else if (CheckHitKey(KEY_INPUT_7)) {
+		auto enemy = object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
 	}
 
 
