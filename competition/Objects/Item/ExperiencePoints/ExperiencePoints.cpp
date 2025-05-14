@@ -45,7 +45,7 @@ void ExperiencePoints::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	__super::Draw(0.0f, this->flip_flag);
 
 	//DrawBox(location.x - 10, location.y - 10, location.x + 10, location.y + 10, GetColor(200, 100, 100), TRUE);
-	DrawCircle(location.x, location.y, 10, GetColor(255, 100, 100), TRUE, TRUE);
+	DrawCircle(location.x, location.y, 10, GetColor(0, 200, 0), TRUE, TRUE);
 }
 
 void ExperiencePoints::Finalize()
@@ -90,7 +90,7 @@ void ExperiencePoints::Movement(float delta_seconds)
 	}
 	if (track_flag)
 	{
-		velocity = (Tracking(location, player_location)) * 2.0;
+		velocity = (Tracking(location, player_location)) * 4.0;
 	}
 
 	//à íuç¿ïWÇâ¡ë¨ìxï™å∏ÇÁÇ∑

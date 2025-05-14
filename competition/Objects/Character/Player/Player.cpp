@@ -7,7 +7,9 @@ Player::Player() :
 	screen_velocity(0.0f),
 	shot_timer(0.0f),
 	SHOT_INTERVAL(0.3f),
-	threeway_flag(false)
+	threeway_flag(false),
+	is_invincible(false),
+	invincible_timer(0.0f)
 {
 
 	//リソース管理インスタンス取得
@@ -46,6 +48,16 @@ void Player::Update(float delta_seconds)
 	Movement(delta_seconds);
 
 	Animation();
+
+	// 無敵状態の更新
+	if (is_invincible)
+	{
+		invincible_timer -= delta_seconds;
+		if (invincible_timer <= 0.0f)
+		{
+			is_invincible = false;
+		}
+	}
 
 	if (shot_timer > 0.0f)
 	{
@@ -107,13 +119,27 @@ void Player::OnHitCollision(GameObject* hit_object)
 	{
 	case eNone:
 		break;
-	case ePlayer:
-		break;
 	case eEnemy:
+		if (is_invincible)
+		{
+			return;
+		}
+
+		player_stats.life_count -= 1.0f;
+		is_invincible = true;
+		invincible_timer = 1.0f;
 		break;
 	case ePlayerShot:
 		break;
 	case eEnemyShot:
+		if (is_invincible)
+		{
+			return;
+		}
+
+		player_stats.life_count -= 1.0f;
+		is_invincible = true;
+		invincible_timer = 1.0f;
 		break;
 	case eItem:
 		AddExperience(5);
@@ -240,12 +266,18 @@ void Player::Movement(float delta_seconds)
 	//上画面端
 	if ((location.y + velocity.y) < (120) - (collision.box_size.y / 2.0f))
 	{
-		velocity.y = 0.0f;
+		if ((location.y + velocity.y) < location.y)
+		{
+			velocity.y = 0.0f;
+		}
 	}
 	//下画面端
 	if ((location.y + velocity.y) >= (680) - (collision.box_size.y / 2.0f))
 	{
-		velocity.y = 0.0f;
+		if ((location.y + velocity.y) > location.y)
+		{
+			velocity.y = 0.0f;
+		}
 	}
 
 
