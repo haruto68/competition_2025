@@ -5,7 +5,9 @@ HpUI::HpUI() :
 	//hp_table(),
 	//hp_bar()
 	hp_bar1(0),
-	hp_bar2(0)
+	hp_bar2(0),
+	hp(0),
+	max_hp(0)
 {
 	// リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
