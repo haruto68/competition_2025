@@ -17,4 +17,5 @@ public:
 
 	float hp;
 
+	int power;
 };

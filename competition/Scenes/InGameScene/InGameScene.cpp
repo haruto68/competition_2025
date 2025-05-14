@@ -279,6 +279,9 @@ void InGameScene::Draw() const
 		level_up_ui->Draw(player->GetPlayerStats());
 	}
 	
+	SetFontSize(64);
+	DrawString(0, 150, "‰º•i‚¾‚È‚Ÿ@‚»‚¤‚ÉŒˆ‚Ü‚Á‚Ä‚éB", GetColor(255, 255, 255), TRUE);
+	SetFontSize(16);
 }
 
 void InGameScene::Finalize()
