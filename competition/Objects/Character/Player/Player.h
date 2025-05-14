@@ -12,11 +12,12 @@ private:
 	float screen_velocity;		// ƒXƒNƒŠ[ƒ“ˆÚ“®—Ê
 
 	float shot_timer;
-	const float SHOT_INTERVAL;
+	float SHOT_INTERVAL;
 
 	PlayerStats player_stats = {};
 
 	int image;
+	bool threeway_flag;
 
 public:
 	Player();
@@ -42,7 +43,6 @@ public:
 	void LevelUp();
 	void SubtractLife();
 	void AddShield(int shield);
-	void AddPower(int power);
 
 	void SetPlayerStats(float attack, int life, int level)
 	{

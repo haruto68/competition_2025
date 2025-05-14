@@ -1,6 +1,7 @@
 #include"ExperiencePoints.h"
 
-ExperiencePoints::ExperiencePoints()
+ExperiencePoints::ExperiencePoints() :
+	track_flag(false)
 {
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
@@ -79,6 +80,18 @@ void ExperiencePoints::OnHitCollision(GameObject* hit_object)
 void ExperiencePoints::Movement(float delta_seconds)
 {
 	velocity.x = -1.0f;
+	//距離
+	float distance;
+	distance = sqrt(pow((location.x - player_location.x), 2.0) + pow((location.y - player_location.y), 2.0));
+
+	if (distance < 150.0f)
+	{
+		track_flag = true;
+	}
+	if (track_flag)
+	{
+		velocity = (Tracking(location, player_location)) * 2.0;
+	}
 
 	//位置座標を加速度分減らす
 	location += velocity * speed * delta_seconds;

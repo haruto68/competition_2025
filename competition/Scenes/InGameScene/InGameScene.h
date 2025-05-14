@@ -41,8 +41,10 @@ public:
 	Planet pla2;								//惑星2
 
 	float spawn_timer;							//敵生成クールタイム
+	int player_old_level;						//プレイヤー過去レベル
 	bool level_up_flg;							//レベルアップフラグ
-	bool time_stop;
+	bool time_stop;								//一時停止フラグ
+	float time_count;								//時間カウント
 
 
 

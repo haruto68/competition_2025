@@ -132,3 +132,10 @@ void PlayerShot::ShotModeChange()
 {
 
 }
+
+void PlayerShot::SetAngle(float degree)
+{
+    float radian = degree * (3.14f / 180.0f);
+    this->velocity.x = cosf(radian);
+    this->velocity.y = -sinf(radian); // y軸が下方向に正ならマイナス
+}

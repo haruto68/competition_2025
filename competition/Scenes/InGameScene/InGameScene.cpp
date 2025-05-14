@@ -12,8 +12,10 @@ InGameScene::InGameScene() :
 	pla1(),
 	pla2(),
 	spawn_timer(0),
+	player_old_level(1),
 	level_up_flg(),
-	time_stop()
+	time_stop(),
+	time_count(60)
 {
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
@@ -75,9 +77,17 @@ eSceneType InGameScene::Update(const float& delta_second)
 	level_up_ui->Update(level_up_flg);
 
 
+	level_ui->SetExperience(player->GetPlayerStats().current_exp);
+
+
 	// シーン内オブジェクト更新
 	if(!time_stop)
 	{
+		if(time_count >= 0.0f)
+		{
+			time_count -= (delta_second * 1.0f);
+		}
+
 		// 背景管理処理
 		BackGroundManager(delta_second);
 
@@ -95,8 +105,10 @@ eSceneType InGameScene::Update(const float& delta_second)
 		for (GameObject* obj : scene_objects_list)
 		{
 			obj->Update(delta_second);
-			// プライヤー座標受け渡し
+			// プレイヤー座標受け渡し
 			obj->SetPlayerLocation(player->GetLocation());
+			//プレイヤーステータス受け渡し
+			obj->SetPlayerStats(player->GetPlayerStats());
 			// オブジェクトをスクロールと一緒に動かす処理
 			if (obj->GetCollision().object_type != eObjectType::ePlayer)
 			{
@@ -131,6 +143,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	}
 	else
 	{
+		//カーソル左
 		if (input->GetKeyUp(KEY_INPUT_A) || input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
 		{
 			if (level_up_ui->cursor == 0)
@@ -146,6 +159,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 				level_up_ui->cursor = 1;
 			}
 		}
+		//カーソル右
 		if (input->GetKeyUp(KEY_INPUT_D) || input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
 		{
 			if (level_up_ui->cursor == 0)
@@ -161,9 +175,13 @@ eSceneType InGameScene::Update(const float& delta_second)
 				level_up_ui->cursor = 0;
 			}
 		}
+		//カーソル決定
 		if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A))
 		{
-			player->StatsUp(ePowerUp::eSpeed);
+			//強化内容取得
+			ePowerUp strengthen = level_up_ui->GetLottery();
+			//強化
+			player->StatsUp(strengthen);
 			time_stop = false;
 			level_up_flg = false;
 		}
@@ -174,24 +192,27 @@ eSceneType InGameScene::Update(const float& delta_second)
 	if (input->GetKeyUp(KEY_INPUT_L) || input->GetButtonDown(XINPUT_BUTTON_BACK))
 	{
 		if (level_up_flg)
-		{
 			level_up_flg = false;
-		}
 		else
-		{
 			level_up_flg = true;
-		}
 		if (time_stop)
-		{
 			time_stop = false;
-		}
 		else
-		{
 			time_stop = true;
-		}
+	}
+	if (player->GetPlayerStats().player_level != player_old_level)
+	{
+		if (level_up_flg)
+			level_up_flg = false;
+		else
+			level_up_flg = true;
+		if (time_stop)
+			time_stop = false;
+		else
+			time_stop = true;
 	}
 
-	level_ui->SetExperience(player->GetPlayerStats().current_exp);
+	player_old_level = player->GetPlayerStats().player_level;
 
 	//リザルトシーンへ遷移
 	if (input->GetKeyUp(KEY_INPUT_SPACE) || input->GetButtonDown(XINPUT_BUTTON_START))
@@ -211,8 +232,10 @@ eSceneType InGameScene::Update(const float& delta_second)
 void InGameScene::Draw() const
 {
 	// 背景描画	
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 175);
 	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
 	DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	// 惑星描画
 	int bright = 125;
@@ -229,18 +252,29 @@ void InGameScene::Draw() const
 		c++;
 	}
 
-	SetFontSize(40);
-	DrawFormatString(10, 10, GetColor(255, 255, 255), "%d", c);
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	if(level_up_flg)
-	{
-		level_up_ui->Draw();
-	}
+	//UIゾーン
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100); 
+	DrawBox(0, 0, 1280, 80, GetColor(100, 0, 200), TRUE);
+	DrawBox(0, 680, 1280, 720, GetColor(100, 0, 200), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	
+	//タイムカウント
+	SetFontSize(70);
+	DrawFormatString(1100, 10, GetColor(255, 255, 255), "%.1f", time_count);
+
 	// プレイヤーのHPのテーブルHPバーの描画
 	hp_ui->Draw();
-
 	// レベルUIバーの描画
 	level_ui->Draw();
+
+	//レベルアップUI描画
+	if (level_up_flg)
+	{
+		level_up_ui->Draw(player->GetPlayerStats());
+	}
+	
 }
 
 void InGameScene::Finalize()
@@ -281,7 +315,7 @@ void InGameScene::EnemyManager(const float& delta_second)
 {
 	// 敵生成クールタイム
 	spawn_timer += delta_second;
-	if (spawn_timer >= 1.0f) // 1秒ごとにスポーン
+	if (spawn_timer >= 2.0f) // 秒ごとにスポーン
 	{
 		Spawn();
 		spawn_timer = 0.0f;
@@ -291,7 +325,7 @@ void InGameScene::EnemyManager(const float& delta_second)
 void InGameScene::Spawn()        //敵の自動生成
 {
 	int ramdom_l = GetRand(2);
-	int ramdom_r = GetRand(2);
+	int ramdom_r = GetRand(6);
 
 	/*int ramdom_x = GetRand(1);*/
 	/*float X1 = 0;*/
@@ -311,15 +345,15 @@ void InGameScene::Spawn()        //敵の自動生成
 	}*/
 
 
-	int ramdom_y = GetRand(2);
-	float Y_t = 170 + (float)(ramdom_y * 80);
-	float Y_b = 170 + (3 * 80);
+	/*int ramdom_y = GetRand(6);*/
+	/*float Y_t = 170 + (float)(ramdom_y * 80);*/
+	/*float Y_b = 170 + (3 * 80);*/
 
 	int num = rand() % 100 + 1;
 	
-	if (num <= 95)
+	if (num <= 99)
 	{
-
+		  
 		EnemyBase* enemy;
 		switch (ramdom_r)
 		{
@@ -327,7 +361,7 @@ void InGameScene::Spawn()        //敵の自動生成
 			enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));//ジグザグ
 			break;
 		case 1:
-			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 680));//大砲
+			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//大砲
 			break;
 		case 2:
 			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 400));//特攻、真ん中
@@ -338,16 +372,23 @@ void InGameScene::Spawn()        //敵の自動生成
 		case 4:
 			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 600));//特攻、下
 			break;
+		case 5:
+			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//大砲、逆
+			break;
+		case 6:
+			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//大砲、逆
+			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//大砲
+			break;
 		default:
 			break;
 		}
 	}
 
-	/*if (CheckHitKey(KEY_INPUT_0)) {
+	if (CheckHitKey(KEY_INPUT_0)) {
 		auto enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));
 	}
 	else if (CheckHitKey(KEY_INPUT_1)) {
-		auto enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 680));
+		auto enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));
 	}
 	else if (CheckHitKey(KEY_INPUT_2)) {
 		auto enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 400));
@@ -357,7 +398,14 @@ void InGameScene::Spawn()        //敵の自動生成
 	}
 	else if (CheckHitKey(KEY_INPUT_4)) {
 		auto enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 600));
-	}*/
+	}
+	else if (CheckHitKey(KEY_INPUT_5)) {
+		 object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();
+	}
+	else if (CheckHitKey(KEY_INPUT_6)) {
+		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();
+		auto enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));
+	}
 
 
 }

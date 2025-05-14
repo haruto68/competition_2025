@@ -7,7 +7,7 @@ class ExperiencePoints : public Item
 protected:
 
 private:
-
+	bool track_flag;
 
 public:
 	ExperiencePoints();

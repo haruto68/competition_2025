@@ -4,7 +4,7 @@
 
 class LevelUI
 {	
-public:
+private:
 	int level;
 private:
 	std::vector<int> level_bar;			// ƒŒƒxƒ‹‘‰Á‚Ì‰æ‘œ

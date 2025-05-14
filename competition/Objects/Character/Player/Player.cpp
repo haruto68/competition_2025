@@ -6,7 +6,8 @@
 Player::Player() : 
 	screen_velocity(0.0f),
 	shot_timer(0.0f),
-	SHOT_INTERVAL(0.3f)
+	SHOT_INTERVAL(0.3f),
+	threeway_flag(false)
 {
 
 	//リソース管理インスタンス取得
@@ -59,6 +60,20 @@ void Player::Update(float delta_seconds)
 		PlayerShot* shot = object_manager->CreateGameObject<PlayerShot>(this->location);
 		shot->SetShotType(ePlayer1);
 		shot->SetPlayerStats(this->GetPlayerStats());
+
+		if (threeway_flag == true)
+		{
+			PlayerShot* angled_shot_up = object_manager->CreateGameObject<PlayerShot>(this->location);
+			angled_shot_up->SetShotType(ePlayer1);
+			angled_shot_up->SetPlayerStats(this->GetPlayerStats());
+			angled_shot_up->SetAngle(10.0f);
+
+			PlayerShot* angled_shot_down = object_manager->CreateGameObject<PlayerShot>(this->location);
+			angled_shot_down->SetShotType(ePlayer1);
+			angled_shot_down->SetPlayerStats(this->GetPlayerStats());
+			angled_shot_down->SetAngle(-10.0f);
+		}
+
 		shot_timer = SHOT_INTERVAL;
 	}
 }
@@ -216,25 +231,21 @@ void Player::Movement(float delta_seconds)
 	if ((location.x + velocity.x) < (collision.box_size.x / 2.0f))
 	{
 		velocity.x = 0.0f;
-		location.x = 20.0f;
 	}
 	//右画面端
 	if ((location.x + velocity.x) >= (D_WIN_MAX_X) - (collision.box_size.x / 2.0f))
 	{
 		velocity.x = 0.0f;
-		location.x = 1260.0f;
 	}
 	//上画面端
-	if ((location.y + velocity.y) < (collision.box_size.y / 2.0f))
+	if ((location.y + velocity.y) < (120) - (collision.box_size.y / 2.0f))
 	{
 		velocity.y = 0.0f;
-		location.y = 20.0f;
 	}
 	//下画面端
-	if ((location.y + velocity.y) >= (D_WIN_MAX_Y)-(collision.box_size.y / 2.0f))
+	if ((location.y + velocity.y) >= (680) - (collision.box_size.y / 2.0f))
 	{
 		velocity.y = 0.0f;
-		location.y = 700.0;
 	}
 
 
@@ -260,11 +271,9 @@ void Player::AddExperience(float exp)
 }
 
 void Player::LevelUp()
-{	// 入力機能インスタンス取得
+{	
 	player_stats.player_level++;			//プレイヤーレベルアップ
 	player_stats.next_level_exp += 50;		//次のレベルアップに必要な経験値量の増加
-
-	AddPower(10);
 }
 
 void Player::StatsUp(ePowerUp powerup)
@@ -278,15 +287,14 @@ void Player::StatsUp(ePowerUp powerup)
 		player_stats.attack_power += 1.0f;		// 攻撃力アップ
 		break;
 	case ePowerUp::eSpeed:
-		player_stats.move_speed += 500.0f;		// 移動速度アップ
+		player_stats.move_speed = Max(100.0f, player_stats.move_speed + 5.0f);		// 移動速度アップ
 		break;
+	case ePowerUp::eShotspeed:
+		SHOT_INTERVAL = Max(0.1f, SHOT_INTERVAL - 0.02f);  // 下限を0.02秒に制限
+		break;
+	case ePowerUp::eThreeway:
+		threeway_flag = true;
 	default:
 		break;
 	}
-}
-
-
-void Player::AddPower(int power)
-{
-	player_stats.attack_power += power;
 }

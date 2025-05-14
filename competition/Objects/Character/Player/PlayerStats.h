@@ -3,13 +3,16 @@ enum ePowerUp
 {
 	eHp,
 	eDamage,
-	eSpeed
+	eSpeed,
+	eShotspeed,
+	eThreeway
 };
 
 struct PlayerStats
 {
 	float attack_power = 1.0f;
 	float move_speed = 0.0f;
+	float shot_speed = 0.3f;
 	int life_count = 3;
 	int Shield_count = 3;
 	int player_level = 1;
