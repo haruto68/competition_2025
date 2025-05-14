@@ -26,6 +26,7 @@
     <ClCompile Include="Utility\Vector2D.cpp" />
     <ClCompile Include="Scenes\UI\LevelUpUI.cpp" />
     <ClCompile Include="Scenes\UI\HpUI.cpp" />
+    <ClCompile Include="Scenes\UI\LevelUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Objects\Character\Enemy\Enemy2\Enemy2.h" />
@@ -58,5 +59,6 @@
     <ClInclude Include="Utility\Vector2D.h" />
     <ClInclude Include="Scenes\UI\LevelUpUI.h" />
     <ClInclude Include="Scenes\UI\HpUI.h" />
+    <ClInclude Include="Scenes\UI\LevelUI.h" />
   </ItemGroup>
 </Project>
