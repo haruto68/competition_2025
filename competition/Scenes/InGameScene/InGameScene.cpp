@@ -78,6 +78,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 
 	level_ui->SetExperience(player->GetPlayerStats().current_exp);
+	hp_ui->SetHp(player->GetPlayerStats().life_count, 6);
 
 
 	// シーン内オブジェクト更新
