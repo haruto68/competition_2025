@@ -5,7 +5,7 @@
 class LevelUI
 {	
 public:
-	float level;
+	int level;
 private:
 	std::vector<int> level_bar;			// ƒŒƒxƒ‹‘‰Á‚Ì‰æ‘œ
 public:
@@ -18,4 +18,5 @@ public:
 	void Draw() const;			//•`‰æˆ—
 	void Finalize();			//I—¹ˆ—
 
+	void SetExperience(int);
 };

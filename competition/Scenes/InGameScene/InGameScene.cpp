@@ -191,7 +191,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		}
 	}
 
-
+	level_ui->SetExperience(player->GetPlayerStats().current_exp);
 
 	//リザルトシーンへ遷移
 	if (input->GetKeyUp(KEY_INPUT_SPACE) || input->GetButtonDown(XINPUT_BUTTON_START))
