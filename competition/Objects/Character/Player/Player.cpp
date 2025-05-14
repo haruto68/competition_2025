@@ -240,12 +240,18 @@ void Player::Movement(float delta_seconds)
 	//è„âÊñ í[
 	if ((location.y + velocity.y) < (120) - (collision.box_size.y / 2.0f))
 	{
-		velocity.y = 0.0f;
+		if ((location.y + velocity.y) < location.y)
+		{
+			velocity.y = 0.0f;
+		}
 	}
 	//â∫âÊñ í[
 	if ((location.y + velocity.y) >= (680) - (collision.box_size.y / 2.0f))
 	{
-		velocity.y = 0.0f;
+		if ((location.y + velocity.y) > location.y)
+		{
+			velocity.y = 0.0f;
+		}
 	}
 
 
