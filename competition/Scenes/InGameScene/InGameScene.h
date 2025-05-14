@@ -9,6 +9,7 @@
 #include"../../Objects/Character/Enemy/Enemy1/Enemy1.h"
 #include"../../Objects/Character/Enemy/Enemy2/Enemy2.h"
 #include"../../Objects/Character/Enemy/Enemy3/Enemy3.h"
+#include "../../Objects/Character/Enemy/Boss1/Boss1.h"
 #include"../../Objects/Shot/PlayerShot/PlayerShot.h"
 #include"../../Objects/Shot/EnemyShot/EnemyShot.h"
 #include"../../Objects/Item/ExperiencePoints/ExperiencePoints.h"
