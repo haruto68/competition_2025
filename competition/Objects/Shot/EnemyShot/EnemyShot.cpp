@@ -75,8 +75,7 @@ void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 
 	if (image_to_draw != -1)
 	{
-		/*DrawGraph(location.x, location.y, image_to_draw, TRUE);*/
-		DrawRotaGraph(location.x, location.y, 0.05, 0, image_to_draw,TRUE);
+		DrawRotaGraph(location.x, location.y, 1.5, 0, image_to_draw,TRUE);
 	}
 	
 }
