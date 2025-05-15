@@ -2,7 +2,7 @@
 #include"../../Utility/InputManager.h"
 #include"../../Resource/ResourceManager.h"
 
-ResultScene::ResultScene()
+ResultScene::ResultScene(): m_selectedbutton(selectedbutton::Title)			//初期はタイトル選択
 {
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
@@ -17,7 +17,8 @@ ResultScene::~ResultScene()
 
 void ResultScene::Initialize()
 {
-
+	//選択状態リセット
+	m_selectedbutton = selectedbutton::Title;
 }
 
 eSceneType ResultScene::Update(const float& delta_second)
@@ -28,6 +29,29 @@ eSceneType ResultScene::Update(const float& delta_second)
 	//入力情報の更新
 	input->Update();
 
+	//ボタン選択
+	if (input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
+	{
+		m_selectedbutton= selectedbutton::End;
+	}
+
+	if (input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
+	{
+		m_selectedbutton = selectedbutton::Title;
+	}
+
+	//決定ボタンで遷移
+	if (input->GetButtonDown(XINPUT_BUTTON_A))
+	{
+		if (m_selectedbutton == selectedbutton::Title)
+		{
+			return eSceneType::eTitle;
+		}
+		else if (m_selectedbutton == selectedbutton::End)
+		{
+			return eSceneType::eExit;
+		}
+	}
 	//インゲームシーンへ遷移
 	if (input->GetKeyUp(KEY_INPUT_SPACE))
 	{
@@ -56,12 +80,14 @@ void ResultScene::Draw() const
 		DrawFormatString(665, 270, 0x000000, "スコア結果");
 
 		// エンドボタン
+		int endColor = (m_selectedbutton == selectedbutton::End) ? GetColor(255, 0, 0):GetColor(128,128,128);
 		DrawBox(25, 600, 325, 700, 0xffffff, TRUE);
-		DrawFormatString(25, 630, 0xff0000, "End");
+		DrawFormatString(25, 630, endColor, "End");
 
 		// タイトルボタン
+		int titleColor = (m_selectedbutton == selectedbutton::Title) ? GetColor(255, 0, 0) : GetColor(128,128,128);
 		DrawBox(955, 600, 1255, 700, 0xffffff, TRUE);
-		DrawFormatString(955, 630, 0x0000ff, "Title");
+		DrawFormatString(955, 630, titleColor, "Title");
 	
 }
 

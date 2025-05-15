@@ -35,6 +35,7 @@ void Enemy1::Initialize()
 
 	//‰æ‘œ“Ç‚İ‚İ
 	image = LoadGraph("Resource/Images/enemy/ship1.png");
+	power = 1.0;
 }
 
 void Enemy1::Update(float delta_seconds)
