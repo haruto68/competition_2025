@@ -220,7 +220,6 @@ eSceneType InGameScene::Update(const float& delta_second)
 	{
 		up_grade_stock++;
 	}
-	up_grade_stock++;
 	player_old_level = player->GetPlayerStats().player_level;
 
 	//リザルトシーンへ遷移
