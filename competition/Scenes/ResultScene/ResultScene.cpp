@@ -2,7 +2,8 @@
 #include"../../Utility/InputManager.h"
 #include"../../Resource/ResourceManager.h"
 
-ResultScene::ResultScene(): m_selectedbutton(selectedbutton::Title)			//初期はタイトル選択
+
+ResultScene::ResultScene(): m_selectedbutton(selectedbutton::Title), menu_num(0), is_button(true)			//初期はタイトル選択
 {
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
@@ -29,41 +30,44 @@ eSceneType ResultScene::Update(const float& delta_second)
 	//入力情報の更新
 	input->Update();
 
-	//ボタン選択
-	if (input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
+	// カーソル右移動
+	if (input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT) && is_button == true)
 	{
-		m_selectedbutton= selectedbutton::End;
-	}
-
-	if (input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
-	{
-		m_selectedbutton = selectedbutton::Title;
-	}
-
-	//決定ボタンで遷移
-	if (input->GetButtonDown(XINPUT_BUTTON_A))
-	{
-		if (m_selectedbutton == selectedbutton::Title)
+		menu_num--;
+		if (menu_num < 0)
 		{
-			return eSceneType::eTitle;
+			menu_num = 1;
 		}
-		else if (m_selectedbutton == selectedbutton::End)
+	}
+
+	// カーソル左移動
+	if (input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT) && is_button == true)
+	{
+		menu_num++;
+		if (menu_num > 1)
 		{
+			menu_num = 0;
+		}
+	}
+
+
+	if (input->GetButtonDown(XINPUT_BUTTON_A) && is_button == true)
+	{
+		switch (menu_num)
+		{
+		case 0:
+			//タイトルシーンへ遷移
 			return eSceneType::eExit;
+			break;
+		case 1:
+			//ゲームを終了
+			return eSceneType::eTitle;
+			break;
+		default:
+			break;
+
 		}
 	}
-	//インゲームシーンへ遷移
-	if (input->GetKeyUp(KEY_INPUT_SPACE))
-	{
-		return eSceneType::eTitle;
-	}
-
-	//ゲームを終了
-	if (input->GetKeyUp(KEY_INPUT_ESCAPE))
-	{
-		return eSceneType::eExit;
-	}
-
 	return GetNowSceneType();
 }
 
@@ -89,6 +93,17 @@ void ResultScene::Draw() const
 		DrawBox(955, 600, 1255, 700, 0xffffff, TRUE);
 		DrawFormatString(955, 630, titleColor, "Title");
 	
+		switch (menu_num)
+		{
+		case 0:
+			DrawTriangle(5, 640, 5, 660, 25, 650, GetColor(255, 0, 0), TRUE);
+			break;
+		case 1:
+			DrawTriangle(935, 640, 935, 660, 955, 650, GetColor(255, 0, 0), TRUE);
+			break;
+		default:
+			break;
+		}
 }
 
 void ResultScene::Finalize()

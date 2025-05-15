@@ -35,7 +35,7 @@ eSceneType RankingScene::Update(const float& delta_second)
 	}
 
 	// 2キーでタイトルに戻る
-	if (input->GetKeyUp(KEY_INPUT_2))
+	if (input->GetButtonDown(XINPUT_BUTTON_B) || input->GetKeyUp(KEY_INPUT_2))
 	{
 		return eSceneType::eTitle;
 	}
@@ -46,7 +46,7 @@ eSceneType RankingScene::Update(const float& delta_second)
 void RankingScene::Draw() const
 {
 	DrawFormatString(10, 10, GetColor(255, 255, 255), "ランキングシーン");
-	DrawFormatString(10, 110, GetColor(255, 255, 255), "2キーでタイトルに戻る");
+	DrawFormatString(10, 110, GetColor(255, 255, 255), "Bボタンでタイトルに戻る");
 
 }
 
