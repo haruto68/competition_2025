@@ -28,12 +28,6 @@ eSceneType TitleScene::Update(const float& delta_second)
 	//入力情報の更新
 	input->Update();
 
-	//インゲームシーンへ遷移
-	if (input->GetKeyUp(KEY_INPUT_SPACE))
-	{
-		return eSceneType::eInGame;
-	}
-
 	//ゲームを終了
 	if (input->GetKeyUp(KEY_INPUT_ESCAPE))
 	{
@@ -41,7 +35,9 @@ eSceneType TitleScene::Update(const float& delta_second)
 	}
 
 	// カーソル上移動
-	if (input->GetKeyDown(KEY_INPUT_W) && is_button == true)
+	if ((input->GetKeyDown(KEY_INPUT_W) ||
+		input->GetButtonDown(XINPUT_BUTTON_DPAD_UP))
+		&& !help)
 	{
 		menu_num--;
 		if (menu_num < 0)
@@ -51,7 +47,9 @@ eSceneType TitleScene::Update(const float& delta_second)
 	}
 
 	// カーソル下移動
-	if (input->GetKeyDown(KEY_INPUT_S) && is_button == true)
+	if ((input->GetKeyDown(KEY_INPUT_S) ||
+		input->GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
+		&& !help)
 	{
 		menu_num++;
 		if (menu_num > 2)
@@ -61,28 +59,22 @@ eSceneType TitleScene::Update(const float& delta_second)
 	}
 
 	// カーソル決定(決定した画面に移動する)
-	if (input->GetKeyDown(KEY_INPUT_1) && is_button == true)
+	if (input->GetKeyDown(KEY_INPUT_E) ||
+		input->GetButtonDown(XINPUT_BUTTON_A))
 	{
 		switch (menu_num)
 		{
-			case 0:
-				return eSceneType::eInGame;
-				break;
-			case 1:
-				// return eSceneType::eInGame;
+		case 0:
+			return eSceneType::eInGame;
+		case 1:
+			if (help)
+				help = false;
+			else
 				help = true;
-				is_button = false;
-				break;
-			case 2:
-				return eSceneType::eRanking;
-				break;
+			break;
+		case 2:
+			return eSceneType::eRanking;
 		}
-	}
-
-	if (input->GetKeyDown(KEY_INPUT_2))
-	{
-		help = false;
-		is_button = true;
 	}
 
 	return GetNowSceneType();
@@ -90,25 +82,34 @@ eSceneType TitleScene::Update(const float& delta_second)
 
 void TitleScene::Draw() const
 {
-	// DrawFormatString(10, 10, GetColor(255, 255, 255), "タイトルシーン");
+	int font[3] = { 40,40,40 };
+	font[menu_num] = 60;
+
 	// タイトルの大見出し
 	DrawBox(50, 20, 1230, 420, 0xffffff, TRUE);
+	SetFontSize(40);
 	DrawFormatString(50, 175, 0x000000, "ゲームの名前(仮)");
 
 	/*シーン選択*/
 	// Startボタン(ゲームメインに遷移する)
-	DrawBox(480, 435, 800, 510, 0xffffff, TRUE);		
+	DrawBox(480, 435, 800, 510, 0xffffff, TRUE);
+	SetFontSize(font[0]);
 	DrawFormatString(480, 450, 0x000000, "Game Start");
 
 	// Helpボタン(ヘルプ画面に遷移する)
-	DrawBox(480, 525, 800, 600, 0xffffff, TRUE);		
+	DrawBox(480, 525, 800, 600, 0xffffff, TRUE);
+	SetFontSize(font[1]);
 	DrawFormatString(480, 540, 0x000000, "Help");
 
 	// Rankingボタン(ランキング画面に遷移する)
-	DrawBox(480, 615, 800, 690, 0xffffff, TRUE);		
+	DrawBox(480, 615, 800, 690, 0xffffff, TRUE);
+	SetFontSize(font[2]);
 	DrawFormatString(480, 630, 0x000000, "Ranking");
 
-	DrawFormatString(900, 500, 0xFFFFFF, "シーンの番号 %d", menu_num);		// 仮
+	SetFontSize(40);
+	DrawFormatString(70, 450, GetColor(255, 255, 255), "十字ボタン");
+	DrawFormatString(70, 500, GetColor(255, 255, 255), "      カーソル移動");
+	DrawFormatString(70, 580, GetColor(0, 255, 0), "A　決定");
 
 	// 仮カーソルUI	時間があれば治します。
 	switch (menu_num)
@@ -126,18 +127,16 @@ void TitleScene::Draw() const
 			break;
 	}
 
-	if (menu_num == 1 && help == true)
+	if (help)
 	{
-		DrawBox(0, 0, 1280, 720, 0xff00ff, TRUE);
+		SetFontSize(50);
+		DrawBox(0, 0, 1280, 720, GetColor(0,150,200), TRUE);
 		DrawFormatString(0, 0, 0x000000, "一応ヘルプ");
-		DrawFormatString(0, 100, 0x000000, "操作説明及び敵やオブジェクトの詳細説明");
 		DrawFormatString(0, 200, 0x000000, "WASDキーで移動");
 		DrawFormatString(0, 300, 0x000000, "Bボタンで弾の発射");
-		DrawFormatString(0, 400, 0x000000, "2キーでタイトルに戻る");
+		SetFontSize(40);
+		DrawFormatString(70, 580, GetColor(0, 255, 0), "A　戻る");
 	}
-	// ボタン操作確認
-	DrawFormatString(800, 600, 0xFFFFFF, "ボタン操作の番号 %d", is_button);
-	DrawFormatString(900, 500, 0xFFFFFF, "シーンの番号 %d", menu_num);
 }
 
 void TitleScene::Finalize()
