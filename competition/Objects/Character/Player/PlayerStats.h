@@ -16,6 +16,7 @@ struct PlayerStats
 	int life_count = 3;
 	int Shield_count = 3;
 	int player_level = 1;
+	int player_hp_max = 6;
 
 	// ŒoŒ±’lŠÖ˜A
 	int current_exp = 0;

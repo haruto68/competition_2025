@@ -313,7 +313,7 @@ void Player::StatsUp(ePowerUp powerup)
 	switch (powerup)
 	{
 	case ePowerUp::eHp:
-		if(player_stats.life_count < player_hp_max)
+		if(player_stats.life_count < player_stats.player_hp_max)
 		player_stats.life_count += 1.0f;		// HP残量アップ
 		break;
 	case ePowerUp::eDamage:
