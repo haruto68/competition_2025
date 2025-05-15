@@ -18,7 +18,7 @@ EnemyShot::EnemyShot() :
 	collision.hit_object_type.push_back(eObjectType::ePlayer);
 	// ‰æ‘œİ’è
 	// ƒŒƒCƒ„[İ’è
-	z_layer = 2;
+	z_layer = 3;
 	// ‰Â“®«İ’è
 	is_mobility = true;
 

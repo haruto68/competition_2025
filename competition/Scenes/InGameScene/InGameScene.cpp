@@ -13,11 +13,12 @@ InGameScene::InGameScene() :
 	pla1(),
 	pla2(),
 	spawn_timer(0),
+	boss_flag(),
 	player_old_level(1),
+	up_grade_stock(0),
 	level_up_flg(),
 	time_stop(),
-	time_count(60),
-	boss_flag()
+	time_count(60)
 {
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
@@ -195,12 +196,15 @@ eSceneType InGameScene::Update(const float& delta_second)
 			player->StatsUp(strengthen);
 			time_stop = false;
 			level_up_flg = false;
+
+			up_grade_stock--;
 		}
 	}
 
-
-	//レベルアップUI仮表示用
-	if (input->GetKeyUp(KEY_INPUT_L) || input->GetButtonDown(XINPUT_BUTTON_BACK))
+	//アップグレード
+	if ((input->GetKeyUp(KEY_INPUT_L) ||
+		input->GetButtonDown(XINPUT_BUTTON_START))
+		&& up_grade_stock > 0)
 	{
 		if (level_up_flg)
 			level_up_flg = false;
@@ -211,22 +215,16 @@ eSceneType InGameScene::Update(const float& delta_second)
 		else
 			time_stop = true;
 	}
+	//レベルアップ時
 	if (player->GetPlayerStats().player_level != player_old_level)
 	{
-		if (level_up_flg)
-			level_up_flg = false;
-		else
-			level_up_flg = true;
-		if (time_stop)
-			time_stop = false;
-		else
-			time_stop = true;
+		up_grade_stock++;
 	}
-
+	up_grade_stock++;
 	player_old_level = player->GetPlayerStats().player_level;
 
 	//リザルトシーンへ遷移
-	if (input->GetKeyUp(KEY_INPUT_SPACE) || input->GetButtonDown(XINPUT_BUTTON_START)|| player->GetPlayerStats().life_count <= 0)
+	if (input->GetKeyUp(KEY_INPUT_SPACE)|| player->GetPlayerStats().life_count <= 0)
 	{
 		return eSceneType::eResult;
 	}
@@ -280,12 +278,18 @@ void InGameScene::Draw() const
 	// レベルUIバーの描画
 	level_ui->Draw();
 
+	if (up_grade_stock > 0)
+	{
+		SetFontSize(40);
+		DrawFormatString(475, 680, GetColor(255, 0, 255), "Start to UpGrade");
+	}
+
 	//レベルアップUI描画
 	if (level_up_flg)
 	{
 		level_up_ui->Draw(player->GetPlayerStats());
 	}
-	
+
 }
 
 void InGameScene::Finalize()

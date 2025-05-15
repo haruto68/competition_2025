@@ -42,11 +42,13 @@ public:
 	Planet pla2;								//惑星2
 
 	float spawn_timer;							//敵生成クールタイム
+	bool boss_flag;								//ボス描画フラグ
+
 	int player_old_level;						//プレイヤー過去レベル
+	int up_grade_stock;							//アップグレードストック
 	bool level_up_flg;							//レベルアップフラグ
 	bool time_stop;								//一時停止フラグ
 	float time_count;							//時間カウント
-	bool boss_flag;
 
 
 
