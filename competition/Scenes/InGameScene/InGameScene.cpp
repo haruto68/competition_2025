@@ -16,7 +16,8 @@ InGameScene::InGameScene() :
 	player_old_level(1),
 	level_up_flg(),
 	time_stop(),
-	time_count(60)
+	time_count(60),
+	boss_flag()
 {
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
@@ -92,6 +93,11 @@ eSceneType InGameScene::Update(const float& delta_second)
 		if(time_count >= 0.0f)
 		{
 			time_count -= (delta_second * 1.0f);
+		}
+		else if (!boss_flag)
+		{
+			boss_flag = true;
+			object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
 		}
 
 		// ”wŒiŠÇ—ˆ—
