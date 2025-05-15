@@ -1,11 +1,12 @@
 #include"LevelUI.h"
-
+#define MAX_BAR		(31)
 LevelUI::LevelUI() :
 	// level_bar(),
 	exp(0),
 	max_exp(0),
 	level_ui1(0),
-	level_ui2(0)
+	level_ui2(0),
+	level(0)
 {
 	// リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
@@ -26,20 +27,20 @@ void LevelUI::Initialize()
 
 void LevelUI::Update()
 {
-
+	level = (exp * 100) / max_exp;
 }
 
 void LevelUI::Draw() const
 {
 	// テスト用描画
 	DrawRotaGraph(30, 700, 0.9, 0, level_ui1, 1, 0);
-	for (int i = 0; i < exp; i++)
+	for (int i = 0; i < exp; i++)			// max描画は31(画面左から右端まで)
 	{
-		DrawRotaGraph((50 + (i * 30)), 700, 0.9, 0, level_ui2, 1, 0);
+		DrawRotaGraph((70 + (i * 40)), 700, 0.9, 0, level_ui2, 1, 0);
 	}
 
 	// DrawFormatString(640, 80, 0xff00ff, "%d", exp);
-	// DrawFormatString(640, 80, 0xff00ff, "%d", max_exp);
+	DrawFormatString(640, 80, 0xff00ff, "%d", level);
 	// DrawRotaGraph(58, 700, 0.9, 0, level_bar[1], 1, 0);
 	// DrawRotaGraph(640, 80, 1.0, 0, window[1], 1, 0);
 
