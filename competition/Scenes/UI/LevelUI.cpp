@@ -33,6 +33,11 @@ void LevelUI::Draw() const
 {
 	// テスト用描画
 	DrawRotaGraph(30, 700, 0.9, 0, level_ui1, 1, 0);
+	for (int i = 0; i < exp; i++)
+	{
+		DrawRotaGraph((50 + (i * 40)), 700, 0.9, 0, level_ui2, 1, 0);
+	}
+
 	// DrawFormatString(640, 80, 0xff00ff, "%d", exp);
 	// DrawFormatString(640, 80, 0xff00ff, "%d", max_exp);
 	// DrawRotaGraph(58, 700, 0.9, 0, level_bar[1], 1, 0);
