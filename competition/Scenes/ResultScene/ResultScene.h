@@ -4,7 +4,13 @@
 class ResultScene : public SceneBase
 {
 protected:
+	enum class selectedbutton 
+	{
+		Title,
+		End
+	};
 
+	selectedbutton m_selectedbutton;
 public:
 	ResultScene();
 	~ResultScene();
