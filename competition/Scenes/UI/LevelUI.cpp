@@ -9,7 +9,7 @@ LevelUI::LevelUI() :
 {
 	// リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
-	// level_bar = rm->GetImages("Resource/Images/LevelUi/Loading_Bar_1_2.png", 10, 10, 1, 32, 32);
+	// level_bar = rm->GetImages("Resource/Images/LevelUi/level_ui3.png", 10, 10, 1, 32, 32);
 	level_ui1 = rm->GetImages("Resource/Images/LevelUi/level_ui1.png")[0];
 	level_ui2 = rm->GetImages("Resource/Images/LevelUi/level_ui2.png")[0];
 }
@@ -35,7 +35,7 @@ void LevelUI::Draw() const
 	DrawRotaGraph(30, 700, 0.9, 0, level_ui1, 1, 0);
 	for (int i = 0; i < exp; i++)
 	{
-		DrawRotaGraph((50 + (i * 40)), 700, 0.9, 0, level_ui2, 1, 0);
+		DrawRotaGraph((50 + (i * 30)), 700, 0.9, 0, level_ui2, 1, 0);
 	}
 
 	// DrawFormatString(640, 80, 0xff00ff, "%d", exp);
