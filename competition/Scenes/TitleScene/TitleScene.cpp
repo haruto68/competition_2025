@@ -41,7 +41,7 @@ eSceneType TitleScene::Update(const float& delta_second)
 	}
 
 	// カーソル上移動
-	if (input->GetKeyDown(KEY_INPUT_W) && is_button == true)
+	if ((input->GetButtonDown(XINPUT_BUTTON_DPAD_UP) || input->GetKeyDown(KEY_INPUT_W)) && is_button == true)
 	{
 		menu_num--;
 		if (menu_num < 0)
@@ -51,7 +51,7 @@ eSceneType TitleScene::Update(const float& delta_second)
 	}
 
 	// カーソル下移動
-	if (input->GetKeyDown(KEY_INPUT_S) && is_button == true)
+	if ((input->GetButtonDown(XINPUT_BUTTON_DPAD_DOWN) || input->GetKeyDown(KEY_INPUT_S)) && is_button == true)
 	{
 		menu_num++;
 		if (menu_num > 2)
@@ -61,7 +61,7 @@ eSceneType TitleScene::Update(const float& delta_second)
 	}
 
 	// カーソル決定(決定した画面に移動する)
-	if (input->GetKeyDown(KEY_INPUT_1) && is_button == true)
+	if ((input->GetButtonDown(XINPUT_BUTTON_A) || input->GetKeyDown(KEY_INPUT_1)) && is_button == true)
 	{
 		switch (menu_num)
 		{
@@ -79,7 +79,7 @@ eSceneType TitleScene::Update(const float& delta_second)
 		}
 	}
 
-	if (input->GetKeyDown(KEY_INPUT_2))
+	if (input->GetButtonDown(XINPUT_BUTTON_B) || input->GetKeyDown(KEY_INPUT_2))
 	{
 		help = false;
 		is_button = true;
@@ -133,7 +133,7 @@ void TitleScene::Draw() const
 		DrawFormatString(0, 100, 0x000000, "操作説明及び敵やオブジェクトの詳細説明");
 		DrawFormatString(0, 200, 0x000000, "WASDキーで移動");
 		DrawFormatString(0, 300, 0x000000, "Bボタンで弾の発射");
-		DrawFormatString(0, 400, 0x000000, "2キーでタイトルに戻る");
+		DrawFormatString(0, 400, 0x000000, "Bボタンでタイトルに戻る");
 	}
 	// ボタン操作確認
 	DrawFormatString(800, 600, 0xFFFFFF, "ボタン操作の番号 %d", is_button);

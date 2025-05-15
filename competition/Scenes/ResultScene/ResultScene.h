@@ -10,6 +10,9 @@ public:
 	~ResultScene();
 
 public:
+	int menu_num;
+	bool is_button;
+
 	virtual void Initialize() override;
 	virtual eSceneType Update(const float& delta_second);
 	virtual void Draw() const override;
