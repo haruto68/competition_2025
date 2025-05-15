@@ -81,7 +81,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 	level_up_ui->Update(level_up_flg);
 
 
-	level_ui->SetExperience(player->GetPlayerStats().current_exp);
+	level_ui->SetExperience(player->GetPlayerStats().current_exp, player->GetPlayerStats().next_level_exp);
+	level_ui->Update();
 	hp_ui->SetHp(player->GetPlayerStats().life_count, 6);
 
 
