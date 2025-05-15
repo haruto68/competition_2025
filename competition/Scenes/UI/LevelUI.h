@@ -9,6 +9,7 @@ private:
 	int max_exp;
 	int level_ui1;
 	int level_ui2;
+	int level_ui3;
 	int level;
 	std::vector<int> level_bar;			// ƒŒƒxƒ‹‘‰Á‚Ì‰æ‘œ
 
