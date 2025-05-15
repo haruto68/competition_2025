@@ -34,7 +34,7 @@ void LevelUI::Draw() const
 {
 	// テスト用描画
 	DrawRotaGraph(30, 700, 0.9, 0, level_ui1, 1, 0);
-	for (int i = 0; i < exp; i++)			// max描画は31(画面左から右端まで)
+	for (int i = 0; i < exp; i++)			// max描画は31(画面左から右端まで 右端が見えるのは30)
 	{
 		DrawRotaGraph((70 + (i * 40)), 700, 0.9, 0, level_ui2, 1, 0);
 	}
