@@ -283,7 +283,10 @@ void InGameScene::Draw() const
 	
 	//タイムカウント
 	SetFontSize(70);
-	DrawFormatString(1100, 10, GetColor(255, 255, 255), "%.1f", time_count);
+	if(time_count > 0)
+	{
+		DrawFormatString(1100, 10, GetColor(255, 255, 255), "%.1f", time_count);
+	}
 
 	// プレイヤーのHPのテーブルHPバーの描画
 	hp_ui->Draw();
