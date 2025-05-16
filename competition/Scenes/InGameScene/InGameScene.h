@@ -31,6 +31,7 @@ public:
 	std::vector<GameObject*> scene_objects_list;//オブジェクトリスト
 	class GameObjectManager* object_manager;	//オブジェクトマネージャーインスタンス
 	class Player* player;						//プレイヤーインスタンス
+	class Boss1* boss;							//ボスインスタンス
 	LevelUpUI* level_up_ui;						//レベルアップUI
 	HpUI* hp_ui;								//HPUI
 	LevelUI* level_ui;							//レベルUI

@@ -1,10 +1,17 @@
 #include "Boss1.h"
 
 Boss1::Boss1() :
-	atack_pattern(0)
+	atack_pattern(0),
+	hp_bar1(0),
+	hp_bar2(0),
+	max_hp(150),
+	ratio(1)
 {
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
+
+	hp_bar1= rm->GetImages("Resource/Images/HPUi/Boss_HP_Bar_1.png")[0];
+	hp_bar2= rm->GetImages("Resource/Images/HPUi/Boss_HP_Bar_3.png")[0];
 
 	// コリジョン設定
 	collision.is_blocking = true;
@@ -20,7 +27,7 @@ Boss1::Boss1() :
 	// 可動性設定
 	is_mobility = true;
 
-	hp = 100.0f;
+	hp = float(max_hp);
 }
 
 Boss1::~Boss1()
@@ -38,8 +45,8 @@ void Boss1::Update(float delta_seconds)
 	Movement(delta_seconds);
 	Animation();
 
-	//入力機能インスタンス取得
-	InputManager* input = InputManager::GetInstance();
+	//HP割合計算
+	ratio = (hp * 100) / max_hp;
 
 	//時間経過
 	shot_timer += delta_seconds;
@@ -85,6 +92,23 @@ void Boss1::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	{
 		DrawRotaGraphF(location.x, location.y, 10.0f, 0.0f, image, TRUE);
 	}
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+	// 現在のHPのバーの描画
+	if(ratio != 0)
+	{
+		DrawRotaGraph(100, 670, 1.0, 0, hp_bar1, 1, 0);
+	}
+	for (int i = 0; i < ratio; i++)
+	{
+		DrawRotaGraph((105 + (i * 11)), 670, 1.0, 0, hp_bar2, 1, 0);
+	}
+	if (ratio != 0)
+	{
+		SetFontSize(26);
+		DrawFormatString(7, 657, GetColor(255, 0, 255), "BOSS");
+	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void Boss1::Finalize()
@@ -130,4 +154,9 @@ void Boss1::Movement(float delta_seconds)
 
 void Boss1::Animation()
 {
+}
+
+int Boss1::GetBoss1Hp()
+{
+	return ratio;
 }

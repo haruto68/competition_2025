@@ -53,7 +53,10 @@ void HpUI::Draw() const
 	}
 	// Œ»Ý‚ÌHP‚Ìƒo[‚Ì•`‰æ
 	SetDrawBright(255, 255, 255);
-	DrawRotaGraph(50, 30, 1.0, 0, hp_bar1, 1, 0);
+	if (hp > 0)
+	{
+		DrawRotaGraph(50, 30, 1.0, 0, hp_bar1, 1, 0);
+	}
 	for (int i = 0; i < hp; i++)
 	{
 		DrawRotaGraph((100 + (i * 45)), 30, 1.0, 0, hp_bar2, 1, 0);

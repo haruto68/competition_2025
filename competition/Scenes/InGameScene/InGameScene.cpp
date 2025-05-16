@@ -6,7 +6,10 @@
 InGameScene::InGameScene() :
 	object_manager(nullptr),
 	player(),
+	boss(),
 	level_up_ui(),
+	hp_ui(),
+	level_ui(),
 	back_ground_image(0),
 	back_ground_location(0),
 	planets_image(),
@@ -91,14 +94,16 @@ eSceneType InGameScene::Update(const float& delta_second)
 	// シーン内オブジェクト更新
 	if(!time_stop)
 	{
+		//タイムカウント	
 		if(time_count >= 0.0f)
 		{
 			time_count -= (delta_second * 1.0f);
 		}
 		else if (!boss_flag)
 		{
+			//ボス生成
 			boss_flag = true;
-			object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
+			boss = object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
 		}
 
 		// 背景管理処理
@@ -224,9 +229,16 @@ eSceneType InGameScene::Update(const float& delta_second)
 	player_old_level = player->GetPlayerStats().player_level;
 
 	//リザルトシーンへ遷移
-	if (input->GetKeyUp(KEY_INPUT_SPACE)|| player->GetPlayerStats().life_count <= 0)
+	if (input->GetKeyUp(KEY_INPUT_SPACE) ||
+		player->GetPlayerStats().life_count <= 0)
 	{
 		return eSceneType::eResult;
+	}
+
+	//ランキングシーンへ遷移
+	if (boss != nullptr && boss->GetBoss1Hp() <= 0)
+	{
+		return eSceneType::eRanking;
 	}
 
 	//ゲームを終了
@@ -264,9 +276,9 @@ void InGameScene::Draw() const
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//UIゾーン
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100); 
-	DrawBox(0, 0, 1280, 80, GetColor(100, 0, 200), TRUE);
-	DrawBox(0, 680, 1280, 720, GetColor(100, 0, 200), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+	DrawBox(0, 0, 1280, 80, GetColor(50, 0, 100), TRUE);
+	DrawBox(0, 680, 1280, 720, GetColor(50, 0, 100), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	
 	//タイムカウント
