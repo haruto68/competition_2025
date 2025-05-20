@@ -96,9 +96,9 @@ eSceneType InGameScene::Update(const float& delta_second)
 		//タイムカウント	
 		if(time_count >= 0.0f)
 		{
-			time_count -= (delta_second * 10.0f);
+			time_count -= (delta_second * 1.0f);
 		}
-		else if (boss_flag == false)
+		else if (stage_level == 1 && boss_flag == false)
 		{
 			//ボス生成
 			boss_flag = true;
@@ -293,7 +293,13 @@ void InGameScene::Draw() const
 	//ステージレベル
 	SetFontSize(40);
 	DrawFormatString(500, 20, GetColor(255, 255, 255), "Stage Level");
-	DrawFormatString(740, 20, GetColor(255, 255, 0), "%d", stage_level);
+	int level_color;
+	if (stage_level == 1)
+		level_color = GetColor(50, 255, 50);
+	else if (stage_level == 2)
+		level_color = GetColor(255, 255, 50);
+	SetFontSize(50);
+	DrawFormatString(740, 15, level_color, "%d", stage_level);
 
 	// プレイヤーのHPのテーブルHPバーの描画
 	hp_ui->Draw();
@@ -352,10 +358,18 @@ void InGameScene::EnemyManager(const float& delta_second)
 {
 	// 敵生成クールタイム
 	spawn_timer += delta_second;
-	if (spawn_timer >= 2.0f) // 秒ごとにスポーン
+
+	if(stage_level == 1)
 	{
-		Spawn();
-		spawn_timer = 0.0f;
+		if (spawn_timer >= 2.0f) // 秒ごとにスポーン
+		{
+			Spawn();
+			spawn_timer = 0.0f;
+		}
+	}
+	else if (stage_level == 2)
+	{
+
 	}
 }
 

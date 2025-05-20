@@ -17,7 +17,7 @@ Boss1::Boss1()
 	is_mobility = true;
 
 	//ç≈ëÂHPê›íË
-	max_hp = 10;
+	max_hp = 150;
 	hp = float(max_hp);
 }
 
