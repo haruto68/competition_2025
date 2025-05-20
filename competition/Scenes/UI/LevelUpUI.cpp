@@ -57,6 +57,8 @@ void LevelUpUI::Update(bool flag)
 				break;
 			case WAPON_3WAY:
 				lot[i] = ePowerUp::eThreeway;
+			case WAPON_SIZE:
+				lot[i] = ePowerUp::eShot_HitRange;
 			default:
 				break;
 			}
