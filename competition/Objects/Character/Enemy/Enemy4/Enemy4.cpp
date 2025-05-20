@@ -51,7 +51,20 @@ void Enemy4::Update(float delta_seconds)
 	Animation();
 
 
-	/*if(is_first_Enemy && spawn_index)*/
+	//if (is_first_Enemy && spawn_index < 2)
+	//{
+	//	timar += delta_seconds;
+
+	//	if (timar >= 0.5f)
+	//	{
+	//		timar = 0.0f;
+	//		spawn_index++;
+
+	//		//‚¸‚ç‚µ‚Äo‚·
+	//		Vector2D spawn_offset(30.0f * spawn_index, 0.0f);
+	//		Enemy4 new_enemy = object_manager->
+	//	}
+	//}
 }
 
 void Enemy4::Draw(const Vector2D& screeen_offset, bool file_flag) const

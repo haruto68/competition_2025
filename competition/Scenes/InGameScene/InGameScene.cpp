@@ -401,39 +401,39 @@ void InGameScene::Spawn()        //“G‚Ì©“®¶¬
 	/*float Y_b = 170 + (3 * 80);*/
 
 	int num = rand() % 100 + 1;
-	//
-	//if (num <= 99)
-	//{
-	//	  
-	//	EnemyBase* enemy;
-	//	switch (ramdom_r)
-	//	{
-	//	case 0:
-	//		enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));//ƒWƒOƒUƒO
-	//		break;
-	//	case 1:
-	//		enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//‘å–C
-	//		break;
-	//	case 2:
-	//		enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 400));//“ÁUA^‚ñ’†
-	//		break;
-	//	case 3:
-	//		enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 200));//“ÁUAã
-	//		break;
-	//	case 4:
-	//		enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 600));//“ÁUA‰º
-	//		break;
-	//	case 5:
-	//		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//‘å–CA‹t
-	//		break;
-	//	case 6:
-	//		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//‘å–CA‹t
-	//		enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//‘å–C
-	//		break;
-	//	default:
-	//		break;
-	//	}
-	//}
+	
+	if (num <= 99)
+	{
+		  
+		EnemyBase* enemy;
+		switch (ramdom_r)
+		{
+		case 0:
+			enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));//ƒWƒOƒUƒO
+			break;
+		case 1:
+			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//‘å–C
+			break;
+		case 2:
+			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 400));//“ÁUA^‚ñ’†
+			break;
+		case 3:
+			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 200));//“ÁUAã
+			break;
+		case 4:
+			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 600));//“ÁUA‰º
+			break;
+		case 5:
+			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//‘å–CA‹t
+			break;
+		case 6:
+			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//‘å–CA‹t
+			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//‘å–C
+			break;
+		default:
+			break;
+		}
+	}
 
 	//if (time_count == 0)
 	//{
