@@ -38,15 +38,19 @@ void Boss1::Update(float delta_seconds)
 
 	//HP割合計算
 	ratio = (hp * 100) / max_hp;
+	if (ratio <= 0)
+	{
+		ratio = 0;
+	}
 
 	//時間経過
 	shot_timer += delta_seconds;
 
 	EnemyShot* shot;
 
-	if (shot_timer >= 0.5f)
+	//攻撃
+	if (hp > 0 && shot_timer >= 0.5f)
 	{
-
 		switch (atack_pattern)
 		{
 		case 0:
@@ -72,6 +76,16 @@ void Boss1::Update(float delta_seconds)
 
 		//タイマーリセット
 		shot_timer = 0.0f;
+	}
+
+	//死
+	if (hp <= 0.0f)
+	{
+		death_count -= (delta_seconds * 1.0f);
+	}
+	if (death_count <= 0.0)
+	{
+		death_flag = true;
 	}
 
 }
@@ -127,12 +141,6 @@ void Boss1::OnHitCollision(GameObject* hit_object)
 	default:
 		break;
 	}
-
-	if (hp <= 0.0f)
-	{
-		object_manager->CreateGameObject< ExperiencePoints>(this->location);
-		object_manager->DestroyGameObject(this);
-	}
 }
 
 void Boss1::Movement(float delta_seconds)
@@ -149,4 +157,9 @@ void Boss1::Animation()
 int Boss1::GetBoss1Hp()
 {
 	return ratio;
+}
+
+bool Boss1::GetDeathFlag()
+{
+	return death_flag;
 }

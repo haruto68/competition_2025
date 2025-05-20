@@ -23,5 +23,6 @@ public:
     void Animation();
 
     int GetBoss1Hp();
+    bool GetDeathFlag();
 };
 
