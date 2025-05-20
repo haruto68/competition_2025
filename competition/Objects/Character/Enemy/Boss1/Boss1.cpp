@@ -1,11 +1,7 @@
 #include "Boss1.h"
 
-Boss1::Boss1() :
-	atack_pattern(0)
+Boss1::Boss1()
 {
-	//リソース管理インスタンス取得
-	ResourceManager* rm = ResourceManager::GetInstance();
-
 	// コリジョン設定
 	collision.is_blocking = true;
 	collision.box_size = Vector2D(150, 150);							//当たり判定の大きさ
@@ -20,7 +16,9 @@ Boss1::Boss1() :
 	// 可動性設定
 	is_mobility = true;
 
-	hp = 100.0f;
+	//最大HP設定
+	max_hp = 150;
+	hp = float(max_hp);
 }
 
 Boss1::~Boss1()
@@ -38,18 +36,21 @@ void Boss1::Update(float delta_seconds)
 	Movement(delta_seconds);
 	Animation();
 
-	//入力機能インスタンス取得
-	InputManager* input = InputManager::GetInstance();
+	//HP割合計算
+	ratio = (hp * 100) / max_hp;
+	if (ratio <= 0)
+	{
+		ratio = 0;
+	}
 
 	//時間経過
 	shot_timer += delta_seconds;
 
 	EnemyShot* shot;
-	EnemyBase* enemy;
 
-	if (shot_timer >= 0.5f)
+	//攻撃
+	if (hp > 0 && shot_timer >= 0.5f)
 	{
-
 		switch (atack_pattern)
 		{
 		case 0:
@@ -77,6 +78,16 @@ void Boss1::Update(float delta_seconds)
 		shot_timer = 0.0f;
 	}
 
+	//死
+	if (hp <= 0.0f)
+	{
+		death_count -= (delta_seconds * 1.0f);
+	}
+	if (death_count <= 0.0)
+	{
+		death_flag = true;
+	}
+
 }
 
 void Boss1::Draw(const Vector2D& screen_offset, bool flip_flag) const
@@ -85,6 +96,23 @@ void Boss1::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	{
 		DrawRotaGraphF(location.x, location.y, 10.0f, 0.0f, image, TRUE);
 	}
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+	// 現在のHPのバーの描画
+	if(ratio != 0)
+	{
+		DrawRotaGraph(100, 670, 1.0, 0, hp_bar1, 1, 0);
+	}
+	for (int i = 0; i < ratio; i++)
+	{
+		DrawRotaGraph((105 + (i * 11)), 670, 1.0, 0, hp_bar2, 1, 0);
+	}
+	if (ratio != 0)
+	{
+		SetFontSize(26);
+		DrawFormatString(7, 657, GetColor(255, 0, 255), "BOSS");
+	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void Boss1::Finalize()
@@ -113,12 +141,6 @@ void Boss1::OnHitCollision(GameObject* hit_object)
 	default:
 		break;
 	}
-
-	if (hp <= 0.0f)
-	{
-		object_manager->CreateGameObject< ExperiencePoints>(this->location);
-		object_manager->DestroyGameObject(this);
-	}
 }
 
 void Boss1::Movement(float delta_seconds)
@@ -130,4 +152,14 @@ void Boss1::Movement(float delta_seconds)
 
 void Boss1::Animation()
 {
+}
+
+int Boss1::GetBoss1Hp()
+{
+	return ratio;
+}
+
+bool Boss1::GetDeathFlag()
+{
+	return death_flag;
 }

@@ -73,7 +73,6 @@ eSceneType ResultScene::Update(const float& delta_second)
 
 void ResultScene::Draw() const
 {
-		DrawFormatString(10, 10, GetColor(255, 255, 255), "リザルトシーン");
 		/*		リザルト画面案*/
 		// ランク
 		DrawBox(50, 20, 615, 550, 0xffffff, TRUE);

@@ -101,9 +101,9 @@ void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const
 
 	//DrawBox(location.x - 10, location.y - 10, location.x + 10, location.y + 10, GetColor(255, 0, 0), TRUE);
 	SetFontSize(20);
-	DrawFormatString(5, 50, GetColor(255, 255, 255), "現在のプレイヤーレベル：%d", player_stats.player_level);
+	/*DrawFormatString(5, 50, GetColor(255, 255, 255), "現在のプレイヤーレベル：%d", player_stats.player_level);
 	DrawFormatString(5, 70, GetColor(255, 255, 255), "累積プレイヤーレベル：%d", player_stats.current_exp);
-	DrawFormatString(5, 90, GetColor(255, 255, 255), "次のレベルアップに必要なEXP：%d", player_stats.next_level_exp);
+	DrawFormatString(5, 90, GetColor(255, 255, 255), "次のレベルアップに必要なEXP：%d", player_stats.next_level_exp);*/
 }
 
 void Player::Finalize()
@@ -313,7 +313,7 @@ void Player::StatsUp(ePowerUp powerup)
 	switch (powerup)
 	{
 	case ePowerUp::eHp:
-		if(player_stats.life_count < player_hp_max)
+		if(player_stats.life_count < player_stats.player_hp_max)
 		player_stats.life_count += 1.0f;		// HP残量アップ
 		break;
 	case ePowerUp::eDamage:
@@ -327,6 +327,8 @@ void Player::StatsUp(ePowerUp powerup)
 		break;
 	case ePowerUp::eThreeway:
 		threeway_flag = true;
+	case ePowerUp::eShot_HitRange:
+		player_stats.player_shot_hitrange_up = player_stats.player_shot_hitrange_up + 1;
 	default:
 		break;
 	}

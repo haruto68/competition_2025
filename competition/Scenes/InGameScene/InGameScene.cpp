@@ -1,19 +1,22 @@
 #include"InGameScene.h"
 #include"../../Utility/InputManager.h"
 #include"../../Objects/GameObjectManager.h"
-#include"../../Objects/Character/Player/Player.h"
 
 InGameScene::InGameScene() :
 	object_manager(nullptr),
 	player(),
+	boss1(nullptr),
 	level_up_ui(),
-	back_ground_image(0),
+	hp_ui(),
+	level_ui(),
+	stage_level(1),
+	back_ground_image(),
 	back_ground_location(0),
 	planets_image(),
 	pla1(),
 	pla2(),
 	spawn_timer(0),
-	boss_flag(),
+	boss_flag(false),
 	player_old_level(1),
 	up_grade_stock(0),
 	level_up_flg(),
@@ -28,7 +31,8 @@ InGameScene::InGameScene() :
 	ResourceManager* rm = ResourceManager::GetInstance();
 
 	//背景
-	back_ground_image = rm->GetImages("Resource/Images/back_ground/universe_space02.png")[0];
+	back_ground_image[1] = rm->GetImages("Resource/Images/back_ground/universe_space02.png")[0];
+	back_ground_image[2] = rm->GetImages("Resource/Images/back_ground/universe_space03.png")[0];
 	back_ground_location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
 
 	// 惑星
@@ -36,9 +40,7 @@ InGameScene::InGameScene() :
 	planets_image[1] = rm->GetImages("Resource/Images/Planets/Planet2.png")[0];
 	planets_image[2] = rm->GetImages("Resource/Images/Planets/Planet3.png")[0];
 	planets_image[3] = rm->GetImages("Resource/Images/Planets/Planet4.png")[0];
-	// 惑星1
 	pla1 = { D_WIN_MAX_X * 1.5,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
-	// 惑星2
 	pla1 = { D_WIN_MAX_X * 1.0,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
 }
 
@@ -91,14 +93,25 @@ eSceneType InGameScene::Update(const float& delta_second)
 	// シーン内オブジェクト更新
 	if(!time_stop)
 	{
+		//タイムカウント	
 		if(time_count >= 0.0f)
 		{
 			time_count -= (delta_second * 1.0f);
 		}
-		else if (!boss_flag)
+		else if (stage_level == 1 && boss_flag == false)
 		{
+			//ボス生成
 			boss_flag = true;
-			object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
+			boss1 = object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
+		}
+		else
+		{
+			if (stage_level == 1 && boss1->GetDeathFlag())
+			{
+				stage_level += 1;
+				time_count = 60.0f;
+				object_manager->DestroyGameObject(boss1);
+			}
 		}
 
 		// 背景管理処理
@@ -224,10 +237,11 @@ eSceneType InGameScene::Update(const float& delta_second)
 	player_old_level = player->GetPlayerStats().player_level;
 
 	//リザルトシーンへ遷移
-	if (input->GetKeyUp(KEY_INPUT_SPACE)|| player->GetPlayerStats().life_count <= 0)
+	if (input->GetKeyUp(KEY_INPUT_SPACE) ||
+		player->GetPlayerStats().life_count <= 0)
 	{
 		return eSceneType::eResult;
-	}
+	}	
 
 	//ゲームを終了
 	if (input->GetKeyUp(KEY_INPUT_ESCAPE))
@@ -242,8 +256,8 @@ void InGameScene::Draw() const
 {
 	// 背景描画	
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 175);
-	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
-	DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
+	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE);
+	DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	// 惑星描画
@@ -264,14 +278,28 @@ void InGameScene::Draw() const
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//UIゾーン
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100); 
-	DrawBox(0, 0, 1280, 80, GetColor(100, 0, 200), TRUE);
-	DrawBox(0, 680, 1280, 720, GetColor(100, 0, 200), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+	DrawBox(0, 0, 1280, 80, GetColor(50, 0, 100), TRUE);
+	DrawBox(0, 680, 1280, 720, GetColor(50, 0, 100), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	
 	//タイムカウント
 	SetFontSize(70);
-	DrawFormatString(1100, 10, GetColor(255, 255, 255), "%.1f", time_count);
+	if(time_count > 0)
+	{
+		DrawFormatString(1100, 10, GetColor(255, 255, 255), "%.1f", time_count);
+	}
+
+	//ステージレベル
+	SetFontSize(40);
+	DrawFormatString(500, 20, GetColor(255, 255, 255), "Stage Level");
+	int level_color;
+	if (stage_level == 1)
+		level_color = GetColor(50, 255, 50);
+	else if (stage_level == 2)
+		level_color = GetColor(255, 255, 50);
+	SetFontSize(50);
+	DrawFormatString(740, 15, level_color, "%d", stage_level);
 
 	// プレイヤーのHPのテーブルHPバーの描画
 	hp_ui->Draw();
@@ -308,7 +336,7 @@ void InGameScene::BackGroundManager(const float& delta_second)
 {
 	float speed = 1000;
 	// 背景ループ
-	back_ground_location.x -= 0.05f * delta_second * speed;
+	back_ground_location.x -= 0.04f * delta_second * speed;
 	if (back_ground_location.x <= -(D_WIN_MAX_X / 2))
 		back_ground_location.x = D_WIN_MAX_X / 2;
 	speed = 300;
@@ -330,10 +358,18 @@ void InGameScene::EnemyManager(const float& delta_second)
 {
 	// 敵生成クールタイム
 	spawn_timer += delta_second;
-	if (spawn_timer >= 2.0f) // 秒ごとにスポーン
+
+	if(stage_level == 1)
 	{
-		Spawn();
-		spawn_timer = 0.0f;
+		if (spawn_timer >= 2.0f) // 秒ごとにスポーン
+		{
+			Spawn();
+			spawn_timer = 0.0f;
+		}
+	}
+	else if (stage_level == 2)
+	{
+
 	}
 }
 

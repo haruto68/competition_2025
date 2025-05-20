@@ -8,14 +8,24 @@
 class EnemyBase : public Character
 {
 public:
+	int image;					//画像
+	float radian = 0;			//角度
 
-	float shot_timer = 0.0f;       //時間経過
-	float shot_cooldown = 2.0f;    //クールタイム
+	float hp;					//HP
+	int max_hp = 0;				//最大HP
+	int ratio = 100;				//HP割合
 
-	int image;
-	float radian = 0;
+	float shot_timer = 0.0f;	//時間経過
+	float shot_cooldown = 2.0f;	//クールタイム
+	int atack_pattern = 0;		//攻撃パターン
 
-	float hp;
+	float death_count = 3.0f;	//死ぬまでの時間
+	bool death_flag = false;	//死
 
-	int power;
+	//リソース管理インスタンス取得
+	ResourceManager* rm = ResourceManager::GetInstance();
+
+	int hp_bar1 = rm->GetImages("Resource/Images/HPUi/Boss_HP_Bar_1.png")[0];
+	int hp_bar2 = rm->GetImages("Resource/Images/HPUi/Boss_HP_Bar_3.png")[0];
+
 };

@@ -6,8 +6,6 @@
 class Boss1 : public EnemyBase
 {
 private:
-    int atack_pattern;
-
 
 public:
     Boss1();
@@ -23,5 +21,8 @@ public:
 public:
     void Movement(float);
     void Animation();
+
+    int GetBoss1Hp();
+    bool GetDeathFlag();
 };
 

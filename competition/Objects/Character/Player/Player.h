@@ -20,7 +20,6 @@ private:
 	int image;
 	bool threeway_flag;
 	bool is_invincible;
-	int player_hp_max = 6;
 
 public:
 	Player();
