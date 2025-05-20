@@ -36,7 +36,9 @@ public:
 	HpUI* hp_ui;								//HPUI
 	LevelUI* level_ui;							//ƒŒƒxƒ‹UI
 
-	int back_ground_image;						//”wŒi‰æ‘œ
+	int stage_level;							//ƒXƒe[ƒWƒŒƒxƒ‹
+
+	int back_ground_image[2];					//”wŒi‰æ‘œ
 	Vector2D back_ground_location;				//”wŒiÀ•W
 	int planets_image[4];						//˜f¯‰æ‘œ
 	Planet pla1;								//˜f¯1

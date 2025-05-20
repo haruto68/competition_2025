@@ -1,18 +1,7 @@
 #include "Boss1.h"
 
-Boss1::Boss1() :
-	atack_pattern(0),
-	hp_bar1(0),
-	hp_bar2(0),
-	max_hp(150),
-	ratio(1)
+Boss1::Boss1()
 {
-	//リソース管理インスタンス取得
-	ResourceManager* rm = ResourceManager::GetInstance();
-
-	hp_bar1= rm->GetImages("Resource/Images/HPUi/Boss_HP_Bar_1.png")[0];
-	hp_bar2= rm->GetImages("Resource/Images/HPUi/Boss_HP_Bar_3.png")[0];
-
 	// コリジョン設定
 	collision.is_blocking = true;
 	collision.box_size = Vector2D(150, 150);							//当たり判定の大きさ
@@ -27,6 +16,8 @@ Boss1::Boss1() :
 	// 可動性設定
 	is_mobility = true;
 
+	//最大HP設定
+	max_hp = 150;
 	hp = float(max_hp);
 }
 
@@ -52,7 +43,6 @@ void Boss1::Update(float delta_seconds)
 	shot_timer += delta_seconds;
 
 	EnemyShot* shot;
-	EnemyBase* enemy;
 
 	if (shot_timer >= 0.5f)
 	{

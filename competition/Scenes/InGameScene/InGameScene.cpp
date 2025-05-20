@@ -1,16 +1,16 @@
 #include"InGameScene.h"
 #include"../../Utility/InputManager.h"
 #include"../../Objects/GameObjectManager.h"
-#include"../../Objects/Character/Player/Player.h"
 
 InGameScene::InGameScene() :
 	object_manager(nullptr),
 	player(),
-	boss(),
+	boss(nullptr),
 	level_up_ui(),
 	hp_ui(),
 	level_ui(),
-	back_ground_image(0),
+	stage_level(1),
+	back_ground_image(),
 	back_ground_location(0),
 	planets_image(),
 	pla1(),
@@ -31,7 +31,8 @@ InGameScene::InGameScene() :
 	ResourceManager* rm = ResourceManager::GetInstance();
 
 	//”wŒi
-	back_ground_image = rm->GetImages("Resource/Images/back_ground/universe_space02.png")[0];
+	back_ground_image[0] = rm->GetImages("Resource/Images/back_ground/universe_space02.png")[0];
+	back_ground_image[1] = rm->GetImages("Resource/Images/back_ground/universe_space03.png")[0];
 	back_ground_location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
 
 	// ˜f¯
@@ -238,7 +239,12 @@ eSceneType InGameScene::Update(const float& delta_second)
 	//ƒ‰ƒ“ƒLƒ“ƒOƒV[ƒ“‚Ö‘JˆÚ
 	if (boss != nullptr && boss->GetBoss1Hp() <= 0)
 	{
-		return eSceneType::eRanking;
+		//return eSceneType::eRanking;
+	}
+	//ƒ‰ƒ“ƒLƒ“ƒOƒV[ƒ“‚Ö‘JˆÚ
+	if (boss != nullptr && boss->GetBoss1Hp() <= 0)
+	{
+
 	}
 
 	//ƒQ[ƒ€‚ðI—¹
@@ -254,8 +260,8 @@ void InGameScene::Draw() const
 {
 	// ”wŒi•`‰æ	
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 175);
-	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
-	DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
+	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE);
+	DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	// ˜f¯•`‰æ
@@ -323,7 +329,7 @@ void InGameScene::BackGroundManager(const float& delta_second)
 {
 	float speed = 1000;
 	// ”wŒiƒ‹[ƒv
-	back_ground_location.x -= 0.05f * delta_second * speed;
+	back_ground_location.x -= 0.04f * delta_second * speed;
 	if (back_ground_location.x <= -(D_WIN_MAX_X / 2))
 		back_ground_location.x = D_WIN_MAX_X / 2;
 	speed = 300;

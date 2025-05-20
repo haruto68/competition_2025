@@ -6,12 +6,6 @@
 class Boss1 : public EnemyBase
 {
 private:
-    int atack_pattern;
-
-    int hp_bar1;
-    int hp_bar2;
-    int max_hp;
-    int ratio;
 
 public:
     Boss1();
