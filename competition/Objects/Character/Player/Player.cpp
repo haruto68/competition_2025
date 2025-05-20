@@ -313,7 +313,7 @@ void Player::StatsUp(ePowerUp powerup)
 	switch (powerup)
 	{
 	case ePowerUp::eHp:
-		if(player_stats.life_count < player_hp_max)
+		if(player_stats.life_count < player_stats.player_hp_max)
 		player_stats.life_count += 1.0f;		// HP残量アップ
 		break;
 	case ePowerUp::eDamage:
@@ -327,6 +327,8 @@ void Player::StatsUp(ePowerUp powerup)
 		break;
 	case ePowerUp::eThreeway:
 		threeway_flag = true;
+	case ePowerUp::eShot_HitRange:
+		player_stats.player_shot_hitrange_up = player_stats.player_shot_hitrange_up + 1;
 	default:
 		break;
 	}
