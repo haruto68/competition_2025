@@ -31,14 +31,14 @@ public:
 	std::vector<GameObject*> scene_objects_list;//オブジェクトリスト
 	class GameObjectManager* object_manager;	//オブジェクトマネージャーインスタンス
 	class Player* player;						//プレイヤーインスタンス
-	class Boss1* boss;							//ボスインスタンス
+	class Boss1* boss1;							//ボスインスタンス
 	LevelUpUI* level_up_ui;						//レベルアップUI
 	HpUI* hp_ui;								//HPUI
 	LevelUI* level_ui;							//レベルUI
 
 	int stage_level;							//ステージレベル
 
-	int back_ground_image[2];					//背景画像
+	int back_ground_image[3];					//背景画像
 	Vector2D back_ground_location;				//背景座標
 	int planets_image[4];						//惑星画像
 	Planet pla1;								//惑星1

@@ -5,7 +5,7 @@
 InGameScene::InGameScene() :
 	object_manager(nullptr),
 	player(),
-	boss(nullptr),
+	boss1(nullptr),
 	level_up_ui(),
 	hp_ui(),
 	level_ui(),
@@ -16,7 +16,7 @@ InGameScene::InGameScene() :
 	pla1(),
 	pla2(),
 	spawn_timer(0),
-	boss_flag(),
+	boss_flag(false),
 	player_old_level(1),
 	up_grade_stock(0),
 	level_up_flg(),
@@ -31,8 +31,8 @@ InGameScene::InGameScene() :
 	ResourceManager* rm = ResourceManager::GetInstance();
 
 	//背景
-	back_ground_image[0] = rm->GetImages("Resource/Images/back_ground/universe_space02.png")[0];
-	back_ground_image[1] = rm->GetImages("Resource/Images/back_ground/universe_space03.png")[0];
+	back_ground_image[1] = rm->GetImages("Resource/Images/back_ground/universe_space02.png")[0];
+	back_ground_image[2] = rm->GetImages("Resource/Images/back_ground/universe_space03.png")[0];
 	back_ground_location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
 
 	// 惑星
@@ -40,9 +40,7 @@ InGameScene::InGameScene() :
 	planets_image[1] = rm->GetImages("Resource/Images/Planets/Planet2.png")[0];
 	planets_image[2] = rm->GetImages("Resource/Images/Planets/Planet3.png")[0];
 	planets_image[3] = rm->GetImages("Resource/Images/Planets/Planet4.png")[0];
-	// 惑星1
 	pla1 = { D_WIN_MAX_X * 1.5,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
-	// 惑星2
 	pla1 = { D_WIN_MAX_X * 1.0,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
 }
 
@@ -98,13 +96,22 @@ eSceneType InGameScene::Update(const float& delta_second)
 		//タイムカウント	
 		if(time_count >= 0.0f)
 		{
-			time_count -= (delta_second * 1.0f);
+			time_count -= (delta_second * 10.0f);
 		}
-		else if (!boss_flag)
+		else if (boss_flag == false)
 		{
 			//ボス生成
 			boss_flag = true;
-			boss = object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
+			boss1 = object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
+		}
+		else
+		{
+			if (stage_level == 1 && boss1->GetDeathFlag())
+			{
+				stage_level += 1;
+				time_count = 60.0f;
+				object_manager->DestroyGameObject(boss1);
+			}
 		}
 
 		// 背景管理処理
@@ -234,18 +241,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		player->GetPlayerStats().life_count <= 0)
 	{
 		return eSceneType::eResult;
-	}
-
-	//ランキングシーンへ遷移
-	if (boss != nullptr && boss->GetBoss1Hp() <= 0)
-	{
-		//return eSceneType::eRanking;
-	}
-	//ランキングシーンへ遷移
-	if (boss != nullptr && boss->GetBoss1Hp() <= 0)
-	{
-
-	}
+	}	
 
 	//ゲームを終了
 	if (input->GetKeyUp(KEY_INPUT_ESCAPE))
@@ -293,6 +289,11 @@ void InGameScene::Draw() const
 	{
 		DrawFormatString(1100, 10, GetColor(255, 255, 255), "%.1f", time_count);
 	}
+
+	//ステージレベル
+	SetFontSize(40);
+	DrawFormatString(500, 20, GetColor(255, 255, 255), "Stage Level");
+	DrawFormatString(740, 20, GetColor(255, 255, 0), "%d", stage_level);
 
 	// プレイヤーのHPのテーブルHPバーの描画
 	hp_ui->Draw();
