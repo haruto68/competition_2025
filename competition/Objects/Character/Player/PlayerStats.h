@@ -5,7 +5,8 @@ enum ePowerUp
 	eDamage,
 	eSpeed,
 	eShotspeed,
-	eThreeway
+	eThreeway,
+	eShot_HitRange
 };
 
 struct PlayerStats
@@ -17,6 +18,7 @@ struct PlayerStats
 	int Shield_count = 3;
 	int player_level = 1;
 	int player_hp_max = 6;
+	int player_shot_hitrange_up = 0;
 
 	// åoå±ílä÷òA
 	int current_exp = 0;
