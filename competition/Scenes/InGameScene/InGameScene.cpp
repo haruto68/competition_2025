@@ -98,20 +98,9 @@ eSceneType InGameScene::Update(const float& delta_second)
 		{
 			time_count -= (delta_second * 1.0f);
 		}
-		else if (stage_level == 1 && boss_flag == false)
-		{
-			//ボス生成
-			boss_flag = true;
-			boss1 = object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
-		}
 		else
 		{
-			if (stage_level == 1 && boss1->GetDeathFlag())
-			{
-				stage_level += 1;
-				time_count = 60.0f;
-				object_manager->DestroyGameObject(boss1);
-			}
+			BossSpawn();
 		}
 
 		// 背景管理処理
@@ -150,7 +139,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		//当たり判定チェック処理
 		for (int a = 0; a < scene_objects_list.size(); a++)
 		{
-			for (int b = 0; b < scene_objects_list.size(); b++)
+			for (int b = a + 1; b < scene_objects_list.size(); b++)
 			{
 				object_manager->HitCheck(scene_objects_list[a], scene_objects_list[b]);
 				object_manager->HitCheck(scene_objects_list[b], scene_objects_list[a]);
@@ -218,7 +207,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	//アップグレード
 	if ((input->GetKeyUp(KEY_INPUT_L) ||
 		input->GetButtonDown(XINPUT_BUTTON_START))
-		&& up_grade_stock > 0)
+		/*&& up_grade_stock > 0*/)
 	{
 		if (level_up_flg)
 			level_up_flg = false;
@@ -359,7 +348,7 @@ void InGameScene::EnemyManager(const float& delta_second)
 	// 敵生成クールタイム
 	spawn_timer += delta_second;
 
-	if(stage_level == 1)
+	if(stage_level == 1 && boss_flag == false)
 	{
 		if (spawn_timer >= 2.0f) // 秒ごとにスポーン
 		{
@@ -471,4 +460,22 @@ void InGameScene::Spawn()        //敵の自動生成
 	}
 
 
+}
+
+void InGameScene::BossSpawn()
+{
+	if (stage_level == 1)
+	{
+		if (boss_flag == false)
+		{
+			boss_flag = true;
+			boss1 = object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
+		}
+		else if (boss1->GetDeathFlag())
+		{
+			stage_level += 1;
+			time_count = 60.0f;
+			object_manager->DestroyGameObject(boss1);
+		}
+	}
 }
