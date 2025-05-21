@@ -9,12 +9,14 @@ InGameScene::InGameScene() :
 	level_up_ui(),
 	hp_ui(),
 	level_ui(),
-	stage_level(1),
+	stage_level(2),
 	back_ground_image(),
 	back_ground_location(0),
 	planets_image(),
 	pla1(),
 	pla2(),
+	enemy_random(1),
+	pattern_timer(0),
 	spawn_timer(0),
 	boss_flag(false),
 	player_old_level(1),
@@ -278,7 +280,7 @@ void InGameScene::Draw() const
 	{
 		DrawFormatString(1100, 10, GetColor(255, 255, 255), "%.1f", time_count);
 	}
-
+	DrawFormatString(1100, 100, GetColor(255, 255, 255), "%d", enemy_random);
 	//ステージレベル
 	SetFontSize(40);
 	DrawFormatString(500, 20, GetColor(255, 255, 255), "Stage Level");
@@ -348,17 +350,55 @@ void InGameScene::EnemyManager(const float& delta_second)
 	// 敵生成クールタイム
 	spawn_timer += delta_second;
 
-	if(stage_level == 1 && boss_flag == false)
+	if (boss_flag == false)
 	{
-		if (spawn_timer >= 2.0f) // 秒ごとにスポーン
+		//レベル1
+		if (stage_level == 1)
 		{
-			Spawn();
-			spawn_timer = 0.0f;
+			if (spawn_timer >= 2.0f) // 2秒ごとにスポーン
+			{
+				Spawn();
+				spawn_timer = 0.0f;
+			}
 		}
-	}
-	else if (stage_level == 2)
-	{
+		//レベル2
+		if (stage_level == 2)
+		{
+			if (spawn_timer >= 1.0f)
+			{
+				pattern_timer += delta_second;
+			}
 
+			if(spawn_timer >= 6.0f)
+			{
+				spawn_timer = 0.0f;
+				enemy_random = rand() % 2 + 1;
+				pattern_timer = 0.0f;
+			}
+
+			//ここに関数
+			//↓関数に入れるスイッチ文1
+			switch (enemy_random)
+			{
+			case 0:
+				break;
+			case 1:
+				if (pattern_timer >= 0.9f)
+				{
+					object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));//ジグザグ
+					pattern_timer = 0.0f;
+				}
+				break;
+			case 2:
+				if (pattern_timer >= 1.3)
+				{
+					object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//大砲
+					pattern_timer = 0.0f;
+				}
+			default:
+				break;
+			}
+		}
 	}
 }
 
@@ -419,6 +459,11 @@ void InGameScene::Spawn()        //敵の自動生成
 			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//大砲、逆
 			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//大砲
 			break;
+		case 10:
+			if (pattern_timer == 1)
+			{
+
+			}
 		default:
 			break;
 		}
