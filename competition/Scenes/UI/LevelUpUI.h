@@ -4,7 +4,7 @@
 #include"../../Utility/InputManager.h"
 #include"../../Objects/Character/Player/PlayerStats.h"
 
-#define	LOT_MAX			(4)	//Å‘å’Š‘I”
+#define	LOT_MAX			(5)	//Å‘å’Š‘I”
 
 #define	STATS_HP		(0)
 #define STATS_DAMAGE	(1)

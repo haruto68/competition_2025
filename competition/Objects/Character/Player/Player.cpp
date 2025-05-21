@@ -253,16 +253,7 @@ void Player::Movement(float delta_seconds)
 	}
 
 
-	//左画面端
-	if ((location.x + velocity.x) < (collision.box_size.x / 2.0f))
-	{
-		velocity.x = 0.0f;
-	}
-	//右画面端
-	if ((location.x + velocity.x) >= (D_WIN_MAX_X) - (collision.box_size.x / 2.0f))
-	{
-		velocity.x = 0.0f;
-	}
+
 	//上画面端
 	if ((location.y + velocity.y) < (120) - (collision.box_size.y / 2.0f))
 	{
@@ -277,6 +268,22 @@ void Player::Movement(float delta_seconds)
 		if ((location.y + velocity.y) > location.y)
 		{
 			velocity.y = 0.0f;
+		}
+	}
+	//左画面端
+	if ((location.x + velocity.x) < (collision.box_size.x / 2.0f))
+	{
+		if ((location.x + velocity.x) < location.x)
+		{
+			velocity.x = 0.0f;
+		}
+	}
+	//右画面端
+	if ((location.x + velocity.x) >= (D_WIN_MAX_X) - (collision.box_size.x / 2.0f))
+	{
+		if ((location.x + velocity.x) > location.x)
+		{
+			velocity.x = 0.0f;
 		}
 	}
 
@@ -328,7 +335,7 @@ void Player::StatsUp(ePowerUp powerup)
 	case ePowerUp::eThreeway:
 		threeway_flag = true;
 	case ePowerUp::eShot_HitRange:
-		player_stats.player_shot_hitrange_up = player_stats.player_shot_hitrange_up + 0.5f;
+		player_stats.player_shot_hitrange_up = player_stats.player_shot_hitrange_up + 1.0f;
 	default:
 		break;
 	}
