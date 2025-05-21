@@ -7,7 +7,9 @@ TitleScene::TitleScene() : menu_num(0), help(false), is_button(true)
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
 
-	//画像取得
+	// 画像取得
+
+	// 音源取得
 }
 
 TitleScene::~TitleScene()
