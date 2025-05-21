@@ -328,7 +328,7 @@ void Player::StatsUp(ePowerUp powerup)
 	case ePowerUp::eThreeway:
 		threeway_flag = true;
 	case ePowerUp::eShot_HitRange:
-		player_stats.player_shot_hitrange_up = player_stats.player_shot_hitrange_up + 1;
+		player_stats.player_shot_hitrange_up = player_stats.player_shot_hitrange_up + 0.5f;
 	default:
 		break;
 	}

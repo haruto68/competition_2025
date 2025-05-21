@@ -6,7 +6,8 @@ enum ePowerUp
 	eSpeed,
 	eShotspeed,
 	eThreeway,
-	eShot_HitRange
+	eShot_HitRange,
+	eDrawn
 };
 
 struct PlayerStats
@@ -19,6 +20,7 @@ struct PlayerStats
 	int player_level = 1;
 	int player_hp_max = 6;
 	int player_shot_hitrange_up = 0;
+	int drone_count = 0;
 
 	// åoå±ílä÷òA
 	int current_exp = 0;
