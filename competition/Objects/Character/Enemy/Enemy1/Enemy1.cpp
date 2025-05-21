@@ -92,6 +92,7 @@ void Enemy1::OnHitCollision(GameObject* hit_object)
 	case ePlayerShot:
 		object_manager->CreateGameObject< ExperiencePoints>(this->location);
 		object_manager->DestroyGameObject(this);
+		hp -= player_stats.attack_power / 2;
 		break;
 	case eEnemyShot:
 		break;

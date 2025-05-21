@@ -73,7 +73,7 @@ void Enemy3::OnHitCollision(GameObject* hit_object)
 	case eEnemy:
 		break;
 	case ePlayerShot:
-		hp -= player_stats.attack_power / 4;
+		hp -= player_stats.attack_power / 2;
 		break;
 	case eEnemyShot:
 		break;

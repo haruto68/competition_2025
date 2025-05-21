@@ -26,7 +26,7 @@ public:
     float timar = 0.0f;
     int spawn_index;
 
-    bool is_first_Enemy = false;
+    bool is_first_Enemy = true;
 
 public:
     void setClone();
