@@ -9,7 +9,7 @@ InGameScene::InGameScene() :
 	level_up_ui(),
 	hp_ui(),
 	level_ui(),
-	stage_level(2),
+	stage_level(1),
 	back_ground_image(),
 	back_ground_location(0),
 	planets_image(),
