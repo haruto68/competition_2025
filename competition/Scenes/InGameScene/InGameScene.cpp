@@ -82,7 +82,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	input->Update();
 
 	//レベルアップUI更新処理
-	level_up_ui->Update(level_up_flg);
+	level_up_ui->Update(level_up_flg, player->GetPlayerStats());
 
 
 	level_ui->SetExperience(player->GetPlayerStats().current_exp, player->GetPlayerStats().next_level_exp);
@@ -304,7 +304,7 @@ void InGameScene::Draw() const
 	//レベルアップUI描画
 	if (level_up_flg)
 	{
-		level_up_ui->Draw(player->GetPlayerStats());
+		level_up_ui->Draw();
 	}
 
 }
