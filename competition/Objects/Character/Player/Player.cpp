@@ -7,7 +7,6 @@ Player::Player() :
 	screen_velocity(0.0f),
 	shot_timer(0.0f),
 	SHOT_INTERVAL(0.3f),
-	threeway_flag(false),
 	is_invincible(false),
 	invincible_timer(0.0f)
 {
@@ -73,7 +72,7 @@ void Player::Update(float delta_seconds)
 		shot->SetShotType(ePlayer1);
 		shot->SetPlayerStats(this->GetPlayerStats());
 
-		if (threeway_flag == true)
+		if (player_stats.threeway_flag == true)
 		{
 			PlayerShot* angled_shot_up = object_manager->CreateGameObject<PlayerShot>(this->location);
 			angled_shot_up->SetShotType(ePlayer1);
@@ -142,7 +141,7 @@ void Player::OnHitCollision(GameObject* hit_object)
 		invincible_timer = 1.0f;
 		break;
 	case eItem:
-		AddExperience(5);
+		AddExperience(10);
 		break;
 	default:
 		break;
@@ -333,7 +332,7 @@ void Player::StatsUp(ePowerUp powerup)
 		SHOT_INTERVAL = Max(0.1f, SHOT_INTERVAL - 0.02f);  // â∫å¿Ç0.02ïbÇ…êßå¿
 		break;
 	case ePowerUp::eThreeway:
-		threeway_flag = true;
+		player_stats.threeway_flag = true;
 	case ePowerUp::eShot_HitRange:
 		player_stats.player_shot_hitrange_up = player_stats.player_shot_hitrange_up + 1.0f;
 	default:
