@@ -6,9 +6,11 @@ class TitleScene : public SceneBase
 protected:
 
 private:
-	int menu_num;		// メニューカーソル番号
-	bool help;			// ヘルプが開かれてるかどうか?
-	bool is_button;		// ボタンが操作できるかどうか?
+	int menu_num;			// メニューカーソル番号
+	bool help;				// ヘルプが開かれてるかどうか?
+	bool is_button;			// ボタンが操作できるかどうか?
+	int back_ground_sound;	// BGM
+
 public:
 	TitleScene();
 	~TitleScene();
