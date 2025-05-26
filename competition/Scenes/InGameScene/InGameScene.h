@@ -76,7 +76,7 @@ private:
 
 	void EnemyManager(const float& delta_second);			//“G¶¬ŠÇ—ˆ—
 	void Spawn();											//“G¶¬
-
+	void pattan_Spawn();
 
 
 	void BossSpawn();										//ƒ{ƒX¶¬
