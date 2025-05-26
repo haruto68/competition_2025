@@ -2,12 +2,15 @@
 #include"../../Utility/InputManager.h"
 #include"../../Resource/ResourceManager.h"
 
-TitleScene::TitleScene() : menu_num(0), help(false), is_button(true)
+TitleScene::TitleScene() : menu_num(0), help(false), is_button(true), back_ground_sound(NULL)
 {
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
 
-	//画像取得
+	// 画像取得
+
+	// 音源取得
+	back_ground_sound = rm->GetSounds("Resource/Sounds/BGM/Title/AS_884778.mp3");
 }
 
 TitleScene::~TitleScene()
@@ -17,7 +20,8 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize()
 {
-
+	// 音源の再生
+	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_BACK, TRUE);
 }
 
 eSceneType TitleScene::Update(const float& delta_second)
@@ -143,7 +147,8 @@ void TitleScene::Draw() const
 
 void TitleScene::Finalize()
 {
-
+	// BGMの再生を止める
+	StopSoundMem(back_ground_sound);
 }
 
 eSceneType TitleScene::GetNowSceneType()const

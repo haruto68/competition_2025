@@ -51,20 +51,22 @@ void Enemy4::Update(float delta_seconds)
 	Animation();
 
 
-	//if (is_first_Enemy && spawn_index < 2)
-	//{
-	//	timar += delta_seconds;
+	if (is_first_Enemy && spawn_index < 2)
+	{
+		timar += delta_seconds;
 
-	//	if (timar >= 0.5f)
-	//	{
-	//		timar = 0.0f;
-	//		spawn_index++;
+		if (timar >= 0.5f)
+		{
+			timar = 0.0f;
+			spawn_index++;
 
-	//		//‚¸‚ç‚µ‚Äo‚·
-	//		Vector2D spawn_offset(30.0f * spawn_index, 0.0f);
-	//		Enemy4 new_enemy = object_manager->
-	//	}
-	//}
+			//‚¸‚ç‚µ‚Äo‚·
+			Vector2D spawn_offset(30.0f * spawn_index, 0.0f);
+			Enemy4* new_enemy = object_manager->CreateGameObject<Enemy4>(location + spawn_offset);
+
+			new_enemy->setClone();
+		}
+	}
 }
 
 void Enemy4::Draw(const Vector2D& screeen_offset, bool file_flag) const
@@ -99,7 +101,7 @@ void Enemy4::OnHitCollision(GameObject* hit_object)
 	case eEnemy:
 		break;
 	case ePlayerShot:
-		hp -= player_stats.attack_power / 4;
+		hp -= player_stats.attack_power / 2;
 		break;
 	case eEnemyShot:
 		break;
@@ -150,5 +152,6 @@ void Enemy4::Animation()
 
 void Enemy4::setClone()
 {
+	is_first_Enemy = false;
 }
 

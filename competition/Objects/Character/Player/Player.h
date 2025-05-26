@@ -18,8 +18,8 @@ private:
 	PlayerStats player_stats = {};
 
 	int image;
-	bool threeway_flag;
 	bool is_invincible;
+	int soundseffect;
 
 public:
 	Player();
