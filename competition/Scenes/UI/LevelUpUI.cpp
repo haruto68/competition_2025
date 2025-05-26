@@ -124,26 +124,13 @@ void LevelUpUI::Draw() const
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	int font = 40;
 	SetFontSize(font);
-	/*DrawFormatString(10, 200 + (font * 0), GetColor(255, 255, 255), "Level  %d", player_stats.player_level);
+	DrawFormatString(10, 200 + (font * 0), GetColor(255, 255, 255), "Level  %d", player_stats.player_level);
 	DrawFormatString(10, 200 + (font * 1), GetColor(255, 255, 255), "hp");
 	DrawFormatString(60, 200 + (font * 2), GetColor(255, 255, 255), "%d", player_stats.life_count);
 	DrawFormatString(10, 200 + (font * 3), GetColor(255, 255, 255), "power");
 	DrawFormatString(60, 200 + (font * 4), GetColor(255, 255, 255), "%.2f", player_stats.attack_power);
 	DrawFormatString(10, 200 + (font * 5), GetColor(255, 255, 255), "speed");
-	DrawFormatString(60, 200 + (font * 6), GetColor(255, 255, 255), "%.2f", player_stats.move_speed);*/
-
-	//Šm—¦Šm”F
-	DrawFormatString(10, 200 + (font * 1), GetColor(255, 255, 255), "STATS_HP");
-	DrawFormatString(60, 200 + (font * 2), GetColor(255, 255, 255), "%d", bility[0]);
-	DrawFormatString(10, 200 + (font * 3), GetColor(255, 255, 255), "STATS_DAMAGE");
-	DrawFormatString(60, 200 + (font * 4), GetColor(255, 255, 255), "%d", bility[1]);
-	DrawFormatString(10, 200 + (font * 5), GetColor(255, 255, 255), "STATS_SPEED");
-	DrawFormatString(60, 200 + (font * 6), GetColor(255, 255, 255), "%d", bility[2]);
-	DrawFormatString(10, 200 + (font * 7), GetColor(255, 255, 255), "WAPON_3WAY");
-	DrawFormatString(60, 200 + (font * 8), GetColor(255, 255, 255), "%d", bility[3]);
-	DrawFormatString(10, 200 + (font * 9), GetColor(255, 255, 255), "WAPON_SIZE");
-	DrawFormatString(60, 200 + (font * 10), GetColor(255, 255, 255), "%d", bility[4]);
-
+	DrawFormatString(60, 200 + (font * 6), GetColor(255, 255, 255), "%.2f", player_stats.move_speed);
 }
 
 void LevelUpUI::Finalize()
