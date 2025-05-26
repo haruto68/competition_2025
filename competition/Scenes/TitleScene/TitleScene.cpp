@@ -10,6 +10,7 @@ TitleScene::TitleScene() : menu_num(0), help(false), is_button(true)
 	// âÊëúéÊìæ
 
 	// âπåπéÊìæ
+	back_ground_sound = rm->GetSounds("Resource/Sounds/BGM/Title/AS_884778.mp3");
 }
 
 TitleScene::~TitleScene()
@@ -19,7 +20,8 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize()
 {
-
+	// âπåπÇÃçƒê∂
+	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_BACK);
 }
 
 eSceneType TitleScene::Update(const float& delta_second)
@@ -145,7 +147,8 @@ void TitleScene::Draw() const
 
 void TitleScene::Finalize()
 {
-
+	// BGMÇÃçƒê∂Çé~ÇﬂÇÈ
+	StopSoundMem(back_ground_sound);
 }
 
 eSceneType TitleScene::GetNowSceneType()const
