@@ -46,7 +46,7 @@ void PlayerShot::Update(float delta_seconds)
 void PlayerShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	__super::Draw(0.0f, this->flip_flag);
-	DrawBox(location.x - 2.5 - player_stats.player_shot_hitrange_up, location.y - 2.5 - player_stats.player_shot_hitrange_up, location.x + 2.5 + player_stats.player_shot_hitrange_up, location.y + 2.5 + player_stats.player_shot_hitrange_up, Color, TRUE);
+	DrawBox((location.x - collision.box_size.x / 2) - player_stats.player_shot_hitrange_up, (location.y - collision.box_size.y / 2) - player_stats.player_shot_hitrange_up, (location.x + collision.box_size.x / 2) + player_stats.player_shot_hitrange_up, (location.y + collision.box_size.y / 2) + player_stats.player_shot_hitrange_up, Color, TRUE);
 }
 
 void PlayerShot::Finalize()
