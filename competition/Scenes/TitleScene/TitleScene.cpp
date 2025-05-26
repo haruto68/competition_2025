@@ -21,7 +21,7 @@ TitleScene::~TitleScene()
 void TitleScene::Initialize()
 {
 	// âπåπÇÃçƒê∂
-	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_BACK);
+	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_BACK, TRUE);
 }
 
 eSceneType TitleScene::Update(const float& delta_second)

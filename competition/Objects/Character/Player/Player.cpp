@@ -9,7 +9,8 @@ Player::Player() :
 	SHOT_INTERVAL(0.3f),
 	threeway_flag(false),
 	is_invincible(false),
-	invincible_timer(0.0f)
+	invincible_timer(0.0f),
+	soundseffect(NULL)
 {
 
 	//リソース管理インスタンス取得
@@ -29,7 +30,8 @@ Player::Player() :
 	z_layer = 2;
 	// 可動性設定
 	is_mobility = true;
-
+	// 音源取得
+	soundseffect = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/AS_1398715.mp3");
 }
 
 Player::~Player()
@@ -86,6 +88,7 @@ void Player::Update(float delta_seconds)
 			angled_shot_down->SetAngle(-10.0f);
 		}
 
+		PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
 		shot_timer = SHOT_INTERVAL;
 	}
 }

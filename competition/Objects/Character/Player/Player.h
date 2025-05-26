@@ -20,6 +20,7 @@ private:
 	int image;
 	bool threeway_flag;
 	bool is_invincible;
+	int soundseffect;
 
 public:
 	Player();
