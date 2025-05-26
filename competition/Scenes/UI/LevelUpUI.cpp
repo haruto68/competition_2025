@@ -2,7 +2,14 @@
 
 LevelUpUI::LevelUpUI() :
 	old_flag(),
-	cursor(0)
+	cursor(0),
+	player_stats(),
+	window(),
+	power(),
+	lot(),
+	lot_str(),
+	lot_icon(),
+	power_icon()
 {
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
@@ -12,15 +19,16 @@ LevelUpUI::LevelUpUI() :
 	window[2] = rm->GetImages("Resource/Images/LevelUpUi/Table_01.png")[0];
 	window[3] = rm->GetImages("Resource/Images/LevelUpUi/window_3.png")[0];
 
-	power[0] = rm->GetImages("Resource/Images/LevelUpUi/Health.png")[0];
+	/*power[0] = rm->GetImages("Resource/Images/LevelUpUi/Health.png")[0];
 	power[1] = rm->GetImages("Resource/Images/LevelUpUi/Damage.png")[0];
 	power[2] = rm->GetImages("Resource/Images/LevelUpUi/Speed.png")[0];
-	power[3] = rm->GetImages("Resource/Images/LevelUpUi/X100.png")[0];
+	power[3] = rm->GetImages("Resource/Images/LevelUpUi/X100.png")[0];*/
 
-	power_icon[0] = rm->GetImages("Resource/Images/LevelUpUi/HP_Icon.png")[0];
-	power_icon[1] = rm->GetImages("Resource/Images/LevelUpUi/Damage_Icon.png")[0];
-	power_icon[2] = rm->GetImages("Resource/Images/LevelUpUi/Speed_Icon.png")[0];
-	power_icon[3] = rm->GetImages("Resource/Images/LevelUpUi/Close_BTN.png")[0];
+	power_icon[0] = rm->GetImages("Resource/Images/UpGrade_Icon/hp.png")[0];
+	power_icon[1] = rm->GetImages("Resource/Images/UpGrade_Icon/power.png")[0];
+	power_icon[2] = rm->GetImages("Resource/Images/UpGrade_Icon/speed.png")[0];
+	power_icon[3] = rm->GetImages("Resource/Images/UpGrade_Icon/three_way.png")[0];
+	power_icon[4] = rm->GetImages("Resource/Images/UpGrade_Icon/shot_size.png")[0];
 }
 
 LevelUpUI::~LevelUpUI()
@@ -33,8 +41,10 @@ void LevelUpUI::Initialize()
 
 }
 
-void LevelUpUI::Update(bool flag)
+void LevelUpUI::Update(bool flag, PlayerStats stats)
 {
+	player_stats = stats;
+
 	//強化内容抽選会
 	if (old_flag != flag)
 	{
@@ -73,7 +83,7 @@ void LevelUpUI::Update(bool flag)
 	old_flag = flag;
 }
 
-void LevelUpUI::Draw(PlayerStats stats) const
+void LevelUpUI::Draw() const
 {
 
 	float choice_size[3] = { 1.0,1.0,1.0 };
@@ -97,9 +107,9 @@ void LevelUpUI::Draw(PlayerStats stats) const
 	DrawRotaGraph(pluse_x + 640, 440, 0.6 * choice_size[1], 0, lot_str[1], 1, 0);
 	DrawRotaGraph(pluse_x + 920, 440, 0.6 * choice_size[2], 0, lot_str[2], 1, 0);
 	//強化内容（アイコン）
-	DrawRotaGraph(pluse_x + 360, 340, 0.8 * choice_size[0], 0, lot_icon[0], 1, 0);
-	DrawRotaGraph(pluse_x + 640, 340, 0.8 * choice_size[1], 0, lot_icon[1], 1, 0);
-	DrawRotaGraph(pluse_x + 920, 340, 0.8 * choice_size[2], 0, lot_icon[2], 1, 0);
+	DrawRotaGraph(pluse_x + 360, 340, 0.5 * choice_size[0], 0, lot_icon[0], 1, 0);
+	DrawRotaGraph(pluse_x + 640, 340, 0.5 * choice_size[1], 0, lot_icon[1], 1, 0);
+	DrawRotaGraph(pluse_x + 920, 340, 0.5 * choice_size[2], 0, lot_icon[2], 1, 0);
 
 
 	//現在ステータス描画
@@ -108,13 +118,13 @@ void LevelUpUI::Draw(PlayerStats stats) const
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	int font = 40;
 	SetFontSize(font);
-	DrawFormatString(10, 200 + (font * 0), GetColor(255, 255, 255), "Level  %d", stats.player_level);
+	DrawFormatString(10, 200 + (font * 0), GetColor(255, 255, 255), "Level  %d", player_stats.player_level);
 	DrawFormatString(10, 200 + (font * 1), GetColor(255, 255, 255), "hp");
-	DrawFormatString(60, 200 + (font * 2), GetColor(255, 255, 255), "%d", stats.life_count);
+	DrawFormatString(60, 200 + (font * 2), GetColor(255, 255, 255), "%d", player_stats.life_count);
 	DrawFormatString(10, 200 + (font * 3), GetColor(255, 255, 255), "power");
-	DrawFormatString(60, 200 + (font * 4), GetColor(255, 255, 255), "%.2f", stats.attack_power);
+	DrawFormatString(60, 200 + (font * 4), GetColor(255, 255, 255), "%.2f", player_stats.attack_power);
 	DrawFormatString(10, 200 + (font * 5), GetColor(255, 255, 255), "speed");
-	DrawFormatString(60, 200 + (font * 6), GetColor(255, 255, 255), "%.2f", stats.move_speed);
+	DrawFormatString(60, 200 + (font * 6), GetColor(255, 255, 255), "%.2f", player_stats.move_speed);
 
 }
 
