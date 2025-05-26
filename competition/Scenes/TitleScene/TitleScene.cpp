@@ -2,7 +2,7 @@
 #include"../../Utility/InputManager.h"
 #include"../../Resource/ResourceManager.h"
 
-TitleScene::TitleScene() : menu_num(0), help(false), is_button(true)
+TitleScene::TitleScene() : menu_num(0), help(false), is_button(true), back_ground_sound(NULL)
 {
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
