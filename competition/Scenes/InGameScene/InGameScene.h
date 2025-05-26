@@ -45,7 +45,9 @@ public:
 	Planet pla1;								//惑星1
 	Planet pla2;								//惑星2
 
+	int enemy_random;							//
 	float spawn_timer;							//敵生成クールタイム
+	float pattern_timer;						//caseの時間経過
 	bool boss_flag;								//ボス描画フラグ
 
 	int player_old_level;						//プレイヤー過去レベル
@@ -74,7 +76,7 @@ private:
 
 	void EnemyManager(const float& delta_second);			//敵生成管理処理
 	void Spawn();											//敵生成
-
+	void pattan_Spawn();
 
 
 	void BossSpawn();										//ボス生成
