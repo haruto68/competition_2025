@@ -20,6 +20,8 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize()
 {
+	// ‰¹Œ¹‚Ì‰¹—Ê‚Ìİ’è
+	ChangeVolumeSoundMem(100, back_ground_sound);
 	// ‰¹Œ¹‚ÌÄ¶
 	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_BACK, TRUE);
 }
