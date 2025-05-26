@@ -29,6 +29,10 @@ private:
 
 	PlayerStats player_stats;	//プレイヤーステータス
 
+	//各確率(合計100%)
+	int proba[LOT_MAX] = { 21,21,21,15,21 };
+	int bility[LOT_MAX] = { 0,0,0,0,0 };
+
 
 public:
 	LevelUpUI();
@@ -40,6 +44,7 @@ public:
 	void Draw() const;							//描画処理
 	void Finalize();							//終了処理
 	
+	int Probability();							//確率調整
 	void Lottery(int* nums);					//抽選
 	ePowerUp GetLottery();						//抽選内容取得
 };

@@ -38,7 +38,13 @@ LevelUpUI::~LevelUpUI()
 
 void LevelUpUI::Initialize()
 {
-
+	for (int i = 0; i < LOT_MAX; i++)
+	{
+		for (int j = 0; j < i + 1; j++)
+		{
+			bility[i] += proba[j];
+		}
+	}
 }
 
 void LevelUpUI::Update(bool flag, PlayerStats stats)
@@ -118,13 +124,25 @@ void LevelUpUI::Draw() const
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	int font = 40;
 	SetFontSize(font);
-	DrawFormatString(10, 200 + (font * 0), GetColor(255, 255, 255), "Level  %d", player_stats.player_level);
+	/*DrawFormatString(10, 200 + (font * 0), GetColor(255, 255, 255), "Level  %d", player_stats.player_level);
 	DrawFormatString(10, 200 + (font * 1), GetColor(255, 255, 255), "hp");
 	DrawFormatString(60, 200 + (font * 2), GetColor(255, 255, 255), "%d", player_stats.life_count);
 	DrawFormatString(10, 200 + (font * 3), GetColor(255, 255, 255), "power");
 	DrawFormatString(60, 200 + (font * 4), GetColor(255, 255, 255), "%.2f", player_stats.attack_power);
 	DrawFormatString(10, 200 + (font * 5), GetColor(255, 255, 255), "speed");
-	DrawFormatString(60, 200 + (font * 6), GetColor(255, 255, 255), "%.2f", player_stats.move_speed);
+	DrawFormatString(60, 200 + (font * 6), GetColor(255, 255, 255), "%.2f", player_stats.move_speed);*/
+
+	//確率確認
+	DrawFormatString(10, 200 + (font * 1), GetColor(255, 255, 255), "STATS_HP");
+	DrawFormatString(60, 200 + (font * 2), GetColor(255, 255, 255), "%d", bility[0]);
+	DrawFormatString(10, 200 + (font * 3), GetColor(255, 255, 255), "STATS_DAMAGE");
+	DrawFormatString(60, 200 + (font * 4), GetColor(255, 255, 255), "%d", bility[1]);
+	DrawFormatString(10, 200 + (font * 5), GetColor(255, 255, 255), "STATS_SPEED");
+	DrawFormatString(60, 200 + (font * 6), GetColor(255, 255, 255), "%d", bility[2]);
+	DrawFormatString(10, 200 + (font * 7), GetColor(255, 255, 255), "WAPON_3WAY");
+	DrawFormatString(60, 200 + (font * 8), GetColor(255, 255, 255), "%d", bility[3]);
+	DrawFormatString(10, 200 + (font * 9), GetColor(255, 255, 255), "WAPON_SIZE");
+	DrawFormatString(60, 200 + (font * 10), GetColor(255, 255, 255), "%d", bility[4]);
 
 }
 
@@ -133,16 +151,56 @@ void LevelUpUI::Finalize()
 
 }
 
+int LevelUpUI::Probability()
+{
+	int value = rand() % 100;
+
+	if (value < bility[STATS_HP])
+	{
+		return STATS_HP;
+	}
+	else if (value < bility[STATS_DAMAGE])
+	{
+		return STATS_DAMAGE;
+	}
+	else if (value < bility[STATS_SPEED])
+	{
+		return STATS_SPEED;
+	}
+	else if (value < bility[WAPON_3WAY])
+	{
+		if (player_stats.threeway_flag)
+		{
+			//取得済みの場合それ以外がでるまでループ
+			int loop = Probability();
+			while (loop == WAPON_3WAY)
+			{
+				loop = Probability();
+			}
+			return loop;
+		}
+
+		return WAPON_3WAY;
+	}
+	else
+	{
+		return WAPON_SIZE;
+	}
+
+}
+
 void LevelUpUI::Lottery(int* nums)
 {
-	nums[0] = rand() % LOT_MAX;
+	nums[0] = Probability();
+
 	while (nums[0] == nums[1])
 	{
-		nums[1] = rand() % LOT_MAX;
+		nums[1] = Probability();
 	}
+
 	while (nums[0] == nums[2] || nums[1] == nums[2])
 	{
-		nums[2] = rand() % LOT_MAX;
+		nums[2] = Probability();
 	}
 }
 
