@@ -10,7 +10,7 @@ TitleScene::TitleScene() : menu_num(0), help(false), is_button(true), back_groun
 	// ‰æ‘œŽæ“¾
 
 	// ‰¹Œ¹Žæ“¾
-	back_ground_sound = rm->GetSounds("Resource/Sounds/BGM/Title/AS_884778.mp3");
+	back_ground_sound = rm->GetSounds("Resource/Sounds/BGM/Title/Title.mp3");
 }
 
 TitleScene::~TitleScene()

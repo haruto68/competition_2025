@@ -30,7 +30,7 @@ Player::Player() :
 	// ‰Â“®«Ý’è
 	is_mobility = true;
 	// ‰¹Œ¹Žæ“¾
-	soundseffect = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/AS_1398715.mp3");
+	soundseffect = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerShot.mp3");
 }
 
 Player::~Player()
