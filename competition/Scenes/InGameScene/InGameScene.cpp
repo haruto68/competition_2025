@@ -23,7 +23,9 @@ InGameScene::InGameScene() :
 	up_grade_stock(0),
 	level_up_flg(),
 	time_stop(),
-	time_count(60)
+	time_count(60),
+	bgm(),
+	soundseffect()
 {
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
@@ -44,6 +46,10 @@ InGameScene::InGameScene() :
 	planets_image[3] = rm->GetImages("Resource/Images/Planets/Planet4.png")[0];
 	pla1 = { D_WIN_MAX_X * 1.5,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
 	pla1 = { D_WIN_MAX_X * 1.0,float(rand() % 720),((double)rand() / RAND_MAX) + 0.7,0.0,planets_image[rand() % 4] };
+
+	// ‰¹Œ¹Žæ“¾
+	bgm[0] = rm->GetSounds("Resource/Sounds/BGM/InGame/GameMain_Stage1.mp3");
+	bgm[1] = rm->GetSounds("Resource/Sounds/BGM/InGame/GameMain_Upgrade.mp3");
 }
 
 InGameScene::~InGameScene()
@@ -71,6 +77,10 @@ void InGameScene::Initialize()
 	level_ui = new LevelUI();
 	level_ui->Initialize();
 	
+	// ‰¹Œ¹‚Ì‰¹—Ê‚ÌÝ’è
+	ChangeVolumeSoundMem(100, bgm[0]);
+	// ‰¹Œ¹‚ÌÄ¶
+	PlaySoundMem(bgm[0], DX_PLAYTYPE_LOOP, TRUE);
 	
 	/*object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));*/
 }
