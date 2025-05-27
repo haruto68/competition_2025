@@ -22,6 +22,8 @@ public:
 	float death_count = 3.0f;	//死ぬまでの時間
 	bool death_flag = false;	//死
 
+	int soundseffect[2];
+
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
 
