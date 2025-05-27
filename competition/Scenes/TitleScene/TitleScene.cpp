@@ -23,7 +23,7 @@ void TitleScene::Initialize()
 	// âπåπÇÃâπó ÇÃê›íË
 	ChangeVolumeSoundMem(100, back_ground_sound);
 	// âπåπÇÃçƒê∂
-	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_BACK, TRUE);
+	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_LOOP, TRUE);
 }
 
 eSceneType TitleScene::Update(const float& delta_second)
