@@ -4,13 +4,14 @@
 #include"../../Utility/InputManager.h"
 #include"../../Objects/Character/Player/PlayerStats.h"
 
-#define	LOT_MAX			(5)	//最大抽選数
+#define	LOT_MAX			(6)	//最大抽選数
 
 #define	STATS_HP		(0)
 #define STATS_DAMAGE	(1)
 #define STATS_SPEED		(2)
-#define WAPON_3WAY		(3)
+#define WAPON_SPEED		(3)
 #define WAPON_SIZE		(4)
+#define WAPON_3WAY		(5)
 
 class LevelUpUI
 {
@@ -20,8 +21,8 @@ public:
 private:
 	//画像
 	int window[4];
-	int power[5];
-	int power_icon[5];
+	int power[LOT_MAX];
+	int power_icon[LOT_MAX];
 
 	ePowerUp lot[LOT_MAX];		//強化内容抽選
 	int lot_str[LOT_MAX];		//強化内容文字
@@ -30,8 +31,8 @@ private:
 	PlayerStats player_stats;	//プレイヤーステータス
 
 	//各確率(合計100%)
-	int proba[LOT_MAX] = { 21,21,21,15,21 };
-	int bility[LOT_MAX] = { 0,0,0,0,0 };
+	int proba[LOT_MAX] = { 18,17,17,17,17,14 };
+	int bility[LOT_MAX] = { 0,0,0,0,0,0 };
 
 
 public:
