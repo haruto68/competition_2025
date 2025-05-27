@@ -90,6 +90,7 @@ void Player::Update(float delta_seconds)
 
 		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 		shot_timer = SHOT_INTERVAL;
+		player_stats.shot_speed = SHOT_INTERVAL;
 	}
 }
 
