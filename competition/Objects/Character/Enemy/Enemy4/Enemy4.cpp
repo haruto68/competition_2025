@@ -30,7 +30,7 @@ void Enemy4::Initialize()
 	speed = 15.0f;
 
 	//âÊëúì«Ç›çûÇ›
-	image = LoadGraph("Resource/Images/enemy/ship.png");
+	image = LoadGraph("Resource/Images/enemy/ship4.png");
 
 	hp = 3.0;
 
@@ -71,16 +71,16 @@ void Enemy4::Update(float delta_seconds)
 
 void Enemy4::Draw(const Vector2D& screeen_offset, bool file_flag) const
 {
-	/*if (image != -1)
+	if (image != -1)
 	{
 		DrawRotaGraphF(location.x, location.y, 1.0f, radian + (-velocity.y / 2), image, TRUE);
-	}*/
+	}
 
-	 //âº(îíÇ¢éläpÇï`âÊÇ∑ÇÈ)
-	Vector2D t1 = location - (collision.box_size / 2.0f);
-	Vector2D br = location + (collision.box_size / 2.0f);
-	DrawBoxAA(t1.x, t1.y, br.x, br.y, GetColor(255, 255, 255), TRUE);
-	DrawString(t1.x, t1.y, "3", GetColor(0, 0, 0), TRUE);
+	// //âº(îíÇ¢éläpÇï`âÊÇ∑ÇÈ)
+	//Vector2D t1 = location - (collision.box_size / 2.0f);
+	//Vector2D br = location + (collision.box_size / 2.0f);
+	//DrawBoxAA(t1.x, t1.y, br.x, br.y, GetColor(255, 255, 255), TRUE);
+	//DrawString(t1.x, t1.y, "3", GetColor(0, 0, 0), TRUE);
 }
 
 void Enemy4::Finalize()

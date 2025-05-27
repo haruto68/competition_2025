@@ -153,14 +153,14 @@ void EnemyShot::Movement(float delta_seconds)
 		}
 		break;
 	case eEnemy3:
-		if(location.x > old_player_location.x)
+		/*if(location.x > old_player_location.x)
 		{
 			velocity = Tracking(location, old_player_location);
 			old_velocity = velocity;
 		}
 		else
-			velocity = old_velocity;
-		/*velocity.y = -1.0f;*/
+			velocity = old_velocity;*/
+		velocity.y = -1.0f;
 		break;
 	default:
 		break;
