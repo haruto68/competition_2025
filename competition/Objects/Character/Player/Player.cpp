@@ -9,7 +9,7 @@ Player::Player() :
 	SHOT_INTERVAL(0.3f),
 	is_invincible(false),
 	invincible_timer(0.0f),
-	soundseffect(NULL)
+	soundseffect()
 {
 
 	//リソース管理インスタンス取得
@@ -30,7 +30,7 @@ Player::Player() :
 	// 可動性設定
 	is_mobility = true;
 	// 音源取得
-	soundseffect = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerShot.mp3");
+	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerShot.mp3");
 }
 
 Player::~Player()

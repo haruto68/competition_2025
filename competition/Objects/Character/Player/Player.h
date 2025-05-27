@@ -19,7 +19,7 @@ private:
 
 	int image;
 	bool is_invincible;
-	int soundseffect;
+	int soundseffect[10];
 
 public:
 	Player();
