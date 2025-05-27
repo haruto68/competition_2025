@@ -160,6 +160,7 @@ void EnemyShot::Movement(float delta_seconds)
 		}
 		else
 			velocity = old_velocity;
+		/*velocity.y = -1.0f;*/
 		break;
 	default:
 		break;

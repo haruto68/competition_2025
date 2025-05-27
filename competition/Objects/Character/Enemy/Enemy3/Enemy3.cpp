@@ -17,7 +17,9 @@ Enemy3::Enemy3()
 	z_layer = 2;
 	// ‰Â“®«Ý’è
 	is_mobility = true;
-
+	// ‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
+	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
+	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 }
 
 Enemy3::~Enemy3()
@@ -74,6 +76,7 @@ void Enemy3::OnHitCollision(GameObject* hit_object)
 		break;
 	case ePlayerShot:
 		hp -= player_stats.attack_power / 2;
+		// PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eEnemyShot:
 		break;
@@ -86,6 +89,7 @@ void Enemy3::OnHitCollision(GameObject* hit_object)
 	{
 		object_manager->CreateGameObject< ExperiencePoints>(this->location);
 		object_manager->DestroyGameObject(this);
+		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 	}
 }
 

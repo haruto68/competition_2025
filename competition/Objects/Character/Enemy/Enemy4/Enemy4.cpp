@@ -27,7 +27,7 @@ Enemy4::~Enemy4()
 void Enemy4::Initialize()
 {
 
-	speed = 2.0f;
+	speed = 15.0f;
 
 	//画像読み込み
 	image = LoadGraph("Resource/Images/enemy/ship.png");
@@ -51,22 +51,22 @@ void Enemy4::Update(float delta_seconds)
 	Animation();
 
 
-	if (is_first_Enemy && spawn_index < 2)
-	{
-		timar += delta_seconds;
+	//if (is_first_Enemy && spawn_index < 2)
+	//{
+	//	timar += delta_seconds;
 
-		if (timar >= 0.5f)
-		{
-			timar = 0.0f;
-			spawn_index++;
+	//	if (timar >= 0.5f)
+	//	{
+	//		timar = 0.0f;
+	//		spawn_index++;
 
-			//ずらして出す
-			Vector2D spawn_offset(30.0f * spawn_index, 0.0f);
-			Enemy4* new_enemy = object_manager->CreateGameObject<Enemy4>(location + spawn_offset);
+	//		/*ずらして出す*/
+	//		/*Vector2D spawn_offset(30.0f * spawn_index, 0.0f);
+	//		Enemy4* new_enemy = object_manager->CreateGameObject<Enemy4>(location + spawn_offset);
 
-			new_enemy->setClone();
-		}
-	}
+	//		new_enemy->setClone();*/
+	//	}
+	//}
 }
 
 void Enemy4::Draw(const Vector2D& screeen_offset, bool file_flag) const
@@ -117,33 +117,62 @@ void Enemy4::OnHitCollision(GameObject* hit_object)
 	}
 }
 
+//void Enemy4::Movement(float delta_seconds)
+//{
+//	if (move_point >= point.size())
+//		return;
+//
+//	Vector2D taget = point[move_point];
+//	Vector2D direction = taget - location;
+//
+//	if (direction.Length() < 5.0f)
+//	{
+//		move_point++;
+//		return;
+//	}
+//
+//	/*if (location.x > old_player_location.x)
+//	{
+//		velocity = Tracking(location, old_player_location) * 2;
+//		old_velocity = velocity;
+//	}
+//	else
+//		velocity = old_velocity;*/
+//
+//
+//	direction.Normalize();
+//	velocity = direction;
+//	
+//
+//	location += velocity * delta_seconds;
+//}
+
+
 void Enemy4::Movement(float delta_seconds)
 {
 	if (move_point >= point.size())
 		return;
 
-	Vector2D taget = point[move_point];
-	Vector2D direction = taget - location;
+	Vector2D target = point[move_point];
+	Vector2D to_target = target - location;
 
-	if (direction.Length() < 5.0f)
+	// 目標との距離が5以下なら次のポイントへ
+	if (to_target.Length() < 5.0f)
 	{
 		move_point++;
 		return;
 	}
 
-	direction.Normalize();
-	velocity = direction;
-	/*if (location.x > old_player_location.x)
-	{
-		velocity = Tracking(location, old_player_location) * 2;
-		old_velocity = velocity;
-	}
-	else
-		velocity = old_velocity;*/
+	// 方向の正規化（目的地への方向）
+	Vector2D desired_velocity = to_target.Normalize() * speed;
 
-	location += velocity * speed * delta_seconds;
+	// 今のvelocityとdesired_velocityを補間して滑らかにする（慣性っぽく）
+	float smooth_factor = 10.0f; // 数値を上げると応答が速くなる（滑らかさ減）
+	velocity = Lerp(velocity, desired_velocity, smooth_factor * delta_seconds);
+
+	// 移動
+	location += velocity *speed * delta_seconds;
 }
-
 
 
 void Enemy4::Animation()
@@ -154,4 +183,10 @@ void Enemy4::setClone()
 {
 	is_first_Enemy = false;
 }
+
+Vector2D Enemy4::Lerp(const Vector2D& a, const Vector2D& b, float t)
+{
+	return a * (1.0f - t) + b * t;
+}
+
 
