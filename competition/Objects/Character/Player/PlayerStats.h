@@ -7,7 +7,7 @@ enum ePowerUp
 	eShotspeed,
 	eThreeway,
 	eShot_HitRange,
-	eDrawn
+	eDrone
 };
 
 struct PlayerStats
@@ -22,6 +22,7 @@ struct PlayerStats
 	int player_shot_hitrange_up = 0;
 	int drone_count = 0;
 	bool threeway_flag = false;
+	int drone_flag = 0;
 
 
 	// åoå±ílä÷òA

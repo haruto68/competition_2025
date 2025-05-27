@@ -338,6 +338,8 @@ void Player::StatsUp(ePowerUp powerup)
 		player_stats.threeway_flag = true;
 	case ePowerUp::eShot_HitRange:
 		player_stats.player_shot_hitrange_up = player_stats.player_shot_hitrange_up + 1.0f;
+	case ePowerUp::eDrone:
+		player_stats.drone_flag += 1;
 	default:
 		break;
 	}
