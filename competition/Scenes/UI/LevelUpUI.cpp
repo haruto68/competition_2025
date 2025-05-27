@@ -132,16 +132,19 @@ void LevelUpUI::Draw() const
 	font = 37;
 	SetFontSize(font);
 	int y = 160;
-	DrawFormatString(10, 160 + (font * 1), GetColor(255, 255, 255), "hp");
-	DrawFormatString(60, 160 + (font * 2), GetColor(255, 255, 255), "%d", player_stats.life_count);
-	DrawFormatString(10, 160 + (font * 3), GetColor(255, 255, 255), "power");
-	DrawFormatString(60, 160 + (font * 4), GetColor(255, 255, 255), "%.2f", player_stats.attack_power);
-	DrawFormatString(10, 160 + (font * 5), GetColor(255, 255, 255), "speed");
-	DrawFormatString(60, 160 + (font * 6), GetColor(255, 255, 255), "%.2f", player_stats.move_speed);
-	DrawFormatString(10, 160 + (font * 7), GetColor(255, 255, 255), "shot_speed");
-	DrawFormatString(60, 160 + (font * 8), GetColor(255, 255, 255), "%.2f", player_stats.shot_speed);
-	DrawFormatString(10, 160 + (font * 9), GetColor(255, 255, 255), "shot_hit_range");
-	DrawFormatString(60, 160 + (font * 10), GetColor(255, 255, 255), "%.2f", float(player_stats.player_shot_hitrange_up));
+	DrawFormatString(10, y + (font * 1), GetColor(255, 255, 255), "hp");
+	DrawFormatString(60, y + (font * 2), GetColor(255, 255, 255), "%d", player_stats.life_count);
+	DrawFormatString(10, y + (font * 3), GetColor(255, 255, 255), "power");
+	DrawFormatString(60, y + (font * 4), GetColor(255, 255, 255), "%.2f", player_stats.attack_power);
+	DrawFormatString(10, y + (font * 5), GetColor(255, 255, 255), "speed");
+	DrawFormatString(60, y + (font * 6), GetColor(255, 255, 255), "%.2f", player_stats.move_speed);
+
+	y += font * 6 + 15;
+	DrawFormatString(10, y + (font * 1), GetColor(255, 255, 255), "--shot--");
+	DrawFormatString(10, y + (font * 2), GetColor(255, 255, 255), "cool_time");
+	DrawFormatString(60, y + (font * 3), GetColor(255, 255, 255), "%.2f", player_stats.shot_speed);
+	DrawFormatString(10, y + (font * 4), GetColor(255, 255, 255), "hit_range");
+	DrawFormatString(60, y + (font * 5), GetColor(255, 255, 255), "%.2f", float(player_stats.player_shot_hitrange_up));
 }
 
 void LevelUpUI::Finalize()
