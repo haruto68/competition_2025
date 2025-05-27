@@ -1,12 +1,12 @@
 #include "Drone.h"
 #include "UserTemplate.h"
 
-Drone::Drone()
+Drone::Drone() : rotation_angle(0.0f)
 {
 
 	ResourceManager* rm = ResourceManager::GetInstance();
 	// 座標
-	location = player_location;
+	location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
 	// コリジョン設定
 	collision.is_blocking = true;
 	collision.box_size = Vector2D(15, 15);
@@ -35,13 +35,17 @@ void Drone::Initialize()
 
 void Drone::Update(float delta_seconds)
 {
-	
+	rotation_angle += 1.0f * delta_seconds; // 例: 毎フレーム1ラジアン回転
+	if (rotation_angle > 360.0f)
+	{
+		rotation_angle -= 360.0f;
+	}
 }
 
 void Drone::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
-
-}
+	__super::Draw(0.0f, this->flip_flag);
+	DrawBox(location.x - 10, location.y - 10, location.x + 10, location.y + 10, GetColor(255, 0, 0), TRUE);}
 
 void Drone::Finalize()
 {
