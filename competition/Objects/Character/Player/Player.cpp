@@ -31,6 +31,7 @@ Player::Player() :
 	is_mobility = true;
 	// ‰¹Œ¹Žæ“¾
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerShot.mp3");
+	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerDamege.mp3");
 }
 
 Player::~Player()
@@ -87,7 +88,7 @@ void Player::Update(float delta_seconds)
 			angled_shot_down->SetAngle(-10.0f);
 		}
 
-		PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
+		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 		shot_timer = SHOT_INTERVAL;
 	}
 }
@@ -130,6 +131,7 @@ void Player::OnHitCollision(GameObject* hit_object)
 		player_stats.life_count -= 1.0f;
 		is_invincible = true;
 		invincible_timer = 1.0f;
+		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case ePlayerShot:
 		break;
@@ -142,6 +144,7 @@ void Player::OnHitCollision(GameObject* hit_object)
 		player_stats.life_count -= 1.0f;
 		is_invincible = true;
 		invincible_timer = 1.0f;
+		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eItem:
 		AddExperience(10);
