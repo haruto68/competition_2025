@@ -9,7 +9,7 @@ Player::Player() :
 	SHOT_INTERVAL(0.3f),
 	is_invincible(false),
 	invincible_timer(0.0f),
-	soundseffect(NULL)
+	soundseffect()
 {
 
 	//リソース管理インスタンス取得
@@ -30,7 +30,8 @@ Player::Player() :
 	// 可動性設定
 	is_mobility = true;
 	// 音源取得
-	soundseffect = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/AS_1398715.mp3");
+	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerShot.mp3");
+	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerDamege.mp3");
 }
 
 Player::~Player()
@@ -87,8 +88,9 @@ void Player::Update(float delta_seconds)
 			angled_shot_down->SetAngle(-10.0f);
 		}
 
-		PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
+		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 		shot_timer = SHOT_INTERVAL;
+		player_stats.shot_speed = SHOT_INTERVAL;
 	}
 }
 
@@ -130,6 +132,7 @@ void Player::OnHitCollision(GameObject* hit_object)
 		player_stats.life_count -= 1.0f;
 		is_invincible = true;
 		invincible_timer = 1.0f;
+		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case ePlayerShot:
 		break;
@@ -142,6 +145,7 @@ void Player::OnHitCollision(GameObject* hit_object)
 		player_stats.life_count -= 1.0f;
 		is_invincible = true;
 		invincible_timer = 1.0f;
+		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eItem:
 		AddExperience(10);
@@ -336,10 +340,12 @@ void Player::StatsUp(ePowerUp powerup)
 		break;
 	case ePowerUp::eThreeway:
 		player_stats.threeway_flag = true;
+		break;
 	case ePowerUp::eShot_HitRange:
 		player_stats.player_shot_hitrange_up = player_stats.player_shot_hitrange_up + 1.0f;
 	case ePowerUp::eDrone:
 		player_stats.drone_flag += 1;
+		break;
 	default:
 		break;
 	}

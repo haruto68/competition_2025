@@ -15,6 +15,8 @@ InGameScene::InGameScene() :
 	planets_image(),
 	pla1(),
 	pla2(),
+	enemy_random(1),
+	pattern_timer(0),
 	spawn_timer(0),
 	boss_flag(false),
 	player_old_level(1),
@@ -82,7 +84,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	input->Update();
 
 	//レベルアップUI更新処理
-	level_up_ui->Update(level_up_flg);
+	level_up_ui->Update(level_up_flg, player->GetPlayerStats());
 
 
 	level_ui->SetExperience(player->GetPlayerStats().current_exp, player->GetPlayerStats().next_level_exp);
@@ -278,7 +280,7 @@ void InGameScene::Draw() const
 	{
 		DrawFormatString(1100, 10, GetColor(255, 255, 255), "%.1f", time_count);
 	}
-
+	DrawFormatString(1100, 100, GetColor(255, 255, 255), "%d", enemy_random);
 	//ステージレベル
 	SetFontSize(40);
 	DrawFormatString(500, 20, GetColor(255, 255, 255), "Stage Level");
@@ -304,7 +306,7 @@ void InGameScene::Draw() const
 	//レベルアップUI描画
 	if (level_up_flg)
 	{
-		level_up_ui->Draw(player->GetPlayerStats());
+		level_up_ui->Draw();
 	}
 
 }
@@ -348,17 +350,45 @@ void InGameScene::EnemyManager(const float& delta_second)
 	// 敵生成クールタイム
 	spawn_timer += delta_second;
 
-	if(stage_level == 1 && boss_flag == false)
+	if (boss_flag == false)
 	{
-		if (spawn_timer >= 2.0f) // 秒ごとにスポーン
+		//レベル1
+		if (stage_level == 1)
 		{
-			Spawn();
-			spawn_timer = 0.0f;
-		}
-	}
-	else if (stage_level == 2)
-	{
+			if (spawn_timer >= 1.0f)
+			{
+				pattern_timer += delta_second;
+			}
 
+			if (spawn_timer >= 6.0f)
+			{
+				spawn_timer = 0.0f;
+				enemy_random = rand() % 3 + 1;
+				pattern_timer = 0.0f;
+			}
+
+			Spawn();
+		}
+		//レベル2
+		if (stage_level == 2)
+		{
+			if (spawn_timer >= 1.0f)
+			{
+				pattern_timer += delta_second;
+			}
+
+			if(spawn_timer >= 6.0f)
+			{
+				spawn_timer = 0.0f;
+				enemy_random = rand() % 3 + 1;
+				pattern_timer = 0.0f;
+			}
+
+			//ここに関数
+			pattan_Spawn();
+			//↓関数に入れるスイッチ文1
+			
+		}
 	}
 }
 
@@ -391,44 +421,67 @@ void InGameScene::Spawn()        //敵の自動生成
 
 	int num = rand() % 100 + 1;
 	
-	if (num <= 99)
-	{
-		  
-		EnemyBase* enemy;
-		switch (ramdom_r)
-		{
-		case 0:
-			enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));//ジグザグ
-			break;
-		case 1:
-			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//大砲
-			break;
-		case 2:
-			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 400));//特攻、真ん中
-			break;
-		case 3:
-			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 200));//特攻、上
-			break;
-		case 4:
-			enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 600));//特攻、下
-			break;
-		case 5:
-			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//大砲、逆
-			break;
-		case 6:
-			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//大砲、逆
-			enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//大砲
-			break;
-		default:
-			break;
-		}
-	}
-
-	//if (time_count == 0)
+	//if (num <= 99)
 	//{
-	//	object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
+	//	  
+	//	EnemyBase* enemy;
+	//	switch (ramdom_r)
+	//	{
+	//	case 0:
+	//		enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));//ジグザグ
+	//		break;
+	//	case 1:
+	//		enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//大砲
+	//		break;
+	//	case 2:
+	//		enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 400));//特攻、真ん中
+	//		break;
+	//	case 3:
+	//		enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 200));//特攻、上
+	//		break;
+	//	case 4:
+	//		enemy = object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 600));//特攻、下
+	//		break;
+	//	case 5:
+	//		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//大砲、逆
+	//		break;
+	//	case 6:
+	//		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 95))->SetTrans();//大砲、逆
+	//		enemy = object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//大砲
+	//		break;
+	//	default:
+	//		break;
+	//	}
 	//}
 
+	switch (enemy_random)
+	{
+	case 0:
+		break;
+	case 1:
+		if (pattern_timer >= 0.9f)
+		{
+			object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));//ジグザグ
+			pattern_timer = 0.0f;
+		}
+		break;
+	case 2:
+		if (pattern_timer >= 1.3)
+		{
+			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//大砲
+			pattern_timer = 0.0f;
+		}
+		break;
+	case 3:
+		if (pattern_timer >= 1.6)
+		{
+			object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 400));//特攻、真ん中
+			pattern_timer = 0.0f;
+		}
+		break;
+	default:
+		break;
+	}
 
 	if (CheckHitKey(KEY_INPUT_0)) {
 		auto enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));
@@ -460,6 +513,38 @@ void InGameScene::Spawn()        //敵の自動生成
 	}
 
 
+}
+
+void InGameScene::pattan_Spawn()
+{
+	switch (enemy_random)
+	{
+	case 0:
+		break;
+	case 1:
+		if (pattern_timer >= 0.9f)
+		{
+			object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));//ジグザグ
+			pattern_timer = 0.0f;
+		}
+		break;
+	case 2:
+		if (pattern_timer >= 1.3)
+		{
+			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));//大砲
+			pattern_timer = 0.0f;
+		}
+		break;
+	case 3:
+		if (pattern_timer >= 1.5)
+		{
+			object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 400));//特攻、真ん中
+			pattern_timer = 0.0f;
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void InGameScene::BossSpawn()

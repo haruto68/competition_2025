@@ -16,11 +16,13 @@ public:
 	int ratio = 100;				//HP割合
 
 	float shot_timer = 0.0f;	//時間経過
-	float shot_cooldown = 2.0f;	//クールタイム
+	float shot_cooldown = 1.5f;	//クールタイム
 	int atack_pattern = 0;		//攻撃パターン
 
 	float death_count = 3.0f;	//死ぬまでの時間
 	bool death_flag = false;	//死
+
+	int soundseffect[2];
 
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();

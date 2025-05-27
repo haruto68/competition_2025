@@ -30,4 +30,7 @@ public:
 
 public:
     void setClone();
+
+    Vector2D Lerp(const Vector2D& a, const Vector2D& b, float t);
+    
 };
