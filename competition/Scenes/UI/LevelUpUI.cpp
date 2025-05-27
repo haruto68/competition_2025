@@ -27,8 +27,9 @@ LevelUpUI::LevelUpUI() :
 	power_icon[0] = rm->GetImages("Resource/Images/UpGrade_Icon/hp.png")[0];
 	power_icon[1] = rm->GetImages("Resource/Images/UpGrade_Icon/power.png")[0];
 	power_icon[2] = rm->GetImages("Resource/Images/UpGrade_Icon/speed.png")[0];
-	power_icon[3] = rm->GetImages("Resource/Images/UpGrade_Icon/three_way.png")[0];
+	power_icon[3] = rm->GetImages("Resource/Images/UpGrade_Icon/shot_speed.png")[0];
 	power_icon[4] = rm->GetImages("Resource/Images/UpGrade_Icon/shot_size.png")[0];
+	power_icon[5] = rm->GetImages("Resource/Images/UpGrade_Icon/three_way.png")[0];
 }
 
 LevelUpUI::~LevelUpUI()
@@ -71,11 +72,14 @@ void LevelUpUI::Update(bool flag, PlayerStats stats)
 			case STATS_SPEED:
 				lot[i] = ePowerUp::eSpeed;
 				break;
-			case WAPON_3WAY:
-				lot[i] = ePowerUp::eThreeway;
+			case WAPON_SPEED:
+				lot[i] = ePowerUp::eShotspeed;
 				break;
 			case WAPON_SIZE:
 				lot[i] = ePowerUp::eShot_HitRange;
+				break;
+			case WAPON_3WAY:
+				lot[i] = ePowerUp::eThreeway;
 				break;
 			default:
 				break;
@@ -124,13 +128,20 @@ void LevelUpUI::Draw() const
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	int font = 40;
 	SetFontSize(font);
-	DrawFormatString(10, 200 + (font * 0), GetColor(255, 255, 255), "Level  %d", player_stats.player_level);
-	DrawFormatString(10, 200 + (font * 1), GetColor(255, 255, 255), "hp");
-	DrawFormatString(60, 200 + (font * 2), GetColor(255, 255, 255), "%d", player_stats.life_count);
-	DrawFormatString(10, 200 + (font * 3), GetColor(255, 255, 255), "power");
-	DrawFormatString(60, 200 + (font * 4), GetColor(255, 255, 255), "%.2f", player_stats.attack_power);
-	DrawFormatString(10, 200 + (font * 5), GetColor(255, 255, 255), "speed");
-	DrawFormatString(60, 200 + (font * 6), GetColor(255, 255, 255), "%.2f", player_stats.move_speed);
+	DrawFormatString(10, 130, GetColor(255, 255, 255), "Level  %d", player_stats.player_level);
+	font = 37;
+	SetFontSize(font);
+	int y = 160;
+	DrawFormatString(10, 160 + (font * 1), GetColor(255, 255, 255), "hp");
+	DrawFormatString(60, 160 + (font * 2), GetColor(255, 255, 255), "%d", player_stats.life_count);
+	DrawFormatString(10, 160 + (font * 3), GetColor(255, 255, 255), "power");
+	DrawFormatString(60, 160 + (font * 4), GetColor(255, 255, 255), "%.2f", player_stats.attack_power);
+	DrawFormatString(10, 160 + (font * 5), GetColor(255, 255, 255), "speed");
+	DrawFormatString(60, 160 + (font * 6), GetColor(255, 255, 255), "%.2f", player_stats.move_speed);
+	DrawFormatString(10, 160 + (font * 7), GetColor(255, 255, 255), "shot_speed");
+	DrawFormatString(60, 160 + (font * 8), GetColor(255, 255, 255), "%.2f", player_stats.shot_speed);
+	DrawFormatString(10, 160 + (font * 9), GetColor(255, 255, 255), "shot_hit_range");
+	DrawFormatString(60, 160 + (font * 10), GetColor(255, 255, 255), "%.2f", float(player_stats.player_shot_hitrange_up));
 }
 
 void LevelUpUI::Finalize()
@@ -154,7 +165,15 @@ int LevelUpUI::Probability()
 	{
 		return STATS_SPEED;
 	}
-	else if (value < bility[WAPON_3WAY])
+	else if(value < bility[WAPON_SPEED])
+	{
+		return WAPON_SPEED;
+	}
+	else if (value < bility[WAPON_SIZE])
+	{
+		return WAPON_SIZE;
+	}
+	else
 	{
 		if (player_stats.threeway_flag)
 		{
@@ -166,12 +185,7 @@ int LevelUpUI::Probability()
 			}
 			return loop;
 		}
-
 		return WAPON_3WAY;
-	}
-	else
-	{
-		return WAPON_SIZE;
 	}
 
 }
