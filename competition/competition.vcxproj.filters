@@ -30,6 +30,7 @@
     <ClCompile Include="Utility\Vector2D.cpp" />
     <ClCompile Include="Objects\Character\Enemy\Enemy4\Enemy4.cpp" />
     <ClCompile Include="Objects\Character\Player\Drone.cpp" />
+    <ClCompile Include="Objects\Character\Enemy\Boss2\Boss2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Objects\Character\Enemy\Boss1\Boss1.h" />
@@ -66,5 +67,6 @@
     <ClInclude Include="Utility\Vector2D.h" />
     <ClInclude Include="Objects\Character\Enemy\Enemy4\Enemy4.h" />
     <ClInclude Include="Objects\Character\Player\Drone.h" />
+    <ClInclude Include="Objects\Character\Enemy\Boss2\Boss2.h" />
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@ GameObject::GameObject() :
 	location(0.0f),
 	speed(0),
 	image(NULL),
+	transparency(255),
 	z_layer(0),
 	is_mobility(false),
 	player_location(0.0f),
