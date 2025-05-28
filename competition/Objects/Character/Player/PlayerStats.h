@@ -22,7 +22,8 @@ struct PlayerStats
 	int player_shot_hitrange_up = 0;
 	int drone_count = 0;
 	bool threeway_flag = false;
-	int drone_flag = 0;
+	bool drone_flag = false;
+
 
 
 	// ŒoŒ±’lŠÖ˜A

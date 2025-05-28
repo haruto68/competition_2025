@@ -5,6 +5,7 @@ Drone::Drone() : rotation_angle(0.0f)
 {
 
 	ResourceManager* rm = ResourceManager::GetInstance();
+	
 	// À•W
 	location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
 	// ƒRƒŠƒWƒ‡ƒ“İ’è
