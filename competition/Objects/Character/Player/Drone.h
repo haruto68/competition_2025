@@ -33,10 +33,13 @@ public:
 		this->player_stats_copy = player_stats;
 	}
 	// プレイヤーによって呼び出され、ドローンに弾を発射させます
-	void Shoot();
+	//void Shoot();
 
 	// 回転角度を設定する関数
-	void SetRotationAngle(float angle) { rotation_angle = angle; }
+	void SetRotationAngle(float angle)
+	{
+		rotation_angle = angle;
+	}
 	// 回転角度を取得する関数
 	float GetRotationAngle() const { return rotation_angle; }
 };

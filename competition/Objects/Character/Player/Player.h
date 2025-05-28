@@ -18,6 +18,9 @@ private:
 
 	PlayerStats player_stats = {};
 
+	Drone* drone;
+	Vector2D old_location[20];
+
 	int image;
 	bool is_invincible;
 	int soundseffect[10];

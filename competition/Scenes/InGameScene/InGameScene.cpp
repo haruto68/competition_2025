@@ -71,7 +71,6 @@ void InGameScene::Initialize()
 	level_ui = new LevelUI();
 	level_ui->Initialize();
 	
-	
 	/*object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));*/
 }
 
