@@ -30,8 +30,8 @@ Player::Player() :
 	// ‰Â“®«Ý’è
 	is_mobility = true;
 	// ‰¹Œ¹Žæ“¾
-	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerShot.mp3");
-	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerDamege.mp3");
+	//soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerShot.mp3");
+	//soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerDamege.mp3");
 }
 
 Player::~Player()
@@ -92,6 +92,13 @@ void Player::Update(float delta_seconds)
 		shot_timer = SHOT_INTERVAL;
 		player_stats.shot_speed = SHOT_INTERVAL;
 	}
+
+	//if (player_stats.drone_flag = true)
+	//{
+	//	Drone* drone = object_manager->CreateGameObject<Drone>(this->location);
+	//	drone ->SetPlayerStats(this->GetPlayerStats());
+	//	player_stats.drone_flag = false;
+	//}
 }
 
 void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const
@@ -343,6 +350,9 @@ void Player::StatsUp(ePowerUp powerup)
 		break;
 	case ePowerUp::eShot_HitRange:
 		player_stats.player_shot_hitrange_up = player_stats.player_shot_hitrange_up + 1.0f;
+	case ePowerUp::eDrone:
+		player_stats.drone_flag = true;
+		player_stats.drone_count += 1;
 		break;
 	default:
 		break;
