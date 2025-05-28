@@ -2,6 +2,7 @@
 
 #include"../Character.h"
 #include"../../Shot/PlayerShot/PlayerShot.h"
+#include "Drone.h"
 #include"PlayerStats.h"
 
 class Player : public Character
