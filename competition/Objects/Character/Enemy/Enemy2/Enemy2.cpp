@@ -19,6 +19,7 @@ Enemy2::Enemy2()
 	// ‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+	
 }
 
 Enemy2::~Enemy2()
@@ -37,12 +38,15 @@ void Enemy2::Initialize()
 	image = LoadGraph("Resource/Images/enemy/cannon.png");
 
 	hp = 2.0;
+	
 }
 
 void Enemy2::Update(float delta_seconds)
 {
 	Movement(delta_seconds);
 	Animation();
+
+	float shot_cooldown = 0.5f;
 
 	//ŽžŠÔŒo‰ß
 	shot_timer += delta_seconds;
