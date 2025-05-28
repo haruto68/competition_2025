@@ -13,6 +13,12 @@ private:
 	int Color;
 	float rotation_angle;
 	struct PlayerStats player_stats_copy;
+	float shot_timer;
+	float SHOT_INTERVAL;
+
+
+public:
+	int drone_hp;
 
 public:
 	Drone();

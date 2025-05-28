@@ -9,7 +9,7 @@ Player::Player() :
 	SHOT_INTERVAL(0.3f),
 	is_invincible(false),
 	invincible_timer(0.0f),
-	drone(),
+	drone(nullptr),
 	old_location(),
 	soundseffect()
 {
@@ -96,12 +96,20 @@ void Player::Update(float delta_seconds)
 		shot_timer = SHOT_INTERVAL;
 		player_stats.shot_speed = SHOT_INTERVAL;
 	}
-
-	if (player_stats.drone_flag == true)
+	if (drone == nullptr && player_stats.drone_count > 0)
 	{
-		drone = object_manager->CreateGameObject<Drone>(this->location);
-		drone ->SetPlayerStats(this->GetPlayerStats());
+		if (player_stats.drone_flag == true)
+		{
+			drone = object_manager->CreateGameObject<Drone>(this->location);
+			drone->SetPlayerStats(this->GetPlayerStats());
+		}
 		player_stats.drone_flag = false;
+	}
+	if (drone != nullptr && drone->drone_hp <= 0)
+	{
+		object_manager->DestroyGameObject(drone);
+		drone = nullptr;
+		player_stats.drone_count = 0;
 	}
 }
 
@@ -309,12 +317,15 @@ void Player::Movement(float delta_seconds)
 
 	if (future_location.x != location.x || future_location.y != location.y)
 	{
-		for (int i = 0; i < 19; i++)
+		for (int i = 19; i > 0; i--)
 		{
-			old_location[i + 1] = old_location[i];
+			old_location[i] = old_location[i - 1];
 		}
 		old_location[0] = location;
-		drone->SetLocation(old_location[19]);
+		if(drone != nullptr)
+		{
+			drone->SetLocation(old_location[19]);
+		}
 	}
 
 	//à íuç¿ïWÇâ¡ë¨ìxï™å∏ÇÁÇ∑
@@ -366,6 +377,7 @@ void Player::StatsUp(ePowerUp powerup)
 		break;
 	case ePowerUp::eShot_HitRange:
 		player_stats.player_shot_hitrange_up = player_stats.player_shot_hitrange_up + 2.0f;
+		break;
 	case ePowerUp::eDrone:
 		player_stats.drone_flag = true;
 		player_stats.drone_count += 1;
