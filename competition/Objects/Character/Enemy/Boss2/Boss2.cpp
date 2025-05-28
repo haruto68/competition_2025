@@ -1,6 +1,6 @@
-#include "Boss1.h"
+#include "Boss2.h"
 
-Boss1::Boss1()
+Boss2::Boss2()
 {
 	// コリジョン設定
 	collision.is_blocking = true;
@@ -21,17 +21,17 @@ Boss1::Boss1()
 	hp = float(max_hp);
 }
 
-Boss1::~Boss1()
+Boss2::~Boss2()
 {
 }
 
-void Boss1::Initialize()
+void Boss2::Initialize()
 {
 	//画像読み込み
 	image = LoadGraph("Resource/Images/enemy/ship3.png");
 }
 
-void Boss1::Update(float delta_seconds)
+void Boss2::Update(float delta_seconds)
 {
 	Movement(delta_seconds);
 	Animation();
@@ -54,21 +54,10 @@ void Boss1::Update(float delta_seconds)
 		switch (atack_pattern)
 		{
 		case 0:
-			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y));
-			shot->SetShotType(eEnemy1);
-			atack_pattern = 1;
 			break;
 		case 1:
-			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y + 150));
-			shot->SetShotType(eEnemy1);
-			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y - 150));
-			shot->SetShotType(eEnemy1);
-			atack_pattern = 2;
 			break;
 		case 2:
-			object_manager->CreateGameObject<Enemy3>(Vector2D(location.x, location.y + 150));
-			object_manager->CreateGameObject<Enemy3>(Vector2D(location.x, location.y - 150));
-			atack_pattern = 0;
 			break;
 		default:
 			break;
@@ -87,26 +76,19 @@ void Boss1::Update(float delta_seconds)
 	{
 		death_flag = true;
 	}
-	if (death_flag)
-	{
-		transparency--;
-	}
 
 }
 
-void Boss1::Draw(const Vector2D& screen_offset, bool flip_flag) const
+void Boss2::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	if (image != -1)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, transparency);
 		DrawRotaGraphF(location.x, location.y, 10.0f, 0.0f, image, TRUE);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
-
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 	// 現在のHPのバーの描画
-	if(ratio != 0)
+	if (ratio != 0)
 	{
 		DrawRotaGraph(100, 670, 1.0, 0, hp_bar1, 1, 0);
 	}
@@ -122,11 +104,11 @@ void Boss1::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
-void Boss1::Finalize()
+void Boss2::Finalize()
 {
 }
 
-void Boss1::OnHitCollision(GameObject* hit_object)
+void Boss2::OnHitCollision(GameObject* hit_object)
 {
 	eObjectType type = hit_object->GetCollision().object_type;
 
@@ -150,23 +132,23 @@ void Boss1::OnHitCollision(GameObject* hit_object)
 	}
 }
 
-void Boss1::Movement(float delta_seconds)
+void Boss2::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
 
 	location += velocity * speed * delta_seconds;
 }
 
-void Boss1::Animation()
+void Boss2::Animation()
 {
 }
 
-int Boss1::GetBoss1Hp()
+int Boss2::GetBoss2Hp()
 {
 	return ratio;
 }
 
-bool Boss1::GetDeathFlag()
+bool Boss2::GetDeathFlag()
 {
 	return death_flag;
 }

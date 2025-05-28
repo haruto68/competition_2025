@@ -57,9 +57,31 @@ void Enemy1::Update(float delta_seconds)
 		shot->SetShotType(eEnemy1);
 		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 
-
 		//タイマーリセット
 		shot_timer = 0.0f;
+
+		int random_cool = rand() % 5;
+
+		switch (random_cool)
+		{
+		case 0:
+			shot_cooldown = 1.0f;
+			break;
+		case 1:
+			shot_cooldown = 1.2f;
+			break;
+		case 2:
+			shot_cooldown = 1.3f;
+			break;
+		case 3:
+			shot_cooldown = 1.5f;
+			break;
+		case 4:
+			shot_cooldown = 1.6f;
+			break;
+		default:
+			break;
+		}
 	}
 
 }
