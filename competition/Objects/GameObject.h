@@ -10,6 +10,7 @@ protected:
 	float speed;
 	Collision collision;			//コリジョン
 	int image;						//画像
+	int transparency;				//透明度
 	unsigned char z_layer;			//レイヤー
 	bool is_mobility;				//可動性
 	Vector2D player_location;		//プレイヤー座標
