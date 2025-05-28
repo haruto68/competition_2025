@@ -12,7 +12,8 @@ enum eObjectType
 	eEnemy,
 	ePlayerShot,
 	eEnemyShot,
-	eItem
+	eItem,
+	eBlockDrone
 };
 
 class Collision
