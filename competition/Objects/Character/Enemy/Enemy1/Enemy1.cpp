@@ -21,8 +21,8 @@ Enemy1::Enemy1()
 	is_mobility = true;
 
 	// ‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
-	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
-	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+	// soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
+	// soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 }
 
 Enemy1::~Enemy1()
@@ -55,8 +55,8 @@ void Enemy1::Update(float delta_seconds)
 	{
 		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
 		shot->SetShotType(eEnemy1);
-		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
-
+		// PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
+		PlaySoundMem(soundseffect1, DX_PLAYTYPE_BACK, TRUE);
 
 		//ƒ^ƒCƒ}[ƒŠƒZƒbƒg
 		shot_timer = 0.0f;
@@ -79,7 +79,10 @@ void Enemy1::Draw(const Vector2D& screeen_offset, bool file_flag) const
 
 void Enemy1::Finalize()
 {
-
+	// DeleteSoundMem(soundseffect);
+	// DeleteSoundMem(soundseffect1);
+	// DeleteSoundMem(soundseffect[0]);
+	// DeleteSoundMem(soundseffect[1]);
 }
 
 void Enemy1::OnHitCollision(GameObject* hit_object)
@@ -98,7 +101,8 @@ void Enemy1::OnHitCollision(GameObject* hit_object)
 		object_manager->CreateGameObject< ExperiencePoints>(this->location);
 		object_manager->DestroyGameObject(this);
 		hp -= player_stats.attack_power / 2;
-		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
+		// PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
+		PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eEnemyShot:
 		break;
