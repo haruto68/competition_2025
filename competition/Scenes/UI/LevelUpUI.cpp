@@ -30,6 +30,7 @@ LevelUpUI::LevelUpUI() :
 	power_icon[3] = rm->GetImages("Resource/Images/UpGrade_Icon/shot_speed.png")[0];
 	power_icon[4] = rm->GetImages("Resource/Images/UpGrade_Icon/shot_size.png")[0];
 	power_icon[5] = rm->GetImages("Resource/Images/UpGrade_Icon/three_way.png")[0];
+	power_icon[6] = rm->GetImages("Resource/Images/UpGrade_Icon/drone.png")[0];
 }
 
 LevelUpUI::~LevelUpUI()
@@ -80,6 +81,9 @@ void LevelUpUI::Update(bool flag, PlayerStats stats)
 				break;
 			case WAPON_3WAY:
 				lot[i] = ePowerUp::eThreeway;
+				break;
+			case WAPON_DRONE:
+				lot[i] = ePowerUp::eDrone;
 				break;
 			default:
 				break;
@@ -176,7 +180,7 @@ int LevelUpUI::Probability()
 	{
 		return WAPON_SIZE;
 	}
-	else
+	else if(value < bility[WAPON_3WAY])
 	{
 		if (player_stats.threeway_flag)
 		{
@@ -189,6 +193,20 @@ int LevelUpUI::Probability()
 			return loop;
 		}
 		return WAPON_3WAY;
+	}
+	else
+	{
+		if (player_stats.drone_count > 0)
+		{
+			//æ“¾Ï‚İ‚Ìê‡‚»‚êˆÈŠO‚ª‚Å‚é‚Ü‚Åƒ‹[ƒv
+			int loop = Probability();
+			while (loop == WAPON_DRONE)
+			{
+				loop = Probability();
+			}
+			return loop;
+		}
+		return WAPON_DRONE;
 	}
 
 }
