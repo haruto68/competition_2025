@@ -6,6 +6,7 @@ InGameScene::InGameScene() :
 	object_manager(nullptr),
 	player(),
 	boss1(nullptr),
+	boss2(nullptr),
 	level_up_ui(),
 	hp_ui(),
 	level_ui(),
@@ -16,6 +17,7 @@ InGameScene::InGameScene() :
 	pla1(),
 	pla2(),
 	enemy_random(1),
+	enemy_random_y(1),
 	pattern_timer(0),
 	spawn_timer(0),
 	boss_flag(false),
@@ -112,7 +114,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 		}
 		else
 		{
-			BossSpawn1();
+			//ボス生成管理
+			BossManager();
 		}
 
 		// 背景管理処理
@@ -219,7 +222,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	//アップグレード
 	if ((input->GetKeyUp(KEY_INPUT_L) ||
 		input->GetButtonDown(XINPUT_BUTTON_START))
-		/*&& up_grade_stock > 0*/)
+		&& up_grade_stock > 0)
 	{
 		if (level_up_flg)
 			level_up_flg = false;
@@ -290,11 +293,10 @@ void InGameScene::Draw() const
 	{
 		DrawFormatString(1100, 10, GetColor(255, 255, 255), "%.1f", time_count);
 	}
-	DrawFormatString(1100, 100, GetColor(255, 255, 255), "%d", enemy_random);
 	//ステージレベル
 	SetFontSize(40);
 	DrawFormatString(500, 20, GetColor(255, 255, 255), "Stage Level");
-	int level_color;
+	int level_color = 0;
 	if (stage_level == 1)
 		level_color = GetColor(50, 255, 50);
 	else if (stage_level == 2)
@@ -319,6 +321,9 @@ void InGameScene::Draw() const
 		level_up_ui->Draw();
 	}
 
+
+	//エネミーランダム確認用
+	//DrawFormatString(1100, 100, GetColor(255, 255, 255), "%d", enemy_random);
 }
 
 void InGameScene::Finalize()
@@ -369,7 +374,7 @@ void InGameScene::EnemyManager(const float& delta_second)
 			{
 				pattern_timer += delta_second;
 			}
-			if (spawn_timer >= 6.0f)
+			if (spawn_timer >= 5.0f)
 			{
 				spawn_timer = 0.0f;
 				enemy_random = rand() % 3 + 1;
@@ -384,13 +389,14 @@ void InGameScene::EnemyManager(const float& delta_second)
 			{
 				pattern_timer += delta_second;
 			}
-			if(spawn_timer >= 6.0f)
+			if(spawn_timer >= 5.0f)
 			{
 				spawn_timer = 0.0f;
 				enemy_random = rand() % 3 + 1;
+				enemy_random_y = rand() % 4 + 1;
 				pattern_timer = 0.0f;
 			}
-
+			Spawn2();
 		}
 	}
 	TestSpawn();
@@ -399,19 +405,29 @@ void InGameScene::EnemyManager(const float& delta_second)
 //テストスポーン
 void InGameScene::TestSpawn()
 {
+	int y_top = 95;
+	int y_center = 380;
+	int y_botom = 665;
+
 	//入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
 
 	if (input->GetKeyUp(KEY_INPUT_1))
-		object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 380));
+		object_manager->CreateGameObject<Enemy1>(Vector2D(1300, y_center));
 	else if (input->GetKeyUp(KEY_INPUT_2))
-		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, 665));
+		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, y_top))->SetTrans();
 	else if (input->GetKeyUp(KEY_INPUT_3))
-		object_manager->CreateGameObject<Enemy3>(Vector2D(1300, 380));
+		object_manager->CreateGameObject<Enemy2>(Vector2D(1300, y_botom));
 	else if (input->GetKeyUp(KEY_INPUT_4))
-		object_manager->CreateGameObject<Enemy4>(Vector2D(1300, 600));
+		object_manager->CreateGameObject<Enemy3>(Vector2D(1300, y_center));
 	else if (input->GetKeyUp(KEY_INPUT_5))
-		object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
+		object_manager->CreateGameObject<Enemy4>(Vector2D(1300, y_center));
+	else if (input->GetKeyUp(KEY_INPUT_6))
+		object_manager->CreateGameObject<Enemy5>(Vector2D(1300, y_center));
+	else if (input->GetKeyUp(KEY_INPUT_7))
+		object_manager->CreateGameObject<Enemy6>(Vector2D(1300, y_center));
+	else if (input->GetKeyUp(KEY_INPUT_8))
+		object_manager->CreateGameObject<Boss1>(Vector2D(1200, y_center));
 }
 
 //雑魚生成1
@@ -464,8 +480,48 @@ void InGameScene::Spawn1()
 	}
 }
 
-//ボス生成1
-void InGameScene::BossSpawn1()
+//雑魚生成2
+void InGameScene::Spawn2()
+{
+	int y_top = 95;
+	int y_center = 380;
+	int y_botom = 665;
+
+	int y_random = (150 * enemy_random_y) + 5;
+
+	switch (enemy_random)
+	{
+	case 0:
+		break;
+	case 1:	//Z軌道
+		if (pattern_timer >= 0.6f)
+		{
+			pattern_timer = 0.0f;
+			object_manager->CreateGameObject<Enemy4>(Vector2D(1300, y_random));
+		}
+		break;
+	case 2:	//自機狙い
+		if (pattern_timer >= 2.0f)
+		{
+			pattern_timer = 0.0f;
+			object_manager->CreateGameObject<Enemy5>(Vector2D(1300, y_random));
+
+		}
+		break;
+	case 3:
+		if (pattern_timer >= 1.6)
+		{
+			pattern_timer = 0.0f;
+			object_manager->CreateGameObject<Enemy6>(Vector2D(1300, y_random));
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+//ボス生成管理処理
+void InGameScene::BossManager()
 {
 	if (stage_level == 1)
 	{
@@ -476,9 +532,25 @@ void InGameScene::BossSpawn1()
 		}
 		else if (boss1->GetDeathFlag())
 		{
+			boss_flag = false;
 			stage_level += 1;
 			time_count = 60.0f;
 			object_manager->DestroyGameObject(boss1);
+		}
+	}
+	else if (stage_level == 2)
+	{
+		if (boss_flag == false)
+		{
+			boss_flag = true;
+			boss2 = object_manager->CreateGameObject<Boss2>(Vector2D(1200, 400));
+		}
+		else if (boss2->GetDeathFlag())
+		{
+			boss_flag = false;
+			stage_level += 1;
+			time_count = 60.0f;
+			object_manager->DestroyGameObject(boss2);
 		}
 	}
 }

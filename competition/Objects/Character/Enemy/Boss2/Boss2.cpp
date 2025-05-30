@@ -27,8 +27,14 @@ Boss2::~Boss2()
 
 void Boss2::Initialize()
 {
+	int random = rand() % 2;
+	if (random == 0)
+		velocity.y = -0.7f;
+	else
+		velocity.y = 0.7f;
+
 	//‰æ‘œ“Ç‚Ýž‚Ý
-	image = LoadGraph("Resource/Images/enemy/ship3.png");
+	image = LoadGraph("Resource/Images/enemy/ship3_col2.png");
 }
 
 void Boss2::Update(float delta_seconds)
@@ -49,15 +55,44 @@ void Boss2::Update(float delta_seconds)
 	EnemyShot* shot;
 
 	//UŒ‚
-	if (hp > 0 && shot_timer >= 0.5f)
+	if (hp > 0 && shot_timer >= 0.6f)
 	{
 		switch (atack_pattern)
 		{
 		case 0:
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y + 230));
+			shot->SetShotType(eEnemy5);
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y));
+			shot->SetShotType(eEnemy5);
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y - 230));
+			shot->SetShotType(eEnemy5);
+			atack_pattern = 1;
 			break;
 		case 1:
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y + 180));
+			shot->SetShotType(eEnemy4);
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y - 180));
+			shot->SetShotType(eEnemy4);
+			atack_pattern = 2;
 			break;
 		case 2:
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y + 230));
+			shot->SetShotType(eEnemy5);
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y));
+			shot->SetShotType(eEnemy5);
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y - 230));
+			shot->SetShotType(eEnemy5);
+			atack_pattern = 3;
+			break;
+		case 3:
+			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, location.y + 7))->SetTrans();
+			object_manager->CreateGameObject<Enemy2>(Vector2D(1300, location.y - 7));
+			atack_pattern = 4;
+			break;
+		case 4:
+			object_manager->CreateGameObject<Enemy4>(Vector2D(1300, location.y + 205));
+			object_manager->CreateGameObject<Enemy4>(Vector2D(1300, location.y - 205));
+			atack_pattern = 0;
 			break;
 		default:
 			break;
@@ -135,6 +170,15 @@ void Boss2::OnHitCollision(GameObject* hit_object)
 void Boss2::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
+
+	if ((location.y + velocity.y) <= (65.0f + collision.box_size.y) || (location.y + velocity.y) >= (680 - collision.box_size.y))
+	{
+
+		if (velocity.y < 0)
+			velocity.y = 0.7f;
+		else
+			velocity.y = -0.7f;
+	}
 
 	location += velocity * speed * delta_seconds;
 }

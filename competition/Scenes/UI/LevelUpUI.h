@@ -32,8 +32,8 @@ private:
 	PlayerStats player_stats;	//プレイヤーステータス
 
 	//各確率(合計100%)
-	//int proba[LOT_MAX] = { 20,15,15,15,15,10,10 };
-	int proba[LOT_MAX] = { 0,10,10,0,10,20,50 };
+	int proba[LOT_MAX] = { 20,15,15,15,15,10,10 };
+	//int proba[LOT_MAX] = { 0,10,10,0,10,20,50 };	////tset
 	int bility[LOT_MAX] = { 0,0,0,0,0,0,0 };
 
 
