@@ -80,7 +80,7 @@ void Enemy3::OnHitCollision(GameObject* hit_object)
 	case ePlayerShot:
 		hp -= player_stats.attack_power / 2;
 		// PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
-		PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
+		// PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eEnemyShot:
 		break;
