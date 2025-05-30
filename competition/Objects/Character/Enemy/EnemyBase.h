@@ -13,7 +13,7 @@ public:
 
 	float hp;					//HP
 	int max_hp = 0;				//最大HP
-	int ratio = 100;				//HP割合
+	int ratio = 100;			//HP割合
 
 	float shot_timer = 0.0f;	//時間経過
 	float shot_cooldown = 1.5f;	//クールタイム

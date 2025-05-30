@@ -37,12 +37,15 @@ void Enemy2::Initialize()
 	image = LoadGraph("Resource/Images/enemy/cannon.png");
 
 	hp = 2.0;
+	
 }
 
 void Enemy2::Update(float delta_seconds)
 {
 	Movement(delta_seconds);
 	Animation();
+
+	float shot_cooldown = 0.5f;
 
 	//ŽžŠÔŒo‰ß
 	shot_timer += delta_seconds;

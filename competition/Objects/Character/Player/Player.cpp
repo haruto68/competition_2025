@@ -9,6 +9,8 @@ Player::Player() :
 	SHOT_INTERVAL(0.3f),
 	is_invincible(false),
 	invincible_timer(0.0f),
+	drone(nullptr),
+	old_location(),
 	soundseffect()
 {
 
@@ -43,13 +45,15 @@ void Player::Initialize()
 {
 	//画像読み込み
 	image = LoadGraph("Resource/Images/player/player.png");
+
+
 }
 
 void Player::Update(float delta_seconds)
 {
 	Movement(delta_seconds);
 
-	Animation();
+	Animation(delta_seconds);
 
 	// 無敵状態の更新
 	if (is_invincible)
@@ -92,22 +96,55 @@ void Player::Update(float delta_seconds)
 		shot_timer = SHOT_INTERVAL;
 		player_stats.shot_speed = SHOT_INTERVAL;
 	}
-
-	//if (player_stats.drone_flag = true)
-	//{
-	//	Drone* drone = object_manager->CreateGameObject<Drone>(this->location);
-	//	drone ->SetPlayerStats(this->GetPlayerStats());
-	//	player_stats.drone_flag = false;
-	//}
+	if (drone == nullptr && player_stats.drone_count > 0)
+	{
+		if (player_stats.drone_flag == true)
+		{
+			drone = object_manager->CreateGameObject<Drone>(this->location);
+			drone->SetPlayerStats(this->GetPlayerStats());
+		}
+		player_stats.drone_flag = false;
+	}
+	if (drone != nullptr && drone->drone_hp <= 0)
+	{
+		object_manager->DestroyGameObject(drone);
+		drone = nullptr;
+		player_stats.drone_count = 0;
+	}
 }
 
 void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
-	__super::Draw(0.0f, this->flip_flag);
-
-	if (image != -1)
+	if (this->is_dead)
 	{
-		DrawRotaGraphF(location.x, location.y, 2.0f, 0.0f, image, TRUE);
+		// 爆発アニメーションの描画
+		int death_image_handle = LoadGraph("Resource/Images/player/Player_death_image.png"); // 画像読み込み
+
+		// 9枚の画像を1枚に並べた画像の指定部分を描画する
+		int image_width = 96; // 1画像の幅 (96 * 9)
+		int image_height = 96; // 1画像の高さ
+		int draw_x = static_cast<int>(location.x - image_width / 2);
+		int draw_y = static_cast<int>(location.y - image_height / 2);
+		int source_x = death_image_index * image_width; // 描画する画像のX座標
+
+		DrawRectGraph(draw_x, draw_y, source_x, 0, image_width, image_height, death_image_handle, TRUE);
+
+		// アニメーションが終わるまでプレイヤーの画像を描画しない
+		if (death_image_index >= 8)
+		{
+			//画像解放
+			DeleteGraph(death_image_handle);
+		}
+	}
+	else if (this->is_visible)
+	{
+		// 通常の描画処理
+		__super::Draw(0.0f, this->flip_flag);
+
+		if (image != -1)
+		{
+			DrawRotaGraphF(location.x, location.y, 2.0f, 0.0f, image, TRUE);
+		}
 	}
 
 	//DrawBox(location.x - 10, location.y - 10, location.x + 10, location.y + 10, GetColor(255, 0, 0), TRUE);
@@ -300,14 +337,89 @@ void Player::Movement(float delta_seconds)
 		}
 	}
 
+	Vector2D future_location = location;
+	future_location += velocity * speed * delta_seconds;
+
+	if (future_location.x != location.x || future_location.y != location.y)
+	{
+		for (int i = 19; i > 0; i--)
+		{
+			old_location[i] = old_location[i - 1];
+		}
+		old_location[0] = location;
+		if(drone != nullptr)
+		{
+			drone->SetLocation(old_location[19]);
+		}
+	}
 
 	//位置座標を加速度分減らす
 	location += velocity * speed * delta_seconds;
 }
 
-void Player::Animation()
+void Player::Animation(float delta_seconds)
 {
+	static float blink_timer = 0.0f;
+	static bool is_visible = true;
+	float blink_interval = 0.1f;
 
+	static bool is_dead = false;
+	static float death_timer = 0.0f;
+	static int death_image_index = 0;
+	int death_image_count = 9;
+	float death_animation_interval = 0.1f;
+	static bool death_animation_finished = false;
+
+	// プレイヤー死亡時の処理
+	if (player_stats.life_count <= 0)
+	{
+		is_dead = true;
+	}
+
+	if (is_dead)
+	{
+		death_timer += delta_seconds;
+
+		// 爆発アニメーションの更新
+		if (death_timer >= death_animation_interval)
+		{
+			death_image_index++;
+			death_timer -= death_animation_interval;
+
+			// アニメーション終了
+			if (death_image_index >= death_image_count)
+			{
+				death_image_index = death_image_count - 1;
+				death_animation_finished = true;
+			}
+		}
+	}
+	else
+	{
+		// 無敵時間中の点滅処理
+		if (is_invincible)
+		{
+			blink_timer += delta_seconds;
+
+			if (blink_timer >= blink_interval)
+			{
+				is_visible = !is_visible;
+				blink_timer -= blink_interval;
+			}
+
+			// 描画フラグを設定
+			this->is_visible = is_visible;
+		}
+		else
+		{
+			// 無敵時間でない場合は、常に表示
+			this->is_visible = true;
+		}
+	}
+
+	this->is_dead = is_dead;
+	this->death_image_index = death_image_index; 
+	this->death_animation_finished = death_animation_finished;
 }
 
 void Player::AddExperience(float exp)
@@ -349,7 +461,8 @@ void Player::StatsUp(ePowerUp powerup)
 		player_stats.threeway_flag = true;
 		break;
 	case ePowerUp::eShot_HitRange:
-		player_stats.player_shot_hitrange_up = player_stats.player_shot_hitrange_up + 1.0f;
+		player_stats.player_shot_hitrange_up = player_stats.player_shot_hitrange_up + 2.0f;
+		break;
 	case ePowerUp::eDrone:
 		player_stats.drone_flag = true;
 		player_stats.drone_count += 1;

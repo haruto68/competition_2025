@@ -239,7 +239,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 	//リザルトシーンへ遷移
 	if (input->GetKeyUp(KEY_INPUT_SPACE) ||
-		player->GetPlayerStats().life_count <= 0)
+		player->GetPlayerStats().life_count <= 0/* && player->death_animation_finished*/)
 	{
 		return eSceneType::eResult;
 	}	
@@ -464,6 +464,7 @@ void InGameScene::Spawn()        //敵の自動生成
 	//	}
 	//}
 
+	//スポーンパターン(1ステージ)
 	switch (enemy_random)
 	{
 	case 0:
@@ -492,6 +493,7 @@ void InGameScene::Spawn()        //敵の自動生成
 	default:
 		break;
 	}
+
 
 	if (CheckHitKey(KEY_INPUT_0)) {
 		auto enemy = object_manager->CreateGameObject<Enemy1>(Vector2D(1300, 400));
@@ -527,6 +529,8 @@ void InGameScene::Spawn()        //敵の自動生成
 
 void InGameScene::pattan_Spawn()
 {
+
+	//スポーンパターン(2ステージ)
 	switch (enemy_random)
 	{
 	case 0:

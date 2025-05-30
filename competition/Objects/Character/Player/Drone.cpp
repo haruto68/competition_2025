@@ -1,7 +1,12 @@
 #include "Drone.h"
+#include"../../../Utility/InputManager.h"
 #include "UserTemplate.h"
 
-Drone::Drone() : rotation_angle(0.0f)
+Drone::Drone() : 
+	rotation_angle(0.0f),
+	shot_timer(0.0f),
+	SHOT_INTERVAL(0.3f),
+	drone_hp(1)
 {
 
 	ResourceManager* rm = ResourceManager::GetInstance();
@@ -11,7 +16,7 @@ Drone::Drone() : rotation_angle(0.0f)
 	// コリジョン設定
 	collision.is_blocking = true;
 	collision.box_size = Vector2D(15, 15);
-	//collision.object_type = eObjectType::eDrone;
+	collision.object_type = eObjectType::eBlockDrone;
 	collision.hit_object_type.push_back(eObjectType::eEnemy);
 	collision.hit_object_type.push_back(eObjectType::eEnemyShot);
 	// 画像設定
@@ -36,10 +41,20 @@ void Drone::Initialize()
 
 void Drone::Update(float delta_seconds)
 {
-	rotation_angle += 1.0f * delta_seconds; // 例: 毎フレーム1ラジアン回転
-	if (rotation_angle > 360.0f)
+	if (shot_timer > 0.0f)
 	{
-		rotation_angle -= 360.0f;
+		shot_timer -= delta_seconds;
+	}
+
+	InputManager* input = InputManager::GetInstance();
+
+	if ((InputManager::GetInstance()->GetButton(13) || CheckHitKey(KEY_INPUT_B)) && shot_timer <= 0.0f)
+	{
+		PlayerShot* shot = object_manager->CreateGameObject<PlayerShot>(this->location);
+
+		shot_timer = SHOT_INTERVAL;
+		player_stats.shot_speed = SHOT_INTERVAL;
+
 	}
 }
 
@@ -64,12 +79,12 @@ void Drone::OnHitCollision(GameObject* hit_object)
 	case ePlayer:
 		break;
 	case eEnemy:
-		object_manager->DestroyGameObject(this);
+		drone_hp--;
 		break;
 	case ePlayerShot:
 		break;
 	case eEnemyShot:
-		object_manager->DestroyGameObject(this);
+		drone_hp--;
 		break;
 	case eItem:
 		break;
