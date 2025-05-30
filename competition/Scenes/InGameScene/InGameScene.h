@@ -77,9 +77,8 @@ private:
 	void BackGroundManager(const float& delta_second);		//背景管理処理
 
 	void EnemyManager(const float& delta_second);			//敵生成管理処理
-	void Spawn();											//敵生成
-	void pattan_Spawn();
+	void TestSpawn();										//テスト生成
+	void Spawn1();											//雑魚生成1
+	void BossSpawn1();										//ボス生成1
 
-
-	void BossSpawn();										//ボス生成
 };

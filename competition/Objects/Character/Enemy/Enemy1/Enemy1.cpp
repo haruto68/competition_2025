@@ -33,7 +33,12 @@ Enemy1::~Enemy1()
 
 void Enemy1::Initialize()
 {
-	velocity.y = -1.0f;
+	int random = rand() % 2;
+	if (random == 0)
+		velocity.y = -1.0f;
+	else
+		velocity.y = 1.0f;
+
 	velocity.x = -0.5f;
 
 	//âÊëúì«Ç›çûÇ›
@@ -65,7 +70,7 @@ void Enemy1::Update(float delta_seconds)
 		switch (random_cool)
 		{
 		case 0:
-			shot_cooldown = 1.0f;
+			shot_cooldown = 1.2f;
 			break;
 		case 1:
 			shot_cooldown = 1.2f;
@@ -135,12 +140,7 @@ void Enemy1::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
 
-	if (location.y <= 95.0f)
-	{
-		velocity.y = 1.0f;
-	}
-
-	if ((location.y + velocity.y) <= collision.box_size.y || (location.y + velocity.y) >= (680 - collision.box_size.y))
+	if ((location.y + velocity.y) <= (65.0f + collision.box_size.y) || (location.y + velocity.y) >= (680 - collision.box_size.y))
 	{
 		
 		if (velocity.y < 0)
