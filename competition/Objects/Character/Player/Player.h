@@ -8,6 +8,9 @@
 class Player : public Character
 {
 protected:
+	bool is_dead;
+	bool is_visible;
+	int death_image_index;
 
 private:
 	float screen_velocity;		// ƒXƒNƒŠ[ƒ“ˆÚ“®—Ê
@@ -24,6 +27,9 @@ private:
 	int image;
 	bool is_invincible;
 	int soundseffect[10];
+
+public:
+	bool death_animation_finished;
 
 public:
 	Player();
@@ -43,7 +49,7 @@ public:
 	void SetVelocity(Vector2D);
 
 	void Movement(float);
-	void Animation();
+	void Animation(float);
 
 	void AddExperience(float exp);
 	void LevelUp();
