@@ -10,7 +10,10 @@
 #include"../../Objects/Character/Enemy/Enemy2/Enemy2.h"
 #include"../../Objects/Character/Enemy/Enemy3/Enemy3.h"
 #include"../../Objects/Character/Enemy/Enemy4/Enemy4.h"
+#include"../../Objects/Character/Enemy/Enemy5/Enemy5.h"
+#include"../../Objects/Character/Enemy/Enemy6/Enemy6.h"
 #include "../../Objects/Character/Enemy/Boss1/Boss1.h"
+#include "../../Objects/Character/Enemy/Boss2/Boss2.h"
 #include"../../Objects/Shot/PlayerShot/PlayerShot.h"
 #include"../../Objects/Shot/EnemyShot/EnemyShot.h"
 #include"../../Objects/Item/ExperiencePoints/ExperiencePoints.h"
@@ -32,7 +35,8 @@ public:
 	std::vector<GameObject*> scene_objects_list;//オブジェクトリスト
 	class GameObjectManager* object_manager;	//オブジェクトマネージャーインスタンス
 	class Player* player;						//プレイヤーインスタンス
-	class Boss1* boss1;							//ボスインスタンス
+	class Boss1* boss1;							//ボスインスタンス1
+	class Boss2* boss2;							//ボスインスタンス2
 	LevelUpUI* level_up_ui;						//レベルアップUI
 	HpUI* hp_ui;								//HPUI
 	LevelUI* level_ui;							//レベルUI
@@ -46,6 +50,7 @@ public:
 	Planet pla2;								//惑星2
 
 	int enemy_random;							//
+	int enemy_random_y;							//
 	float spawn_timer;							//敵生成クールタイム
 	float pattern_timer;						//caseの時間経過
 	bool boss_flag;								//ボス描画フラグ
@@ -77,9 +82,9 @@ private:
 	void BackGroundManager(const float& delta_second);		//背景管理処理
 
 	void EnemyManager(const float& delta_second);			//敵生成管理処理
-	void Spawn();											//敵生成
-	void pattan_Spawn();
+	void TestSpawn();										//テスト生成
+	void Spawn1();											//雑魚生成1
+	void Spawn2();											//雑魚生成2
+	void BossManager();										//ボス生成管理処理
 
-
-	void BossSpawn();										//ボス生成
 };

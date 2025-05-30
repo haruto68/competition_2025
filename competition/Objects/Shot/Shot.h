@@ -8,9 +8,11 @@ enum eShotType
 	ePlayer1,
 	ePlayer2,
 	ePlayer3,
-	eEnemy1,
-	eEnemy2,
-	eEnemy3
+	eEnemy1,	//真左
+	eEnemy2,	//真上
+	eEnemy3,	//真下
+	eEnemy4,	//自機狙い
+	eEnemy5		//グネグネ
 };
 
 class Shot : public GameObject

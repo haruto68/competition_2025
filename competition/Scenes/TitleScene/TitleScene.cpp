@@ -61,7 +61,7 @@ eSceneType TitleScene::Update(const float& delta_second)
 	}
 
 	// ƒJ[ƒ\ƒ‹Œˆ’è(Œˆ’è‚µ‚½‰æ–Ê‚ÉˆÚ“®‚·‚é)
-	if ((input->GetButtonDown(XINPUT_BUTTON_A) || input->GetKeyDown(KEY_INPUT_1)) && is_button == true)
+	if ((input->GetButtonDown(XINPUT_BUTTON_A) || (input->GetKeyDown(KEY_INPUT_E) || input->GetKeyDown(KEY_INPUT_1))) && is_button == true)
 	{
 		switch (menu_num)
 		{

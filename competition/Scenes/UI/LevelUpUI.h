@@ -4,7 +4,7 @@
 #include"../../Utility/InputManager.h"
 #include"../../Objects/Character/Player/PlayerStats.h"
 
-#define	LOT_MAX			(6)	//最大抽選数
+#define	LOT_MAX			(7)	//最大抽選数
 
 #define	STATS_HP		(0)
 #define STATS_DAMAGE	(1)
@@ -12,6 +12,7 @@
 #define WAPON_SPEED		(3)
 #define WAPON_SIZE		(4)
 #define WAPON_3WAY		(5)
+#define WAPON_DRONE		(6)
 
 class LevelUpUI
 {
@@ -31,8 +32,9 @@ private:
 	PlayerStats player_stats;	//プレイヤーステータス
 
 	//各確率(合計100%)
-	int proba[LOT_MAX] = { 18,17,17,17,17,14 };
-	int bility[LOT_MAX] = { 0,0,0,0,0,0 };
+	int proba[LOT_MAX] = { 20,15,15,15,15,10,10 };
+	//int proba[LOT_MAX] = { 0,10,10,0,10,20,50 };	////tset
+	int bility[LOT_MAX] = { 0,0,0,0,0,0,0 };
 
 
 public:
