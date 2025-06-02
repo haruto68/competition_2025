@@ -5,10 +5,13 @@
 
 ResultScene::ResultScene(): m_selectedbutton(selectedbutton::Title), menu_num(0), is_button(true)			//初期はタイトル選択
 {
-	//リソース管理インスタンス取得
-	ResourceManager* rm = ResourceManager::GetInstance();
+	// //リソース管理インスタンス取得
+	// ResourceManager* rm = ResourceManager::GetInstance();
+	// 
+	// //画像取得
 
-	//画像取得
+	sounds_effect[0] = NULL;
+	sounds_effect[1] = NULL;
 }
 
 ResultScene::~ResultScene()
@@ -18,6 +21,20 @@ ResultScene::~ResultScene()
 
 void ResultScene::Initialize()
 {
+	//リソース管理インスタンス取得
+	ResourceManager* rm = ResourceManager::GetInstance();
+
+	//画像取得
+
+	// 音源取得
+	// ボタン決定音
+	sounds_effect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Button/button_enter.mp3");
+	// 選択音
+	sounds_effect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Button/button_select.mp3");
+	// ボタン決定音の音量の設定
+	ChangeVolumeSoundMem(200, sounds_effect[0]);
+	// 選択音の音量の設定
+	ChangeVolumeSoundMem(200, sounds_effect[1]);
 	//選択状態リセット
 	m_selectedbutton = selectedbutton::Title;
 }
@@ -33,6 +50,8 @@ eSceneType ResultScene::Update(const float& delta_second)
 	// カーソル右移動
 	if (input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT) && is_button == true)
 	{
+		PlaySoundMem(sounds_effect[1], DX_PLAYTYPE_BACK, TRUE);
+
 		menu_num--;
 		if (menu_num < 0)
 		{
@@ -43,6 +62,8 @@ eSceneType ResultScene::Update(const float& delta_second)
 	// カーソル左移動
 	if (input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT) && is_button == true)
 	{
+		PlaySoundMem(sounds_effect[1], DX_PLAYTYPE_BACK, TRUE);
+
 		menu_num++;
 		if (menu_num > 1)
 		{
@@ -57,11 +78,13 @@ eSceneType ResultScene::Update(const float& delta_second)
 		{
 		case 0:
 			//タイトルシーンへ遷移
-			return eSceneType::eExit;
+			PlaySoundMem(sounds_effect[0], DX_PLAYTYPE_NORMAL, TRUE);
+			return eSceneType::eTitle;
 			break;
 		case 1:
 			//ゲームを終了
-			return eSceneType::eTitle;
+			PlaySoundMem(sounds_effect[0], DX_PLAYTYPE_NORMAL, TRUE);
+			return eSceneType::eExit;
 			break;
 		default:
 			break;
@@ -83,14 +106,14 @@ void ResultScene::Draw() const
 		DrawFormatString(665, 270, 0x000000, "スコア結果");
 
 		// エンドボタン
-		int endColor = (m_selectedbutton == selectedbutton::End) ? GetColor(255, 0, 0):GetColor(128,128,128);
+		int endColor = (m_selectedbutton == selectedbutton::Title) ? GetColor(255, 0, 0):GetColor(128,128,128);
 		DrawBox(25, 600, 325, 700, 0xffffff, TRUE);
-		DrawFormatString(25, 630, endColor, "End");
+		DrawFormatString(25, 630, endColor, "Title");		// タイトルボタンに変更
 
 		// タイトルボタン
-		int titleColor = (m_selectedbutton == selectedbutton::Title) ? GetColor(255, 0, 0) : GetColor(128,128,128);
+		int titleColor = (m_selectedbutton == selectedbutton::End) ? GetColor(255, 0, 0) : GetColor(128,128,128);
 		DrawBox(955, 600, 1255, 700, 0xffffff, TRUE);
-		DrawFormatString(955, 630, titleColor, "Title");
+		DrawFormatString(955, 630, titleColor, "End");		// エンドボタンに変更
 	
 		switch (menu_num)
 		{
