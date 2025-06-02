@@ -18,6 +18,7 @@ public:
 public:
 	int menu_num;
 	bool is_button;
+	int sounds_effect[2];
 
 	virtual void Initialize() override;
 	virtual eSceneType Update(const float& delta_second);

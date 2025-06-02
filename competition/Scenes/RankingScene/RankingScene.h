@@ -5,6 +5,9 @@ class RankingScene : public SceneBase
 {
 protected:
 
+private:
+	int back_ground_sound;	// BGM
+	int sounds_effect[2];	// Œø‰Ê‰¹
 public:
 	RankingScene();
 	~RankingScene();

@@ -10,6 +10,9 @@ private:
 	bool help;				// ヘルプが開かれてるかどうか?
 	bool is_button;			// ボタンが操作できるかどうか?
 	int back_ground_sound;	// BGM
+	int sounds_effect[2];	// 効果音
+	//int button_sound0;		// 選択音
+	//int button_sound1;		// 決定音
 
 public:
 	TitleScene();

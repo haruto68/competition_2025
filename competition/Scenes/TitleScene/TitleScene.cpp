@@ -4,13 +4,15 @@
 
 TitleScene::TitleScene() : menu_num(0), help(false), is_button(true), back_ground_sound(NULL)
 {
-	//リソース管理インスタンス取得
-	ResourceManager* rm = ResourceManager::GetInstance();
+	// //リソース管理インスタンス取得
+	// ResourceManager* rm = ResourceManager::GetInstance();
 
-	// 画像取得
+	// // 画像取得
 
-	// 音源取得
-	back_ground_sound = rm->GetSounds("Resource/Sounds/BGM/Title/Title.mp3");
+	// // 音源取得
+	// back_ground_sound = rm->GetSounds("Resource/Sounds/BGM/Title/Title.mp3");
+	sounds_effect[0] = NULL;
+	sounds_effect[1] = NULL;
 }
 
 TitleScene::~TitleScene()
@@ -20,8 +22,23 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize()
 {
+	//リソース管理インスタンス取得
+	ResourceManager* rm = ResourceManager::GetInstance();
+
+	// 画像取得
+
+	// 音源取得
+	back_ground_sound = rm->GetSounds("Resource/Sounds/BGM/Title/Title.mp3");
+	// ボタン決定音
+	sounds_effect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Button/button_enter.mp3");
+	// 選択音
+	sounds_effect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Button/button_select.mp3");
 	// 音源の音量の設定
 	ChangeVolumeSoundMem(100, back_ground_sound);
+	// ボタン決定音の音量の設定
+	ChangeVolumeSoundMem(200, sounds_effect[0]);
+	// 選択音の音量の設定
+	ChangeVolumeSoundMem(200, sounds_effect[1]);
 	// 音源の再生
 	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_LOOP, TRUE);
 }
@@ -43,6 +60,8 @@ eSceneType TitleScene::Update(const float& delta_second)
 	// カーソル上移動
 	if ((input->GetButtonDown(XINPUT_BUTTON_DPAD_UP) || input->GetKeyDown(KEY_INPUT_W)) && is_button == true)
 	{
+		PlaySoundMem(sounds_effect[1], DX_PLAYTYPE_BACK, TRUE);
+
 		menu_num--;
 		if (menu_num < 0)
 		{
@@ -53,6 +72,8 @@ eSceneType TitleScene::Update(const float& delta_second)
 	// カーソル下移動
 	if ((input->GetButtonDown(XINPUT_BUTTON_DPAD_DOWN) || input->GetKeyDown(KEY_INPUT_S)) && is_button == true)
 	{
+		PlaySoundMem(sounds_effect[1], DX_PLAYTYPE_BACK, TRUE);
+
 		menu_num++;
 		if (menu_num > 2)
 		{
@@ -66,20 +87,24 @@ eSceneType TitleScene::Update(const float& delta_second)
 		switch (menu_num)
 		{
 		case 0:
+			PlaySoundMem(sounds_effect[0], DX_PLAYTYPE_BACK, TRUE);
 			return eSceneType::eInGame;
 		case 1:
+			PlaySoundMem(sounds_effect[0], DX_PLAYTYPE_BACK, TRUE);
 			if (help)
 				help = false;
 			else
 				help = true;
 			break;
 		case 2:
+			PlaySoundMem(sounds_effect[0], DX_PLAYTYPE_BACK, TRUE);
 			return eSceneType::eRanking;
 		}
 	}
 
 	if (input->GetButtonDown(XINPUT_BUTTON_B) || input->GetKeyDown(KEY_INPUT_2))
 	{
+		PlaySoundMem(sounds_effect[0], DX_PLAYTYPE_BACK, TRUE);
 		help = false;
 		is_button = true;
 	}
@@ -139,10 +164,10 @@ void TitleScene::Draw() const
 		SetFontSize(50);
 		DrawBox(0, 0, 1280, 720, GetColor(0,150,200), TRUE);
 		DrawFormatString(0, 0, 0x000000, "一応ヘルプ");
-		DrawFormatString(0, 200, 0x000000, "WASDキーで移動");
+		DrawFormatString(0, 200, 0x000000, "左スティックで移動");
 		DrawFormatString(0, 300, 0x000000, "Bボタンで弾の発射");
 		DrawFormatString(0, 400, 0x000000, "STARTボタンでアップグレード");
-		DrawFormatString(0, 500, 0x000000, "Bボタンでタイトルに戻る");
+		// DrawFormatString(0, 500, 0x000000, "Bボタンでタイトルに戻る");
 		SetFontSize(40);
 	}
 }
