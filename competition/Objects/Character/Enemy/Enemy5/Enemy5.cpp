@@ -40,7 +40,7 @@ void Enemy5::Initialize()
 	//‰æ‘œ“Ç‚İ‚İ
 	image = LoadGraph("Resource/Images/enemy/ship5.png");
 
-	hp = 6.0f;
+	hp = 16.0f;
 
 	velocity.x = -0.8f;
 }

@@ -35,7 +35,7 @@ void Enemy4::Initialize()
 	//‰æ‘œ“Ç‚İ‚İ
 	image = LoadGraph("Resource/Images/enemy/ship4.png");
 
-	hp = 4.0;
+	hp = 14.0;
 
 	point.clear();
 	point.push_back(Vector2D(600, location.y));
