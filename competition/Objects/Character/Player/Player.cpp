@@ -14,11 +14,20 @@ Player::Player() :
 	soundseffect()
 {
 
+}
+
+Player::~Player()
+{
+
+}
+
+void Player::Initialize()
+{
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
 
 	// 座標
-	location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
+	location = Vector2D(D_WIN_MAX_X - 1080, D_WIN_MAX_Y / 2);
 	// コリジョン設定
 	collision.is_blocking = true;
 	collision.box_size = Vector2D(35, 40);
@@ -34,19 +43,11 @@ Player::Player() :
 	// 音源取得
 	//soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerShot.mp3");
 	//soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerDamege.mp3");
-}
 
-Player::~Player()
-{
-
-}
-
-void Player::Initialize()
-{
 	//画像読み込み
-	image = LoadGraph("Resource/Images/player/player.png");
-
-
+	normal_image = rm->GetImages("Resource/Images/player/player.png", 1, 1, 1, 32, 32);
+	dead_image = rm->GetImages("Resource/Images/player/Player_death_image.png", 9, 3, 3, 96, 96);
+	image = normal_image[0];
 }
 
 void Player::Update(float delta_seconds)
@@ -115,43 +116,20 @@ void Player::Update(float delta_seconds)
 
 void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
+
 	if (this->is_dead)
 	{
-		// 爆発アニメーションの描画
-		int death_image_handle = LoadGraph("Resource/Images/player/Player_death_image.png"); // 画像読み込み
 
-		// 9枚の画像を1枚に並べた画像の指定部分を描画する
-		int image_width = 96; // 1画像の幅 (96 * 9)
-		int image_height = 96; // 1画像の高さ
-		int draw_x = static_cast<int>(location.x - image_width / 2);
-		int draw_y = static_cast<int>(location.y - image_height / 2);
-		int source_x = death_image_index * image_width; // 描画する画像のX座標
-
-		DrawRectGraph(draw_x, draw_y, source_x, 0, image_width, image_height, death_image_handle, TRUE);
-
-		// アニメーションが終わるまでプレイヤーの画像を描画しない
-		if (death_image_index >= 8)
-		{
-			//画像解放
-			DeleteGraph(death_image_handle);
-		}
 	}
 	else if (this->is_visible)
 	{
 		// 通常の描画処理
-		__super::Draw(0.0f, this->flip_flag);
 
 		if (image != -1)
 		{
 			DrawRotaGraphF(location.x, location.y, 2.0f, 0.0f, image, TRUE);
 		}
 	}
-
-	//DrawBox(location.x - 10, location.y - 10, location.x + 10, location.y + 10, GetColor(255, 0, 0), TRUE);
-	SetFontSize(20);
-	/*DrawFormatString(5, 50, GetColor(255, 255, 255), "現在のプレイヤーレベル：%d", player_stats.player_level);
-	DrawFormatString(5, 70, GetColor(255, 255, 255), "累積プレイヤーレベル：%d", player_stats.current_exp);
-	DrawFormatString(5, 90, GetColor(255, 255, 255), "次のレベルアップに必要なEXP：%d", player_stats.next_level_exp);*/
 }
 
 void Player::Finalize()
@@ -354,7 +332,14 @@ void Player::Movement(float delta_seconds)
 	}
 
 	//位置座標を加速度分減らす
-	location += velocity * speed * delta_seconds;
+	if (is_dead == true)
+	{
+		location = 0.0f;
+	}
+	else
+	{
+		location += velocity * speed * delta_seconds;
+	}
 }
 
 void Player::Animation(float delta_seconds)

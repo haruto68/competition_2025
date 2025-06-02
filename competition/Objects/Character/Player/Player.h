@@ -24,7 +24,8 @@ private:
 	Drone* drone;
 	Vector2D old_location[20];
 
-	int image;
+	std::vector<int> normal_image;
+	std::vector<int> dead_image;
 	bool is_invincible;
 	int soundseffect[10];
 
