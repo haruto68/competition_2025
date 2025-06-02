@@ -164,10 +164,10 @@ void TitleScene::Draw() const
 		SetFontSize(50);
 		DrawBox(0, 0, 1280, 720, GetColor(0,150,200), TRUE);
 		DrawFormatString(0, 0, 0x000000, "一応ヘルプ");
-		DrawFormatString(0, 200, 0x000000, "WASDキーで移動");
+		DrawFormatString(0, 200, 0x000000, "左スティックで移動");
 		DrawFormatString(0, 300, 0x000000, "Bボタンで弾の発射");
 		DrawFormatString(0, 400, 0x000000, "STARTボタンでアップグレード");
-		DrawFormatString(0, 500, 0x000000, "Bボタンでタイトルに戻る");
+		// DrawFormatString(0, 500, 0x000000, "Bボタンでタイトルに戻る");
 		SetFontSize(40);
 	}
 }
