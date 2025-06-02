@@ -4,8 +4,8 @@
 
 Drone::Drone() : 
 	rotation_angle(0.0f),
-	shot_timer(0.0f),
-	SHOT_INTERVAL(0.3f),
+	shot_timer(0.3f),
+	SHOT_INTERVAL(0.75f),
 	drone_hp(1)
 {
 
@@ -46,9 +46,9 @@ void Drone::Update(float delta_seconds)
 		shot_timer -= delta_seconds;
 	}
 
-	InputManager* input = InputManager::GetInstance();
-
-	if ((InputManager::GetInstance()->GetButton(13) || CheckHitKey(KEY_INPUT_B)) && shot_timer <= 0.0f)
+	//InputManager* input = InputManager::GetInstance();
+	//if ((InputManager::GetInstance()->GetButton(13) || CheckHitKey(KEY_INPUT_B)) && shot_timer <= 0.0f)
+	if (shot_timer <= 0.0f)	//Ž©“®‚ÅŒ‚‚Âê‡
 	{
 		PlayerShot* shot = object_manager->CreateGameObject<PlayerShot>(this->location);
 
@@ -61,7 +61,9 @@ void Drone::Update(float delta_seconds)
 void Drone::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	__super::Draw(0.0f, this->flip_flag);
-	DrawBox(location.x - 10, location.y - 10, location.x + 10, location.y + 10, GetColor(255, 0, 0), TRUE);}
+	//DrawBox(location.x - 10, location.y - 10, location.x + 10, location.y + 10, GetColor(255, 0, 0), TRUE);
+	DrawCircle(location.x, location.y, 12, GetColor(243, 136, 19), true);
+}
 
 void Drone::Finalize()
 {

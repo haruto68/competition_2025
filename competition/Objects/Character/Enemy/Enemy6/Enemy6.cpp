@@ -1,6 +1,6 @@
-#include "Enemy1.h"
+#include "Enemy6.h"
 
-Enemy1::Enemy1()
+Enemy6::Enemy6()
 {
 
 	//リソース管理インスタンス取得
@@ -21,31 +21,33 @@ Enemy1::Enemy1()
 	is_mobility = true;
 
 	// 音源取得(0: 敵が破壊時の音 1: 敵が弾を撃った時の音)
-	// soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
-	// soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
+	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 }
 
-Enemy1::~Enemy1()
+Enemy6::~Enemy6()
 {
 
 }
 
 
-void Enemy1::Initialize()
+void Enemy6::Initialize()
 {
 	int random = rand() % 2;
 	if (random == 0)
-		velocity.y = -1.0f;
+		velocity.y = -1.7f;
 	else
-		velocity.y = 1.0f;
+		velocity.y = 1.7f;
 
-	velocity.x = -0.5f;
+	velocity.x = -0.3f;
+
+	hp = 4.0f;
 
 	//画像読み込み
-	image = LoadGraph("Resource/Images/enemy/ship1.png");
+	image = LoadGraph("Resource/Images/enemy/ship1_col2.png");
 }
 
-void Enemy1::Update(float delta_seconds)
+void Enemy6::Update(float delta_seconds)
 {
 	Movement(delta_seconds);
 	Animation();
@@ -56,12 +58,11 @@ void Enemy1::Update(float delta_seconds)
 	//時間経過
 	shot_timer += delta_seconds;
 
-	if (shot_timer>=shot_cooldown)
+	if (shot_timer >= shot_cooldown)
 	{
 		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
-		shot->SetShotType(eEnemy1);
-		// PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
-		PlaySoundMem(soundseffect1, DX_PLAYTYPE_BACK, TRUE);
+		shot->SetShotType(eEnemy5);
+		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 
 		//タイマーリセット
 		shot_timer = 0.0f;
@@ -92,28 +93,20 @@ void Enemy1::Update(float delta_seconds)
 
 }
 
-void Enemy1::Draw(const Vector2D& screeen_offset, bool file_flag) const
+void Enemy6::Draw(const Vector2D& screeen_offset, bool file_flag) const
 {
 	if (image != -1)
 	{
 		DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
 	}
-	// 仮(白い四角を描画する)
-	/*Vector2D t1 = location - (collision.box_size / 2.0f);
-	Vector2D br = location + (collision.box_size / 2.0f);
-	DrawBoxAA(t1.x, t1.y, br.x, br.y, GetColor(255, 255, 255), TRUE);
-	DrawString(t1.x, t1.y, "1", GetColor(0, 0, 0), TRUE);*/
 }
 
-void Enemy1::Finalize()
+void Enemy6::Finalize()
 {
-	// DeleteSoundMem(soundseffect);
-	// DeleteSoundMem(soundseffect1);
-	// DeleteSoundMem(soundseffect[0]);
-	// DeleteSoundMem(soundseffect[1]);
+
 }
 
-void Enemy1::OnHitCollision(GameObject* hit_object)
+void Enemy6::OnHitCollision(GameObject* hit_object)
 {
 	eObjectType type = hit_object->GetCollision().object_type;
 
@@ -126,11 +119,8 @@ void Enemy1::OnHitCollision(GameObject* hit_object)
 	case eEnemy:
 		break;
 	case ePlayerShot:
-		object_manager->CreateGameObject< ExperiencePoints>(this->location);
-		object_manager->DestroyGameObject(this);
 		hp -= player_stats.attack_power / 2;
-		// PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
-		PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
+		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eEnemyShot:
 		break;
@@ -139,25 +129,31 @@ void Enemy1::OnHitCollision(GameObject* hit_object)
 	default:
 		break;
 	}
+	if (hp <= 0.0)
+	{
+		object_manager->CreateGameObject< ExperiencePoints>(this->location);
+		object_manager->DestroyGameObject(this);
+		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
+	}
 }
 
-void Enemy1::Movement(float delta_seconds)
+void Enemy6::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
 
 	if ((location.y + velocity.y) <= (65.0f + collision.box_size.y) || (location.y + velocity.y) >= (680 - collision.box_size.y))
 	{
-		
+
 		if (velocity.y < 0)
-			velocity.y = 1.0f;
+			velocity.y = 1.8f;
 		else
-			velocity.y = -1.0f;
+			velocity.y = -1.8f;
 	}
 
 	location += velocity * speed * delta_seconds;
 }
 
-void Enemy1::Animation()
+void Enemy6::Animation()
 {
 
 }

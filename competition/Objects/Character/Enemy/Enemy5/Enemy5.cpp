@@ -1,6 +1,9 @@
-#include "Enemy2.h"
+#include "Enemy5.h"
 
-Enemy2::Enemy2()
+Enemy5::Enemy5() :
+	shot_num(0),
+	cool_down_2(2.0f),
+	cool_down_2_count(0.0f)
 {
 	//ÉäÉ\Å[ÉXä«óùÉCÉìÉXÉ^ÉìÉXéÊìæ
 	ResourceManager* rm = ResourceManager::GetInstance();
@@ -19,13 +22,14 @@ Enemy2::Enemy2()
 	// âπåπéÊìæ(0: ìGÇ™îjâÛéûÇÃâπ 1: ìGÇ™íeÇåÇÇ¡ÇΩéûÇÃâπ)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+
 }
 
-Enemy2::~Enemy2()
+Enemy5::~Enemy5()
 {
 }
 
-void Enemy2::Initialize()
+void Enemy5::Initialize()
 {
 	//Å@âºìG2ÇÃÉTÉCÉY(ëÂÇ´Ç≥)
 	collision.box_size = Vector2D(20.0f, 20.0f);
@@ -34,32 +38,42 @@ void Enemy2::Initialize()
 	speed = 200.0f;
 
 	//âÊëúì«Ç›çûÇ›
-	image = LoadGraph("Resource/Images/enemy/cannon.png");
+	image = LoadGraph("Resource/Images/enemy/ship5.png");
 
-	hp = 2.0;
-	
+	hp = 6.0f;
+
+	velocity.x = -0.8f;
 }
 
-void Enemy2::Update(float delta_seconds)
+void Enemy5::Update(float delta_seconds)
 {
 	Movement(delta_seconds);
 	Animation();
 
-	float shot_cooldown = 0.5f;
+	float shot_cooldown = 0.4f;
+
+	int shot_num_max = 3;
 
 	//éûä‘åoâﬂ
 	shot_timer += delta_seconds;
+	
+	if(shot_num > shot_num_max)
+	{
+		cool_down_2_count += delta_seconds;
+	}
+	if (cool_down_2_count >= cool_down_2)
+	{
+		shot_num = 0;
+		cool_down_2_count = 0.0f;
+	}
 
-	if (shot_timer >= shot_cooldown)
+	if (shot_timer >= shot_cooldown && shot_num <= shot_num_max
+		&& player_location.x < location.x)
 	{
 		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
-		// shot->SetShotType(eEnemy3);
-		// PlaySoundMem(soundseffect1, DX_PLAYTYPE_BACK, TRUE);
-		// PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);s
-		if (!trans)
-			shot->SetShotType(eEnemy2);
-		else
-			shot->SetShotType(eEnemy3);
+		shot->SetShotType(eEnemy4);
+
+		shot_num++;
 
 		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 
@@ -68,42 +82,21 @@ void Enemy2::Update(float delta_seconds)
 	}
 }
 
-void Enemy2::Draw(const Vector2D&, bool) const
+void Enemy5::Draw(const Vector2D&, bool) const
 {
-	
+
 	if (image != -1)
 	{
-		float angle;
-		if (trans == false)
-		{
-			angle = 0.0f;
-		}
-		else
-		{
-			angle = 3.14 / 1.0f;
-		}
-		DrawRotaGraphF(location.x, location.y, 1.0f, angle, image, TRUE);
+		DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
 	}
-	
 
-	//// âº(îíÇ¢éläpÇï`âÊÇ∑ÇÈ)
-	//Vector2D t1 = location - (collision.box_size / 2.0f);
-	//Vector2D br = location + (collision.box_size / 2.0f);
-	//// ê¬êFÇÃéläpÇï`âÊ
-	//DrawBoxAA(t1.x, t1.y, br.x, br.y, GetColor(0, 255, 255), TRUE);
-	//SetFontSize(15);
-	//DrawString(location.x,location.y, "2", GetColor(0, 0, 0), TRUE);
 }
 
-void Enemy2::Finalize()
+void Enemy5::Finalize()
 {
-	// DeleteSoundMem(soundseffect1);
-	// DeleteSoundMem(soundseffect);
-	// DeleteSoundMem(soundseffect[0]);
-	// DeleteSoundMem(soundseffect[1]);
 }
 
-void Enemy2::OnHitCollision(GameObject* hit_object)
+void Enemy5::OnHitCollision(GameObject* hit_object)
 {
 	eObjectType type = hit_object->GetCollision().object_type;
 
@@ -117,8 +110,6 @@ void Enemy2::OnHitCollision(GameObject* hit_object)
 		break;
 	case ePlayerShot:
 		hp -= player_stats.attack_power / 2;
-		// PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
-		// PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eEnemyShot:
 		break;
@@ -132,23 +123,19 @@ void Enemy2::OnHitCollision(GameObject* hit_object)
 		object_manager->CreateGameObject< ExperiencePoints>(this->location);
 		object_manager->DestroyGameObject(this);
 		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
-		// PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
 	}
 }
 
-void Enemy2::Movement(float delta_seconds)
+void Enemy5::Movement(float delta_seconds)
 {
-	//ç∂Ç…ìÆÇ©Ç∑
-	velocity.x = -1.0f;
-	
+	if (location.x <= 1180)
+	{
+		velocity.x = -0.2f;
+	}
+
 	location += velocity * speed * delta_seconds;
 }
 
-void Enemy2::Animation()
+void Enemy5::Animation()
 {
-}
-
-void Enemy2::SetTrans()
-{
-	trans = true;
 }

@@ -30,19 +30,25 @@ Enemy4::~Enemy4()
 void Enemy4::Initialize()
 {
 
-	speed = 15.0f;
+	speed = 20.0f;
 
 	//âÊëúì«Ç›çûÇ›
 	image = LoadGraph("Resource/Images/enemy/ship4.png");
 
-	hp = 3.0;
-
-	location = Vector2D(1300, 600);
+	hp = 4.0;
 
 	point.clear();
-	point.push_back(Vector2D(200, 600));  //ç∂â∫
-	point.push_back(Vector2D(1200, 200));  //âEè„
-	point.push_back(Vector2D(-100, 200));  //ç∂è„
+	point.push_back(Vector2D(600, location.y));
+	if (location.y < 380)
+	{
+		point.push_back(Vector2D(800, location.y + 150));
+		point.push_back(Vector2D(-100, location.y + 150));
+	}
+	else
+	{
+		point.push_back(Vector2D(800, location.y - 150));
+		point.push_back(Vector2D(-100, location.y - 150));
+	}
 
 	timar = 0.0f;
 	spawn_index = 0;
@@ -76,7 +82,7 @@ void Enemy4::Draw(const Vector2D& screeen_offset, bool file_flag) const
 {
 	if (image != -1)
 	{
-		DrawRotaGraphF(location.x, location.y, 1.0f, radian + (-velocity.y / 2), image, TRUE);
+		DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
 	}
 
 	// //âº(îíÇ¢éläpÇï`âÊÇ∑ÇÈ)

@@ -64,10 +64,16 @@ void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 		image_to_draw = shot_image[0];
 		break;
 	case eEnemy2:
-		image_to_draw = shot_image[1];
+		image_to_draw = shot_image[2];
 		break;
 	case eEnemy3:
 		image_to_draw = shot_image[2];
+		break;
+	case eEnemy4:
+		image_to_draw = shot_image[1];
+		break;
+	case eEnemy5:
+		image_to_draw = shot_image[1];
 		break;
 	default:
 		break;
@@ -137,11 +143,26 @@ void EnemyShot::Movement(float delta_seconds)
 
 	switch (shot_type)
 	{
-	case eEnemy1:
+	case eEnemy1:	//真左
 		velocity.x = -1.0f;
 		break;
-	case eEnemy2:
-		velocity.x = -0.5f;
+	case eEnemy2:	//真上
+		velocity.y = -1.0f;
+		break;
+	case eEnemy3:	//真下
+		velocity.y = 1.0f;
+		break;
+	case eEnemy4:	//自機狙い
+		if(location.x > old_player_location.x)
+		{
+			velocity = Tracking(location, old_player_location);
+			old_velocity = velocity;
+		}
+		else
+			velocity = old_velocity;
+		break;
+	case eEnemy5:	//グネグネ
+		velocity.x = -1.2f;
 		birth_count++;
 		if (shot_type == eEnemy2 && birth_count > 800)
 		{
@@ -151,16 +172,6 @@ void EnemyShot::Movement(float delta_seconds)
 			else
 				velocity.y = -1.5f;
 		}
-		break;
-	case eEnemy3:
-		/*if(location.x > old_player_location.x)
-		{
-			velocity = Tracking(location, old_player_location);
-			old_velocity = velocity;
-		}
-		else
-			velocity = old_velocity;*/
-		velocity.y = -1.0f;
 		break;
 	default:
 		break;
