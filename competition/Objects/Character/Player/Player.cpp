@@ -41,8 +41,8 @@ void Player::Initialize()
 	// ‰Â“®«Ý’è
 	is_mobility = true;
 	// ‰¹Œ¹Žæ“¾
-	//soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerShot.mp3");
-	//soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerDamege.mp3");
+	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerShot.mp3");
+	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerDamege.mp3");
 
 	//‰æ‘œ“Ç‚Ýž‚Ý
 	normal_image = rm->GetImages("Resource/Images/player/player.png", 1, 1, 1, 32, 32);

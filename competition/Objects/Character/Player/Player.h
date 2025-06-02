@@ -27,7 +27,7 @@ private:
 	std::vector<int> normal_image;
 	std::vector<int> dead_image;
 	bool is_invincible;
-	int soundseffect[10];
+	int soundseffect[2];
 
 public:
 	bool death_animation_finished;
