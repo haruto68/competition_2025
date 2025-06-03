@@ -175,14 +175,7 @@ void EnemyShot::Movement(float delta_seconds)
 		else
 			velocity = old_velocity;
 		break;
-	case eEnemy7:	//自機上狙い(150.0f)
-		/*if (location.x > old_player_location.x)
-		{
-			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y - 150.0f)) * 2;
-			old_velocity = velocity;
-		}
-		else
-			velocity = old_velocity;*/
+	case eEnemy7:	//上から下にカーブ
 		if (location.x > old_player_location.x)
 		{
 			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y)) * 2;
@@ -192,14 +185,7 @@ void EnemyShot::Movement(float delta_seconds)
 		else
 			velocity = old_velocity;
 		break;
-	case eEnemy8:	//自機下狙い(150.0f)
-		/*if (location.x > old_player_location.x)
-		{
-			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y + 150.0f)) * 2;
-			old_velocity = velocity;
-		}
-		else
-			velocity = old_velocity;*/
+	case eEnemy8:	//下から上にカーブ
 		if (location.x > old_player_location.x)
 		{
 			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y)) * 2;

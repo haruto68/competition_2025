@@ -31,6 +31,9 @@ Player::~Player()
 
 void Player::Initialize()
 {
+	//リソース管理インスタンス取得
+	ResourceManager* rm = ResourceManager::GetInstance();
+
 	// 座標
 	location = Vector2D(D_WIN_MAX_X - 1080, D_WIN_MAX_Y / 2);
 	// コリジョン設定
@@ -45,17 +48,6 @@ void Player::Initialize()
 	z_layer = 2;
 	// 可動性設定
 	is_mobility = true;
-}
-
-Player::~Player()
-{
-
-}
-
-void Player::Initialize()
-{
-	//リソース管理インスタンス取得
-	ResourceManager* rm = ResourceManager::GetInstance();
 
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerShot.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerDamege.mp3");

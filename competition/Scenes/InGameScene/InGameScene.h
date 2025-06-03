@@ -13,6 +13,7 @@
 #include"../../Objects/Character/Enemy/Enemy5/Enemy5.h"
 #include"../../Objects/Character/Enemy/Enemy6/Enemy6.h"
 #include"../../Objects/Character/Enemy/Enemy7/Enemy7.h"
+#include"../../Objects/Character/Enemy/Enemy8/Enemy8.h"
 #include "../../Objects/Character/Enemy/Boss1/Boss1.h"
 #include "../../Objects/Character/Enemy/Boss2/Boss2.h"
 #include"../../Objects/Shot/PlayerShot/PlayerShot.h"

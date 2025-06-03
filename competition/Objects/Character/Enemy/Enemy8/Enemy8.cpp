@@ -1,6 +1,6 @@
-#include "Enemy7.h"
+#include "Enemy8.h"
 
-Enemy7::Enemy7()
+Enemy8::Enemy8()
 {
 
 	//リソース管理インスタンス取得
@@ -27,20 +27,20 @@ Enemy7::Enemy7()
 	image = rm->GetImages("Resource/Images/enemy/ship1_col2.png")[0];
 }
 
-Enemy7::~Enemy7()
+Enemy8::~Enemy8()
 {
 
 }
 
 
-void Enemy7::Initialize()
+void Enemy8::Initialize()
 {
 	velocity.x = -1.0f;
 
 	hp = 4.0f;
 }
 
-void Enemy7::Update(float delta_seconds)
+void Enemy8::Update(float delta_seconds)
 {
 	Movement(delta_seconds);
 	Animation();
@@ -52,9 +52,9 @@ void Enemy7::Update(float delta_seconds)
 	if (shot_timer >= shot_cooldown)
 	{
 		shot = object_manager->CreateGameObject<EnemyShot>(this->location);
-		shot->SetShotType(eEnemy5);
+		shot->SetShotType(eEnemy7);
 		shot = object_manager->CreateGameObject<EnemyShot>(this->location);
-		shot->SetShotType(eEnemy6);
+		shot->SetShotType(eEnemy8);
 		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 
 		//タイマーリセット
@@ -87,7 +87,7 @@ void Enemy7::Update(float delta_seconds)
 
 }
 
-void Enemy7::Draw(const Vector2D& screeen_offset, bool file_flag) const
+void Enemy8::Draw(const Vector2D& screeen_offset, bool file_flag) const
 {
 	if (image != -1)
 	{
@@ -95,12 +95,12 @@ void Enemy7::Draw(const Vector2D& screeen_offset, bool file_flag) const
 	}
 }
 
-void Enemy7::Finalize()
+void Enemy8::Finalize()
 {
 
 }
 
-void Enemy7::OnHitCollision(GameObject* hit_object)
+void Enemy8::OnHitCollision(GameObject* hit_object)
 {
 	eObjectType type = hit_object->GetCollision().object_type;
 
@@ -131,7 +131,7 @@ void Enemy7::OnHitCollision(GameObject* hit_object)
 	}
 }
 
-void Enemy7::Movement(float delta_seconds)
+void Enemy8::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
 
@@ -143,7 +143,7 @@ void Enemy7::Movement(float delta_seconds)
 	location += velocity * speed * delta_seconds;
 }
 
-void Enemy7::Animation()
+void Enemy8::Animation()
 {
 
 }

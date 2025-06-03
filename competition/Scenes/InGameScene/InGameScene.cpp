@@ -10,7 +10,7 @@ InGameScene::InGameScene() :
 	level_up_ui(),
 	hp_ui(),
 	level_ui(),
-	stage_level(3),
+	stage_level(1),
 	back_ground_image(),
 	back_ground_location(0),
 	planets_image(),
@@ -412,7 +412,7 @@ void InGameScene::EnemyManager(const float& delta_second)
 				enemy_random_y = rand() % 4 + 1;
 				pattern_timer = 0.0f;
 			}
-			Spawn3();
+			//Spawn3();
 		}
 	}
 	TestSpawn();
@@ -443,7 +443,9 @@ void InGameScene::TestSpawn()
 	else if (input->GetKeyUp(KEY_INPUT_7))
 		object_manager->CreateGameObject<Enemy6>(Vector2D(1300, y_center));
 	else if (input->GetKeyUp(KEY_INPUT_8))
-		object_manager->CreateGameObject<Boss1>(Vector2D(1200, y_center));
+		object_manager->CreateGameObject<Enemy7>(Vector2D(1200, y_center));
+	else if (input->GetKeyUp(KEY_INPUT_9))
+		object_manager->CreateGameObject<Enemy8>(Vector2D(1200, y_center));
 }
 
 //ŽG‹›¶¬1
@@ -545,7 +547,6 @@ void InGameScene::Spawn3()
 
 	int y_random = (150 * enemy_random_y) + 5;
 
-	enemy_random = 1;
 	switch (enemy_random)
 	{
 	case 0:
@@ -554,11 +555,15 @@ void InGameScene::Spawn3()
 		if (pattern_timer >= 1.0f)
 		{
 			pattern_timer = 0.0f;
-			object_manager->CreateGameObject<Enemy7>(Vector2D(1300, y_center));
+			object_manager->CreateGameObject<Enemy7>(Vector2D(1300, (150 * 1) + 5));
 		}
 		break;
 	case 2:	//
-		
+		if (pattern_timer >= 1.0f)
+		{
+			pattern_timer = 0.0f;
+			object_manager->CreateGameObject<Enemy8>(Vector2D(1300, (150 * 4) + 5));
+		}
 		break;
 	case 3:	//
 		
