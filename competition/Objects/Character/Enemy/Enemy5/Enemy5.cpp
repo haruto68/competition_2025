@@ -38,12 +38,12 @@ void Enemy5::Initialize()
 	speed = 200.0f;
 
 	//‰æ‘œ“Ç‚Ýž‚Ý
-	image = LoadGraph("Resource/Images/enemy/ship5.png");
+	image = LoadGraph("Resource/Images/enemy/ship21.png");
 
 	// ‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
-	hp = 16.0f;
+	hp = 11.0f;
 
 	velocity.x = -0.8f;
 }
