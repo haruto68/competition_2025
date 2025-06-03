@@ -11,7 +11,15 @@ Player::Player() :
 	invincible_timer(0.0f),
 	drone(nullptr),
 	old_location(),
-	soundseffect()
+	soundseffect(),
+	blink_timer(0.0f),
+	is_visible(true),
+	blink_interval(0.1f),
+	death_timer(0.0f),
+	death_image_index(0),
+	death_image_count(9),
+	death_animation_interval(0.1f),
+	death_animation_finished(false)
 {
 
 }
@@ -46,7 +54,13 @@ void Player::Initialize()
 
 	//画像読み込み
 	normal_image = rm->GetImages("Resource/Images/player/player.png", 1, 1, 1, 32, 32);
-	dead_image = rm->GetImages("Resource/Images/player/Player_death_image.png", 9, 3, 3, 96, 96);
+	dead_image = rm->GetImages("Resource/Images/player/Player_death_image.png", 9, 3, 3, 32, 30);
+
+	if (dead_image[0] == 0)
+	{
+		DxLib_End();
+	}
+
 	image = normal_image[0];
 }
 
@@ -57,7 +71,7 @@ void Player::Update(float delta_seconds)
 	Animation(delta_seconds);
 
 	// 無敵状態の更新
-	if (is_invincible)
+	if (is_invincible == true)
 	{
 		invincible_timer -= delta_seconds;
 		if (invincible_timer <= 0.0f)
@@ -117,14 +131,15 @@ void Player::Update(float delta_seconds)
 void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 
-	if (this->is_dead)
+	if (this->is_visible)
 	{
-
+		if (image != -1)
+		{
+			DrawRotaGraphF(location.x, location.y, 2.0f, 0.0f, image, TRUE);
+		}
 	}
-	else if (this->is_visible)
+	else if (this->is_dead)
 	{
-		// 通常の描画処理
-
 		if (image != -1)
 		{
 			DrawRotaGraphF(location.x, location.y, 2.0f, 0.0f, image, TRUE);
@@ -344,28 +359,11 @@ void Player::Movement(float delta_seconds)
 
 void Player::Animation(float delta_seconds)
 {
-	static float blink_timer = 0.0f;
-	static bool is_visible = true;
-	float blink_interval = 0.1f;
+	// 爆発アニメーションの更新
 
-	static bool is_dead = false;
-	static float death_timer = 0.0f;
-	static int death_image_index = 0;
-	int death_image_count = 9;
-	float death_animation_interval = 0.1f;
-	static bool death_animation_finished = false;
-
-	// プレイヤー死亡時の処理
 	if (player_stats.life_count <= 0)
 	{
-		is_dead = true;
-	}
-
-	if (is_dead)
-	{
 		death_timer += delta_seconds;
-
-		// 爆発アニメーションの更新
 		if (death_timer >= death_animation_interval)
 		{
 			death_image_index++;
@@ -374,8 +372,14 @@ void Player::Animation(float delta_seconds)
 			// アニメーション終了
 			if (death_image_index >= death_image_count)
 			{
-				death_image_index = death_image_count - 1;
-				death_animation_finished = true;
+				death_image_index = death_image_count - 1; // 最後の画像を維持
+				death_animation_finished = true;         // アニメーション終了フラグを立てる
+
+				//image = normal_image[0]; // アニメーション終了後に通常画像に戻す (必要に応じて)
+			}
+			else
+			{
+				image = dead_image[death_image_index]; // 現在の爆発画像を設定
 			}
 		}
 	}
@@ -391,22 +395,14 @@ void Player::Animation(float delta_seconds)
 				is_visible = !is_visible;
 				blink_timer -= blink_interval;
 			}
-
-			// 描画フラグを設定
-			this->is_visible = is_visible;
 		}
 		else
 		{
 			// 無敵時間でない場合は、常に表示
-			this->is_visible = true;
+			is_visible = true;
 		}
 	}
-
-	this->is_dead = is_dead;
-	this->death_image_index = death_image_index; 
-	this->death_animation_finished = death_animation_finished;
 }
-
 void Player::AddExperience(float exp)
 {
 	player_stats.current_exp += exp;
