@@ -242,7 +242,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 	//リザルトシーンへ遷移
 	if (input->GetKeyUp(KEY_INPUT_SPACE) ||
-		player->GetPlayerStats().life_count <= 0/* && player->death_animation_finished*/)
+		player->GetPlayerStats().life_count <= 0 && player->death_animation_finished)
 	{
 		return eSceneType::eResult;
 	}	

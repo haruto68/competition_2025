@@ -11,16 +11,12 @@ Enemy4::Enemy4()
 	collision.object_type = eObjectType::eEnemy;					//オブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayer);		//ぶつかるオブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayerShot);	//ぶつかるオブジェクトのタイプ
-
+	
 	// 画像設定
 	// レイヤー設定
 	z_layer = 2;
 	// 可動性設定
 	is_mobility = true;
-
-	// 音源取得(0: 敵が破壊時の音 1: 敵が弾を撃った時の音)
-	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
-	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 
 	//画像読み込み
 	image = rm->GetImages("Resource/Images/enemy/ship4.png")[0];
@@ -35,7 +31,13 @@ void Enemy4::Initialize()
 
 	speed = 20.0f;
 
-	hp = 4.0;
+	//画像読み込み
+	image = LoadGraph("Resource/Images/enemy/ship4.png");
+
+	// 音源取得(0: 敵が破壊時の音 1: 敵が弾を撃った時の音)
+	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
+	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+	hp = 10.0;
 
 	point.clear();
 	point.push_back(Vector2D(600, location.y));
@@ -94,7 +96,9 @@ void Enemy4::Draw(const Vector2D& screeen_offset, bool file_flag) const
 
 void Enemy4::Finalize()
 {
-
+	// DeleteSoundMem(soundseffect);
+	// DeleteSoundMem(soundseffect[0]);
+	// DeleteSoundMem(soundseffect[1]);
 }
 
 void Enemy4::OnHitCollision(GameObject* hit_object)
@@ -124,6 +128,7 @@ void Enemy4::OnHitCollision(GameObject* hit_object)
 		object_manager->CreateGameObject< ExperiencePoints>(this->location);
 		object_manager->DestroyGameObject(this);
 		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
+		// PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
 	}
 }
 

@@ -17,11 +17,7 @@ Enemy3::Enemy3()
 	z_layer = 2;
 	// ‰Â“®«Ý’è
 	is_mobility = true;
-	// ‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
-	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
-	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 
-	//‰æ‘œ“Ç‚Ýž‚Ý
 	image = rm->GetImages("Resource/Images/enemy/ship.png")[0];
 }
 
@@ -34,7 +30,9 @@ void Enemy3::Initialize()
 	
 	speed = 200.0f;
 
-	
+	// ‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
+	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
+	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 
 	hp = 3.0;
 }
@@ -61,7 +59,10 @@ void Enemy3::Draw(const Vector2D& screeen_offset, bool file_flag) const
 
 void Enemy3::Finalize()
 {
-	
+	// DeleteSoundMem(soundseffect);
+	// DeleteSoundMem(soundseffect1);
+	// DeleteSoundMem(soundseffect[0]);
+	// DeleteSoundMem(soundseffect[1]);
 }
 
 void Enemy3::OnHitCollision(GameObject* hit_object)
@@ -79,6 +80,7 @@ void Enemy3::OnHitCollision(GameObject* hit_object)
 	case ePlayerShot:
 		hp -= player_stats.attack_power / 2;
 		// PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
+		// PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eEnemyShot:
 		break;
@@ -92,6 +94,7 @@ void Enemy3::OnHitCollision(GameObject* hit_object)
 		object_manager->CreateGameObject< ExperiencePoints>(this->location);
 		object_manager->DestroyGameObject(this);
 		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
+		// PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
 	}
 }
 

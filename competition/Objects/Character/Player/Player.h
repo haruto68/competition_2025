@@ -12,6 +12,7 @@ protected:
 	bool is_visible;
 	int death_image_index;
 
+
 private:
 	float screen_velocity;		// ƒXƒNƒŠ[ƒ“ˆÚ“®—Ê
 
@@ -24,11 +25,21 @@ private:
 	Drone* drone;
 	Vector2D old_location[20];
 
-	int image;
+	std::vector<int> normal_image;
+	std::vector<int> dead_image;
 	bool is_invincible;
-	int soundseffect[10];
+	int soundseffect[2];
+
+	float blink_timer;
+	float blink_interval;
+
+	float death_timer;
+	int death_image_count;
+	float death_animation_interval;
+
 
 public:
+
 	bool death_animation_finished;
 
 public:
