@@ -34,6 +34,9 @@ Player::Player() :
 	// ‰¹Œ¹æ“¾
 	//soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerShot.mp3");
 	//soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerDamege.mp3");
+
+	//‰æ‘œ“Ç‚İ‚İ
+	image = rm->GetImages("Resource/Images/player/player.png")[0];
 }
 
 Player::~Player()
@@ -43,9 +46,6 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	//‰æ‘œ“Ç‚İ‚İ
-	image = LoadGraph("Resource/Images/player/player.png");
-
 
 }
 

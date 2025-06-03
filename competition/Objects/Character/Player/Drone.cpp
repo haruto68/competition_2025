@@ -35,8 +35,7 @@ Drone::~Drone()
 
 void Drone::Initialize()
 {
-	//‰æ‘œ“Ç‚İ‚İ
-	//image = LoadGraph("Resource/Images/player/player.png");
+
 }
 
 void Drone::Update(float delta_seconds)

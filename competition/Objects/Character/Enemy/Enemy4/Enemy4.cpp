@@ -21,6 +21,9 @@ Enemy4::Enemy4()
 	// ‰¹Œ¹æ“¾(0: “G‚ª”j‰ó‚Ì‰¹ 1: “G‚ª’e‚ğŒ‚‚Á‚½‚Ì‰¹)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+
+	//‰æ‘œ“Ç‚İ‚İ
+	image = rm->GetImages("Resource/Images/enemy/ship4.png")[0];
 }
 
 Enemy4::~Enemy4()
@@ -31,9 +34,6 @@ void Enemy4::Initialize()
 {
 
 	speed = 20.0f;
-
-	//‰æ‘œ“Ç‚İ‚İ
-	image = LoadGraph("Resource/Images/enemy/ship4.png");
 
 	hp = 4.0;
 

@@ -19,6 +19,9 @@ Boss1::Boss1()
 	//Å‘åHPİ’è
 	max_hp = 150;
 	hp = float(max_hp);
+
+	//‰æ‘œ“Ç‚İ‚İ
+	image = rm->GetImages("Resource/Images/enemy/ship3.png")[0];
 }
 
 Boss1::~Boss1()
@@ -27,8 +30,7 @@ Boss1::~Boss1()
 
 void Boss1::Initialize()
 {
-	//‰æ‘œ“Ç‚İ‚İ
-	image = LoadGraph("Resource/Images/enemy/ship3.png");
+	
 }
 
 void Boss1::Update(float delta_seconds)

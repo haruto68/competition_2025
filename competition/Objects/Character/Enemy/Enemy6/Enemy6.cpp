@@ -23,6 +23,8 @@ Enemy6::Enemy6()
 	// 音源取得(0: 敵が破壊時の音 1: 敵が弾を撃った時の音)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+
+	image = rm->GetImages("Resource/Images/enemy/ship1_col2.png")[0];
 }
 
 Enemy6::~Enemy6()
@@ -42,18 +44,12 @@ void Enemy6::Initialize()
 	velocity.x = -0.3f;
 
 	hp = 4.0f;
-
-	//画像読み込み
-	image = LoadGraph("Resource/Images/enemy/ship1_col2.png");
 }
 
 void Enemy6::Update(float delta_seconds)
 {
 	Movement(delta_seconds);
 	Animation();
-
-	//入力機能インスタンス取得
-	InputManager* input = InputManager::GetInstance();
 
 	//時間経過
 	shot_timer += delta_seconds;

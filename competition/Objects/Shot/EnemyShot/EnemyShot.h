@@ -9,6 +9,8 @@ protected:
 private:
 	float screen_velocity;		// ƒXƒNƒŠ[ƒ“ˆÚ“®—Ê
 
+	int shot_image[3];
+
 	int birth_count;
 
 	Vector2D old_velocity;
@@ -32,7 +34,4 @@ public:
 
 	void Movement(float);
 	void Animation();
-
-	int image;
-	int shot_image[3];
 };

@@ -12,6 +12,7 @@
 #include"../../Objects/Character/Enemy/Enemy4/Enemy4.h"
 #include"../../Objects/Character/Enemy/Enemy5/Enemy5.h"
 #include"../../Objects/Character/Enemy/Enemy6/Enemy6.h"
+#include"../../Objects/Character/Enemy/Enemy7/Enemy7.h"
 #include "../../Objects/Character/Enemy/Boss1/Boss1.h"
 #include "../../Objects/Character/Enemy/Boss2/Boss2.h"
 #include"../../Objects/Shot/PlayerShot/PlayerShot.h"
@@ -85,6 +86,7 @@ private:
 	void TestSpawn();										//テスト生成
 	void Spawn1();											//雑魚生成1
 	void Spawn2();											//雑魚生成2
+	void Spawn3();											//雑魚生成3
 	void BossManager();										//ボス生成管理処理
 
 };

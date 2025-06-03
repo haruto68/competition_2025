@@ -19,6 +19,9 @@ Boss2::Boss2()
 	//Å‘åHPİ’è
 	max_hp = 150;
 	hp = float(max_hp);
+
+	//‰æ‘œ“Ç‚İ‚İ
+	image = rm->GetImages("Resource/Images/enemy/ship3_col2.png")[0];
 }
 
 Boss2::~Boss2()
@@ -33,8 +36,7 @@ void Boss2::Initialize()
 	else
 		velocity.y = 0.7f;
 
-	//‰æ‘œ“Ç‚İ‚İ
-	image = LoadGraph("Resource/Images/enemy/ship3_col2.png");
+	
 }
 
 void Boss2::Update(float delta_seconds)

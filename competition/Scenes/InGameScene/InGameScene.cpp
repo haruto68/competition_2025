@@ -10,7 +10,7 @@ InGameScene::InGameScene() :
 	level_up_ui(),
 	hp_ui(),
 	level_ui(),
-	stage_level(1),
+	stage_level(3),
 	back_ground_image(),
 	back_ground_location(0),
 	planets_image(),
@@ -278,7 +278,7 @@ void InGameScene::Draw() const
 		obj->Draw(screen_offset, false);
 		c++;
 	}
-
+	DrawFormatString(1100, 100, GetColor(255, 255, 255), "%d", c);
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//UIƒ][ƒ“
@@ -398,6 +398,22 @@ void InGameScene::EnemyManager(const float& delta_second)
 			}
 			Spawn2();
 		}
+		//ƒŒƒxƒ‹3
+		if (stage_level == 3)
+		{
+			if (spawn_timer >= 1.0f)
+			{
+				pattern_timer += delta_second;
+			}
+			if (spawn_timer >= 5.0f)
+			{
+				spawn_timer = 0.0f;
+				enemy_random = rand() % 3 + 1;
+				enemy_random_y = rand() % 4 + 1;
+				pattern_timer = 0.0f;
+			}
+			Spawn3();
+		}
 	}
 	TestSpawn();
 }
@@ -514,6 +530,38 @@ void InGameScene::Spawn2()
 			pattern_timer = 0.0f;
 			object_manager->CreateGameObject<Enemy6>(Vector2D(1300, y_random));
 		}
+		break;
+	default:
+		break;
+	}
+}
+
+//ŽG‹›¶¬3
+void InGameScene::Spawn3()
+{
+	int y_top = 95;
+	int y_center = 380;
+	int y_botom = 665;
+
+	int y_random = (150 * enemy_random_y) + 5;
+
+	enemy_random = 1;
+	switch (enemy_random)
+	{
+	case 0:
+		break;
+	case 1:	//
+		if (pattern_timer >= 1.0f)
+		{
+			pattern_timer = 0.0f;
+			object_manager->CreateGameObject<Enemy7>(Vector2D(1300, y_center));
+		}
+		break;
+	case 2:	//
+		
+		break;
+	case 3:	//
+		
 		break;
 	default:
 		break;

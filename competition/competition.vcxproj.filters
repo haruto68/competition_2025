@@ -33,6 +33,7 @@
     <ClCompile Include="Objects\Character\Enemy\Boss2\Boss2.cpp" />
     <ClCompile Include="Objects\Character\Enemy\Enemy5\Enemy5.cpp" />
     <ClCompile Include="Objects\Character\Enemy\Enemy6\Enemy6.cpp" />
+    <ClCompile Include="Objects\Character\Enemy\Enemy7\Enemy7.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Objects\Character\Enemy\Boss1\Boss1.h" />
@@ -72,5 +73,6 @@
     <ClInclude Include="Objects\Character\Enemy\Boss2\Boss2.h" />
     <ClInclude Include="Objects\Character\Enemy\Enemy5\Enemy5.h" />
     <ClInclude Include="Objects\Character\Enemy\Enemy6\Enemy6.h" />
+    <ClInclude Include="Objects\Character\Enemy\Enemy7\Enemy7.h" />
   </ItemGroup>
 </Project>

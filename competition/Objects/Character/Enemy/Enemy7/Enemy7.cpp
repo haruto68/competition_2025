@@ -1,7 +1,8 @@
-#include "Enemy2.h"
+#include "Enemy7.h"
 
-Enemy2::Enemy2()
+Enemy7::Enemy7()
 {
+
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
 
@@ -11,92 +12,99 @@ Enemy2::Enemy2()
 	collision.object_type = eObjectType::eEnemy;					//オブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayer);		//ぶつかるオブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayerShot);	//ぶつかるオブジェクトのタイプ
+	// 初期スピード
+	// speed=200.0f;
 	// 画像設定
 	// レイヤー設定
 	z_layer = 2;
 	// 可動性設定
 	is_mobility = true;
+
 	// 音源取得(0: 敵が破壊時の音 1: 敵が弾を撃った時の音)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
-	
-	//画像読み込み
-	image = rm->GetImages("Resource/Images/enemy/cannon.png")[0];
+
+	image = rm->GetImages("Resource/Images/enemy/ship1_col2.png")[0];
 }
 
-Enemy2::~Enemy2()
+Enemy7::~Enemy7()
 {
+
 }
 
-void Enemy2::Initialize()
+
+void Enemy7::Initialize()
 {
-	//　仮敵2のサイズ(大きさ)
-	collision.box_size = Vector2D(20.0f, 20.0f);
-	//box_size = Vector2D(20.0fs, 20.0f);
-	// 仮テキの速さ
-	speed = 200.0f;
+	velocity.x = -1.0f;
 
-	hp = 2.0;
-	
+	hp = 4.0f;
 }
 
-void Enemy2::Update(float delta_seconds)
+void Enemy7::Update(float delta_seconds)
 {
 	Movement(delta_seconds);
 	Animation();
 
-	float shot_cooldown = 0.5f;
-
+	EnemyShot* shot;
 	//時間経過
 	shot_timer += delta_seconds;
 
 	if (shot_timer >= shot_cooldown)
 	{
-		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
-		if (!trans)
-			shot->SetShotType(eEnemy2);
-		else
-			shot->SetShotType(eEnemy3);
-
+		/*shot = object_manager->CreateGameObject<EnemyShot>(this->location);
+		shot->SetShotType(eEnemy5);
+		shot = object_manager->CreateGameObject<EnemyShot>(this->location);
+		shot->SetShotType(eEnemy6);*/
+		shot = object_manager->CreateGameObject<EnemyShot>(this->location);
+		shot->SetShotType(eEnemy7);
+		shot = object_manager->CreateGameObject<EnemyShot>(this->location);
+		shot->SetShotType(eEnemy8);
 		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 
 		//タイマーリセット
 		shot_timer = 0.0f;
+
+		int random_cool = rand() % 5;
+
+		switch (random_cool)
+		{
+		case 0:
+			shot_cooldown = 1.4f;
+			break;
+		case 1:
+			shot_cooldown = 1.4f;
+			break;
+		case 2:
+			shot_cooldown = 1.4f;
+			break;
+		case 3:
+			shot_cooldown = 1.5f;
+			break;
+		case 4:
+			shot_cooldown = 1.6f;
+			break;
+		default:
+			break;
+		}
+		shot_cooldown = 3.0f;
 	}
+
 }
 
-void Enemy2::Draw(const Vector2D&, bool) const
+void Enemy7::Draw(const Vector2D& screeen_offset, bool file_flag) const
 {
-	
 	if (image != -1)
 	{
-		float angle;
-		if (trans == false)
-		{
-			angle = 0.0f;
-		}
-		else
-		{
-			angle = 3.14 / 1.0f;
-		}
-		DrawRotaGraphF(location.x, location.y, 1.0f, angle, image, TRUE);
+		DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
 	}
-	
-
-	//// 仮(白い四角を描画する)
-	//Vector2D t1 = location - (collision.box_size / 2.0f);
-	//Vector2D br = location + (collision.box_size / 2.0f);
-	//// 青色の四角を描画
-	//DrawBoxAA(t1.x, t1.y, br.x, br.y, GetColor(0, 255, 255), TRUE);
-	//SetFontSize(15);
-	//DrawString(location.x,location.y, "2", GetColor(0, 0, 0), TRUE);
 }
 
-void Enemy2::Finalize()
+void Enemy7::Finalize()
 {
+
 }
 
-void Enemy2::OnHitCollision(GameObject* hit_object)
+void Enemy7::OnHitCollision(GameObject* hit_object)
 {
 	eObjectType type = hit_object->GetCollision().object_type;
 
@@ -110,7 +118,7 @@ void Enemy2::OnHitCollision(GameObject* hit_object)
 		break;
 	case ePlayerShot:
 		hp -= player_stats.attack_power / 2;
-		// PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
+		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eEnemyShot:
 		break;
@@ -127,19 +135,19 @@ void Enemy2::OnHitCollision(GameObject* hit_object)
 	}
 }
 
-void Enemy2::Movement(float delta_seconds)
+void Enemy7::Movement(float delta_seconds)
 {
-	//左に動かす
-	velocity.x = -1.0f;
-	
+	float speed = 200.0f;
+
+	if (location.x <= 1180)
+	{
+		velocity.x = -0.075f;
+	}
+
 	location += velocity * speed * delta_seconds;
 }
 
-void Enemy2::Animation()
+void Enemy7::Animation()
 {
-}
 
-void Enemy2::SetTrans()
-{
-	trans = true;
 }

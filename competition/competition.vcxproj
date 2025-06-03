@@ -140,6 +140,7 @@
     <ClCompile Include="Objects\Character\Enemy\Enemy1\Enemy1.cpp" />
     <ClCompile Include="Objects\Character\Enemy\Enemy5\Enemy5.cpp" />
     <ClCompile Include="Objects\Character\Enemy\Enemy6\Enemy6.cpp" />
+    <ClCompile Include="Objects\Character\Enemy\Enemy7\Enemy7.cpp" />
     <ClCompile Include="Objects\Character\Enemy\EnemyBase.cpp" />
     <ClCompile Include="Objects\Character\Player\Drone.cpp" />
     <ClCompile Include="Objects\Character\Player\Player.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Objects\Character\Enemy\Enemy1\Enemy1.h" />
     <ClInclude Include="Objects\Character\Enemy\Enemy5\Enemy5.h" />
     <ClInclude Include="Objects\Character\Enemy\Enemy6\Enemy6.h" />
+    <ClInclude Include="Objects\Character\Enemy\Enemy7\Enemy7.h" />
     <ClInclude Include="Objects\Character\Enemy\EnemyBase.h" />
     <ClInclude Include="Objects\Character\Player\Drone.h" />
     <ClInclude Include="Objects\Character\Player\Player.h" />
