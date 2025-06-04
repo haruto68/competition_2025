@@ -162,10 +162,10 @@ void Player::OnHitCollision(GameObject* hit_object)
 	case eNone:
 		break;
 	case eEnemy:
-		//if (is_invincible)
-		//{
-		//	return;
-		//}
+		if (is_invincible)
+		{
+			return;
+		}
 
 		player_stats.life_count -= 1.0f;
 		is_invincible = true;
