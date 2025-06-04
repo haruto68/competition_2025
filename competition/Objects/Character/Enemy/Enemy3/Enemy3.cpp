@@ -49,12 +49,6 @@ void Enemy3::Draw(const Vector2D& screeen_offset, bool file_flag) const
 	{
 		DrawRotaGraphF(location.x, location.y, 1.0f, radian + (-velocity.y / 2), image, TRUE);
 	}
-
-	// ‰¼(”’‚¢ŽlŠp‚ð•`‰æ‚·‚é)
-	/*Vector2D t1 = location - (collision.box_size / 2.0f);
-	Vector2D br = location + (collision.box_size / 2.0f);
-	DrawBoxAA(t1.x, t1.y, br.x, br.y, GetColor(255, 255, 255), TRUE);
-	DrawString(t1.x, t1.y, "3", GetColor(0, 0, 0), TRUE);*/
 }
 
 void Enemy3::Finalize()

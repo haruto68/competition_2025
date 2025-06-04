@@ -24,7 +24,7 @@ Enemy7::Enemy7()
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 
-	image = rm->GetImages("Resource/Images/enemy/ship1_col2.png")[0];
+	image = rm->GetImages("Resource/Images/enemy/ship21.png")[0];
 }
 
 Enemy7::~Enemy7()
@@ -35,9 +35,15 @@ Enemy7::~Enemy7()
 
 void Enemy7::Initialize()
 {
-	velocity.x = -1.0f;
+	int random = rand() % 2;
+	if (random == 0)
+		velocity.y = -1.0f;
+	else
+		velocity.y = 1.0f;
 
-	hp = 4.0f;
+	velocity.x = -1.2f;
+
+	hp = 10.0f;
 }
 
 void Enemy7::Update(float delta_seconds)
@@ -49,12 +55,12 @@ void Enemy7::Update(float delta_seconds)
 	//時間経過
 	shot_timer += delta_seconds;
 
-	if (shot_timer >= shot_cooldown)
+	if (shot_timer >= shot_cooldown && location.x > player_location.x + 200.0f)
 	{
 		shot = object_manager->CreateGameObject<EnemyShot>(this->location);
-		shot->SetShotType(eEnemy5);
+		shot->SetShotType(eEnemy10);
 		shot = object_manager->CreateGameObject<EnemyShot>(this->location);
-		shot->SetShotType(eEnemy6);
+		shot->SetShotType(eEnemy11);
 		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 
 		//タイマーリセット
@@ -68,21 +74,20 @@ void Enemy7::Update(float delta_seconds)
 			shot_cooldown = 1.4f;
 			break;
 		case 1:
-			shot_cooldown = 1.4f;
-			break;
-		case 2:
-			shot_cooldown = 1.4f;
-			break;
-		case 3:
 			shot_cooldown = 1.5f;
 			break;
-		case 4:
+		case 2:
 			shot_cooldown = 1.6f;
+			break;
+		case 3:
+			shot_cooldown = 1.7f;
+			break;
+		case 4:
+			shot_cooldown = 1.8f;
 			break;
 		default:
 			break;
 		}
-		shot_cooldown = 3.0f;
 	}
 
 }
@@ -135,9 +140,18 @@ void Enemy7::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
 
-	if (location.x <= 1180)
+	if (location.x >= 1290)
+		velocity.x = -0.1f;
+	else
+		velocity.x = -0.85f;
+
+	if ((location.y + velocity.y) <= (65.0f + collision.box_size.y) || (location.y + velocity.y) >= (680 - collision.box_size.y))
 	{
-		velocity.x = -0.075f;
+
+		if (velocity.y < 0)
+			velocity.y = 1.0f;
+		else
+			velocity.y = -1.0f;
 	}
 
 	location += velocity * speed * delta_seconds;

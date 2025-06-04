@@ -37,7 +37,11 @@ EnemyShot::~EnemyShot()
 
 void EnemyShot::Initialize()
 {
-	
+	turn_target[0] = Vector2D(location.x - 1200, location.y);
+	turn_target[1] = Vector2D(location.x - 1200, location.y - 200);
+	turn_target[2] = Vector2D(location.x - 1200, location.y + 200);
+	turn_target[3] = Vector2D(location.x - 600, location.y);
+	turn_target[4] = Vector2D(location.x - 600, location.y);
 }
 
 void EnemyShot::Update(float delta_seconds)
@@ -136,7 +140,6 @@ void EnemyShot::Movement(float delta_seconds)
 	// 移動方向
 	Vector2D direction = 0.0f;
 
-
 	switch (shot_type)
 	{
 	case eEnemy1:	//真左
@@ -196,16 +199,62 @@ void EnemyShot::Movement(float delta_seconds)
 			velocity = old_velocity;
 		break;
 	case eEnemy9:	//グネグネ
-		velocity.x = -1.2f;
-		birth_count++;
-		if (birth_count > 80)
+		velocity.x = -1.0f;
+		//
+		if (turn_flag[1])
+			velocity.y += 0.01f;
+		else
+			velocity.y -= 0.01f;
+		//
+		if (velocity.y > 1.0f)
+			turn_flag[1] = false;
+		else if (velocity.y < -1.0f)
+			turn_flag[1] = true;
+		break;
+	case eEnemy10:
+		if (location.x > old_player_location.x)
 		{
-			birth_count = 0;
-			if (velocity.y < 0)
-				velocity.y = 1.5f;
-			else
-				velocity.y = -1.5f;
+			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y - 150.0f)) * 2;
+			old_velocity = velocity;
 		}
+		else
+			velocity = old_velocity;
+		break;
+	case eEnemy11:
+		if (location.x > old_player_location.x)
+		{
+			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y + 150.0f)) * 2;
+			old_velocity = velocity;
+		}
+		else
+			velocity = old_velocity;
+		break;
+	case eEnemy12:
+		if (location.x > old_player_location.x)
+		{
+			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y - 225.0f)) * 2;
+			old_velocity = velocity;
+		}
+		else
+			velocity = old_velocity;
+		break;
+	case eEnemy13:
+		if (location.x > old_player_location.x)
+		{
+			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y + 225.0f)) * 2;
+			old_velocity = velocity;
+		}
+		else
+			velocity = old_velocity;
+			break;
+	case eEnemy14:	//自機狙い
+		if (location.x > old_player_location.x)
+		{
+			velocity = Tracking(location, old_player_location) * 2;
+			old_velocity = velocity;
+		}
+		else
+			velocity = old_velocity;
 		break;
 	default:
 		break;

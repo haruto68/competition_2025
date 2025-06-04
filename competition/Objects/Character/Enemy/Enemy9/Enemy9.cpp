@@ -1,9 +1,8 @@
-#include "Enemy8.h"
+#include "Enemy9.h"
 
-Enemy8::Enemy8() :
-	target(0),
-	turn_flag(false),
-	vel2(0.0f)
+Enemy9::Enemy9() :
+	target(4),
+	turn(false)
 {
 
 	//リソース管理インスタンス取得
@@ -11,7 +10,7 @@ Enemy8::Enemy8() :
 
 	// コリジョン設定
 	collision.is_blocking = true;
-	collision.box_size = Vector2D(30, 30);							//当たり判定の大きさ
+	collision.box_size = Vector2D(60, 60);							//当たり判定の大きさ
 	collision.object_type = eObjectType::eEnemy;					//オブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayer);		//ぶつかるオブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayerShot);	//ぶつかるオブジェクトのタイプ
@@ -27,23 +26,23 @@ Enemy8::Enemy8() :
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 
-	image = rm->GetImages("Resource/Images/enemy/ship23.png")[0];
+	image = rm->GetImages("Resource/Images/enemy/ship22.png")[0];
 }
 
-Enemy8::~Enemy8()
+Enemy9::~Enemy9()
 {
 
 }
 
 
-void Enemy8::Initialize()
+void Enemy9::Initialize()
 {
-	//velocity.x = -1.0f;
+	velocity.x = -1.0f;
 
-	hp = 15.0f;
+	hp = 20.0f;
 }
 
-void Enemy8::Update(float delta_seconds)
+void Enemy9::Update(float delta_seconds)
 {
 	Movement(delta_seconds);
 	Animation();
@@ -51,23 +50,52 @@ void Enemy8::Update(float delta_seconds)
 	EnemyShot* shot;
 	//時間経過
 	shot_timer += delta_seconds;
-	shot_cooldown = 1.0f;
+	shot_cooldown = 0.25f;
 
 	if (shot_timer >= shot_cooldown)
 	{
-		if (target == 0)
+		switch (target)
 		{
+		case 1:
 			shot = object_manager->CreateGameObject<EnemyShot>(this->location);
-			shot->SetShotType(eEnemy7);
-			target = 1;
-		}
-		else
-		{
+			shot->SetShotType(eEnemy12);
+			turn = false;
+			break;
+		case 2:
 			shot = object_manager->CreateGameObject<EnemyShot>(this->location);
-			shot->SetShotType(eEnemy8);
-			target = 0;
+			shot->SetShotType(eEnemy10);
+			break;
+		case 3:
+			shot = object_manager->CreateGameObject<EnemyShot>(this->location);
+			shot->SetShotType(eEnemy5);
+			break;
+		case 4:
+			shot = object_manager->CreateGameObject<EnemyShot>(this->location);
+			shot->SetShotType(eEnemy14);
+			break;
+		case 5:
+			shot = object_manager->CreateGameObject<EnemyShot>(this->location);
+			shot->SetShotType(eEnemy6);
+			break;
+		case 6:
+			shot = object_manager->CreateGameObject<EnemyShot>(this->location);
+			shot->SetShotType(eEnemy11);
+			break;
+		case 7:
+			shot = object_manager->CreateGameObject<EnemyShot>(this->location);
+			shot->SetShotType(eEnemy13);
+			turn = true;
+			break;
+		default:
+			break;
 		}
+
 		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
+
+		if (turn)
+			target--;
+		else
+			target++;
 
 		//タイマーリセット
 		shot_timer = 0.0f;
@@ -75,20 +103,20 @@ void Enemy8::Update(float delta_seconds)
 
 }
 
-void Enemy8::Draw(const Vector2D& screeen_offset, bool file_flag) const
+void Enemy9::Draw(const Vector2D& screeen_offset, bool file_flag) const
 {
 	if (image != -1)
 	{
-		DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
+		DrawRotaGraphF(location.x, location.y, 2.0f, 0.0f, image, TRUE);
 	}
 }
 
-void Enemy8::Finalize()
+void Enemy9::Finalize()
 {
 
 }
 
-void Enemy8::OnHitCollision(GameObject* hit_object)
+void Enemy9::OnHitCollision(GameObject* hit_object)
 {
 	eObjectType type = hit_object->GetCollision().object_type;
 
@@ -119,26 +147,19 @@ void Enemy8::OnHitCollision(GameObject* hit_object)
 	}
 }
 
-void Enemy8::Movement(float delta_seconds)
+void Enemy9::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
 
-	//
-	if (turn_flag)
-		velocity.x += 0.01f;
-	else
-		velocity.x -= 0.01f;
-	//
-	if (velocity.x > 1.5f)
-		turn_flag = false;
-	else if (velocity.x < -1.5f)
-		turn_flag = true;
+	if (location.x <= 1180)
+	{
+		velocity.x = -0.075f;
+	}
 
 	location += velocity * speed * delta_seconds;
-	location.x -= 0.05f;
 }
 
-void Enemy8::Animation()
+void Enemy9::Animation()
 {
 
 }

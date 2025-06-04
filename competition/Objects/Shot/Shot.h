@@ -16,7 +16,12 @@ enum eShotType
 	eEnemy6,	//自機下狙い(75.0f)
 	eEnemy7,	//上から下にカーブ
 	eEnemy8,	//下から上にカーブ
-	eEnemy9		//グネグネ
+	eEnemy9,	//グネグネ
+	eEnemy10,	//自機上狙い(150.0f)
+	eEnemy11,	//自機下狙い(150.0f)
+	eEnemy12,	//自機上狙い(225.0f)
+	eEnemy13,	//自機下狙い(225.0f)
+	eEnemy14,	//自機狙い2
 };
 
 class Shot : public GameObject
@@ -24,6 +29,8 @@ class Shot : public GameObject
 protected:
 	Vector2D velocity = 0.0f;
 	int anime_count = 0;
+	bool turn_flag[2] = { false,false };
+	Vector2D turn_target[5] = {};
 
 	eShotType shot_type;
 	int shot_power = 0;
