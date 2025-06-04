@@ -19,7 +19,7 @@ struct PlayerStats
 	int Shield_count = 3;
 	int player_level = 1;
 	int player_hp_max = 6;
-	int player_shot_hitrange_up = 0;
+	float player_shot_hitrange_up = 0.0f;
 	int drone_count = 0;
 	bool threeway_flag = false;
 	bool drone_flag = false;

@@ -12,6 +12,7 @@ Player::Player() :
 	drone(nullptr),
 	old_location(),
 	soundseffect(),
+	is_dead(false),
 	blink_timer(0.0f),
 	is_visible(true),
 	blink_interval(0.1f),
@@ -131,14 +132,14 @@ void Player::Update(float delta_seconds)
 void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 
-	if (this->is_visible)
+	if (is_visible == true)
 	{
 		if (image != -1)
 		{
 			DrawRotaGraphF(location.x, location.y, 2.0f, 0.0f, image, TRUE);
 		}
 	}
-	else if (this->is_dead)
+	else if (is_dead == true)
 	{
 		if (image != -1)
 		{
@@ -161,10 +162,10 @@ void Player::OnHitCollision(GameObject* hit_object)
 	case eNone:
 		break;
 	case eEnemy:
-		if (is_invincible)
-		{
-			return;
-		}
+		//if (is_invincible)
+		//{
+		//	return;
+		//}
 
 		player_stats.life_count -= 1.0f;
 		is_invincible = true;
@@ -227,22 +228,50 @@ void Player::Movement(float delta_seconds)
 	//入力状態によって移動方向を変更する
 	if (leftstick.y > 0.5f || input->GetKey(KEY_INPUT_UP) || input->GetKey(KEY_INPUT_W))		//上移動
 	{
-		direction.y = -1.0f;
+		if (is_dead == true)
+		{
+			direction.y = 0.0f;
+		}
+		else
+		{
+			direction.y = -1.0f;
+		}
 		flip_flag = FALSE;
 	}
 	if (leftstick.y < -0.5f || input->GetKey(KEY_INPUT_DOWN) || input->GetKey(KEY_INPUT_S))	//下移動
 	{
-		direction.y = 1.0f;
+		if (is_dead == true)
+		{
+			direction.y = 0.0f;
+		}
+		else
+		{
+			direction.y = 1.0f;
+		}
 		flip_flag = FALSE;
 	}
 	if (leftstick.x < -0.5f || input->GetKey(KEY_INPUT_LEFT) || input->GetKey(KEY_INPUT_A))	//左移動
 	{
-		direction.x = -1.0f;
+		if (is_dead == true)
+		{
+			direction.x = 0.0f;
+		}
+		else
+		{
+			direction.x = -1.0f;
+		}
 		flip_flag = FALSE;
 	}
 	if (leftstick.x > 0.5f || input->GetKey(KEY_INPUT_RIGHT) || input->GetKey(KEY_INPUT_D))	//右移動
 	{
-		direction.x = 1.0f;
+		if (is_dead == true)
+		{
+			direction.x = 0.0f;
+		}
+		else
+		{
+			direction.x = 1.0f;
+		}
 		flip_flag = FALSE;
 	}
 
@@ -347,14 +376,7 @@ void Player::Movement(float delta_seconds)
 	}
 
 	//位置座標を加速度分減らす
-	if (is_dead == true)
-	{
-		location = 0.0f;
-	}
-	else
-	{
-		location += velocity * speed * delta_seconds;
-	}
+	location += velocity * speed * delta_seconds;
 }
 
 void Player::Animation(float delta_seconds)
@@ -363,6 +385,7 @@ void Player::Animation(float delta_seconds)
 
 	if (player_stats.life_count <= 0)
 	{
+		is_dead =true;
 		death_timer += delta_seconds;
 		if (death_timer >= death_animation_interval)
 		{
@@ -426,8 +449,13 @@ void Player::StatsUp(ePowerUp powerup)
 	switch (powerup)
 	{
 	case ePowerUp::eHp:
-		if(player_stats.life_count < player_stats.player_hp_max)
-		player_stats.life_count += 1.0f;		// HP残量アップ
+		if (player_stats.life_count < player_stats.player_hp_max)
+		{
+			if (is_dead == false)
+			{
+				player_stats.life_count += 1.0f;		// HP残量アップ
+			}
+		}
 		break;
 	case ePowerUp::eDamage:
 		player_stats.attack_power += 1.0f;		// 攻撃力アップ
