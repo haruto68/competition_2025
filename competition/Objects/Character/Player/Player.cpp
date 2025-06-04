@@ -89,7 +89,7 @@ void Player::Update(float delta_seconds)
 	//入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
 
-	if ((InputManager::GetInstance()->GetButton(13) || CheckHitKey(KEY_INPUT_B)) && shot_timer <= 0.0f)
+	if ((InputManager::GetInstance()->GetButton(13) || CheckHitKey(KEY_INPUT_B)) && shot_timer <= 0.0f && is_dead == false)
 	{
 		PlayerShot* shot = object_manager->CreateGameObject<PlayerShot>(this->location);
 		shot->SetShotType(ePlayer1);
@@ -136,7 +136,7 @@ void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	{
 		if (image != -1)
 		{
-			DrawRotaGraphF(location.x, location.y, 2.0f, 0.0f, image, TRUE);
+			DrawRotaGraphF(location.x, location.y, 2.0f, velocity.y / 7, image, TRUE);
 		}
 	}
 	else if (is_dead == true)

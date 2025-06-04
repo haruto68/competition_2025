@@ -15,6 +15,8 @@ private:
 	struct PlayerStats player_stats_copy;
 	float shot_timer;
 	float SHOT_INTERVAL;
+	std::vector<int> drone_image;
+	float image_rotation;
 
 
 public:
@@ -38,14 +40,6 @@ public:
 	{
 		this->player_stats_copy = player_stats;
 	}
-	// プレイヤーによって呼び出され、ドローンに弾を発射させます
-	//void Shoot();
+	void Animation(float);
 
-	// 回転角度を設定する関数
-	void SetRotationAngle(float angle)
-	{
-		rotation_angle = angle;
-	}
-	// 回転角度を取得する関数
-	float GetRotationAngle() const { return rotation_angle; }
 };
