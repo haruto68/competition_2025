@@ -4,14 +4,22 @@
 PlayerShot::PlayerShot() :
 	screen_velocity(0.0f),
 	Color(),
-	Shotmode()
+	Shotmode(),
+	image_size(0.0f)
 {
 
+}
+
+PlayerShot::~PlayerShot()
+{
+
+}
+
+void PlayerShot::Initialize()
+{
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
 
-	// 座標
-	location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
 	// コリジョン設定
 	collision.is_blocking = true;
 	collision.box_size = Vector2D(5 + player_stats.player_shot_hitrange_up, 5 + player_stats.player_shot_hitrange_up);
@@ -22,16 +30,9 @@ PlayerShot::PlayerShot() :
 	z_layer = 2;
 	// 可動性設定
 	is_mobility = true;
-}
 
-PlayerShot::~PlayerShot()
-{
-
-}
-
-void PlayerShot::Initialize()
-{
-
+	bullet_image = rm->GetImages("Resource/Images/player/player_bullet.png", 1, 1, 1, 32, 32);
+	image = bullet_image[0];
 }
 
 void PlayerShot::Update(float delta_seconds)
@@ -41,12 +42,12 @@ void PlayerShot::Update(float delta_seconds)
 	Animation();
 
 	ShotModeChange();
+	image_size = 1.0f + player_stats.player_shot_hitrange_up / 5;
 }
 
 void PlayerShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
-	__super::Draw(0.0f, this->flip_flag);
-	DrawBox((location.x - collision.box_size.x / 2) - player_stats.player_shot_hitrange_up, (location.y - collision.box_size.y / 2) - player_stats.player_shot_hitrange_up, (location.x + collision.box_size.x / 2) + player_stats.player_shot_hitrange_up, (location.y + collision.box_size.y / 2) + player_stats.player_shot_hitrange_up, Color, TRUE);
+	DrawRotaGraphF(location.x, location.y, image_size, 0.0, image, TRUE, this->flip_flag);
 }
 
 void PlayerShot::Finalize()
