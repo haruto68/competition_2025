@@ -1,6 +1,7 @@
 #pragma once
 
-#include"../Shot.h"
+#include "../Shot.h"
+#include "../../Character/Character.h"
 #include "../../Character/Player/PlayerStats.h"
 
 class PlayerShot : public Shot
@@ -14,6 +15,8 @@ private:
 	float attack_power;
 
 	struct PlayerStats player_stats;
+	float image_size;
+	std::vector<int> bullet_image;
 
 public:
 	PlayerShot();

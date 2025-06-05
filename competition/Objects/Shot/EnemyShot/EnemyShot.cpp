@@ -3,6 +3,7 @@
 
 EnemyShot::EnemyShot() :
 	screen_velocity(0.0),
+	shot_image(),
 	birth_count(800),
 	old_velocity(0.0f)
 {
@@ -22,6 +23,11 @@ EnemyShot::EnemyShot() :
 	// 可動性設定
 	is_mobility = true;
 
+	//画像読み込み
+	shot_image[0] = rm->GetImages("Resource/Images/enemy_shot/shot1.png")[0];
+	shot_image[1] = rm->GetImages("Resource/Images/enemy_shot/shot2.png")[0];
+	shot_image[2] = rm->GetImages("Resource/Images/enemy_shot/shot3.png")[0];
+	
 }
 
 EnemyShot::~EnemyShot()
@@ -31,12 +37,11 @@ EnemyShot::~EnemyShot()
 
 void EnemyShot::Initialize()
 {
-	//画像読み込み
-	shot_image[0] = LoadGraph("Resource/Images/enemy_shot/shot1.png");
-
-	shot_image[1] = LoadGraph("Resource/Images/enemy_shot/shot2.png");
-
-	shot_image[2] = LoadGraph("Resource/Images/enemy_shot/shot3.png");
+	turn_target[0] = Vector2D(location.x - 1200, location.y);
+	turn_target[1] = Vector2D(location.x - 1200, location.y - 200);
+	turn_target[2] = Vector2D(location.x - 1200, location.y + 200);
+	turn_target[3] = Vector2D(location.x - 600, location.y);
+	turn_target[4] = Vector2D(location.x - 600, location.y);
 }
 
 void EnemyShot::Update(float delta_seconds)
@@ -50,38 +55,33 @@ void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	__super::Draw(0.0f, this->flip_flag);
 
-	int image_to_draw = -1;
+	int image = -1;
 
 	switch (shot_type)
 	{
-	case ePlayer1:
-		break;
-	case ePlayer2:
-		break;
-	case ePlayer3:
-		break;
 	case eEnemy1:
-		image_to_draw = shot_image[0];
+		image = shot_image[0];
 		break;
 	case eEnemy2:
-		image_to_draw = shot_image[2];
+		image = shot_image[2];
 		break;
 	case eEnemy3:
-		image_to_draw = shot_image[2];
+		image = shot_image[2];
 		break;
 	case eEnemy4:
-		image_to_draw = shot_image[1];
+		image = shot_image[1];
 		break;
 	case eEnemy5:
-		image_to_draw = shot_image[1];
+		image = shot_image[1];
 		break;
 	default:
+		image = shot_image[1];
 		break;
 	}
 
-	if (image_to_draw != -1)
+	if (image != -1)
 	{
-		DrawRotaGraph(location.x, location.y, 1.5, 0, image_to_draw,TRUE);
+		DrawRotaGraph(location.x, location.y, 1.5, 0, image,TRUE);
 	}
 	
 }
@@ -140,7 +140,6 @@ void EnemyShot::Movement(float delta_seconds)
 	// 移動方向
 	Vector2D direction = 0.0f;
 
-
 	switch (shot_type)
 	{
 	case eEnemy1:	//真左
@@ -161,17 +160,101 @@ void EnemyShot::Movement(float delta_seconds)
 		else
 			velocity = old_velocity;
 		break;
-	case eEnemy5:	//グネグネ
-		velocity.x = -1.2f;
-		birth_count++;
-		if (shot_type == eEnemy2 && birth_count > 800)
+	case eEnemy5:	//自機上狙い(75.0f)
+		if (location.x > old_player_location.x)
 		{
-			birth_count = 0;
-			if (velocity.y < 0)
-				velocity.y = 1.5f;
-			else
-				velocity.y = -1.5f;
+			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y - 75.0f)) * 2;
+			old_velocity = velocity;
 		}
+		else
+			velocity = old_velocity;
+		break;
+	case eEnemy6:	//自機下狙い(75.0f)
+		if (location.x > old_player_location.x)
+		{
+			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y + 75.0f)) * 2;
+			old_velocity = velocity;
+		}
+		else
+			velocity = old_velocity;
+		break;
+	case eEnemy7:	//上から下にカーブ
+		if (location.x > old_player_location.x)
+		{
+			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y)) * 2;
+			velocity.y -= 1.0f;
+			old_velocity = velocity;
+		}
+		else
+			velocity = old_velocity;
+		break;
+	case eEnemy8:	//下から上にカーブ
+		if (location.x > old_player_location.x)
+		{
+			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y)) * 2;
+			velocity.y += 1.0f;
+			old_velocity = velocity;
+		}
+		else
+			velocity = old_velocity;
+		break;
+	case eEnemy9:	//グネグネ
+		velocity.x = -1.0f;
+		//
+		if (turn_flag[1])
+			velocity.y += 0.01f;
+		else
+			velocity.y -= 0.01f;
+		//
+		if (velocity.y > 1.0f)
+			turn_flag[1] = false;
+		else if (velocity.y < -1.0f)
+			turn_flag[1] = true;
+		break;
+	case eEnemy10:
+		if (location.x > old_player_location.x)
+		{
+			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y - 150.0f)) * 2;
+			old_velocity = velocity;
+		}
+		else
+			velocity = old_velocity;
+		break;
+	case eEnemy11:
+		if (location.x > old_player_location.x)
+		{
+			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y + 150.0f)) * 2;
+			old_velocity = velocity;
+		}
+		else
+			velocity = old_velocity;
+		break;
+	case eEnemy12:
+		if (location.x > old_player_location.x)
+		{
+			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y - 225.0f)) * 2;
+			old_velocity = velocity;
+		}
+		else
+			velocity = old_velocity;
+		break;
+	case eEnemy13:
+		if (location.x > old_player_location.x)
+		{
+			velocity = Tracking(location, Vector2D(old_player_location.x, old_player_location.y + 225.0f)) * 2;
+			old_velocity = velocity;
+		}
+		else
+			velocity = old_velocity;
+			break;
+	case eEnemy14:	//自機狙い
+		if (location.x > old_player_location.x)
+		{
+			velocity = Tracking(location, old_player_location) * 2;
+			old_velocity = velocity;
+		}
+		else
+			velocity = old_velocity;
 		break;
 	default:
 		break;

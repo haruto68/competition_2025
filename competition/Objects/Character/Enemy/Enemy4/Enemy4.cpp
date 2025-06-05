@@ -18,9 +18,8 @@ Enemy4::Enemy4()
 	// ‰Â“®«Ý’è
 	is_mobility = true;
 
-	// ‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
-	// soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
-	// soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+	//‰æ‘œ“Ç‚Ýž‚Ý
+	image = rm->GetImages("Resource/Images/enemy/ship4.png")[0];
 }
 
 Enemy4::~Enemy4()
@@ -38,7 +37,7 @@ void Enemy4::Initialize()
 	// ‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
-	hp = 14.0;
+	hp = 10.0;
 
 	point.clear();
 	point.push_back(Vector2D(600, location.y));

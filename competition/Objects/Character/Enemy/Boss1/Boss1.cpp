@@ -19,6 +19,9 @@ Boss1::Boss1()
 	//Å‘åHPİ’è
 	max_hp = 150;
 	hp = float(max_hp);
+
+	//‰æ‘œ“Ç‚İ‚İ
+	image = rm->GetImages("Resource/Images/enemy/ship3.png")[0];
 }
 
 Boss1::~Boss1()
@@ -27,8 +30,7 @@ Boss1::~Boss1()
 
 void Boss1::Initialize()
 {
-	//‰æ‘œ“Ç‚İ‚İ
-	image = LoadGraph("Resource/Images/enemy/ship3.png");
+	
 }
 
 void Boss1::Update(float delta_seconds)
@@ -82,16 +84,12 @@ void Boss1::Update(float delta_seconds)
 	if (hp <= 0.0f)
 	{
 		death_count -= (delta_seconds * 1.0f);
+		transparency--;
 	}
 	if (death_count <= 0.0)
 	{
 		death_flag = true;
 	}
-	if (death_flag)
-	{
-		transparency--;
-	}
-
 }
 
 void Boss1::Draw(const Vector2D& screen_offset, bool flip_flag) const
@@ -164,6 +162,11 @@ void Boss1::Animation()
 int Boss1::GetBoss1Hp()
 {
 	return ratio;
+}
+
+float Boss1::GetBoss1DeathCount()
+{
+	return death_count;
 }
 
 bool Boss1::GetDeathFlag()

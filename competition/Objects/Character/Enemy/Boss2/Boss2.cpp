@@ -19,6 +19,9 @@ Boss2::Boss2()
 	//Å‘åHPİ’è
 	max_hp = 650;
 	hp = float(max_hp);
+
+	//‰æ‘œ“Ç‚İ‚İ
+	image = rm->GetImages("Resource/Images/enemy/ship3_col2.png")[0];
 }
 
 Boss2::~Boss2()
@@ -33,8 +36,7 @@ void Boss2::Initialize()
 	else
 		velocity.y = 0.7f;
 
-	//‰æ‘œ“Ç‚İ‚İ
-	image = LoadGraph("Resource/Images/enemy/ship3_col2.png");
+	
 }
 
 void Boss2::Update(float delta_seconds)
@@ -106,6 +108,7 @@ void Boss2::Update(float delta_seconds)
 	if (hp <= 0.0f)
 	{
 		death_count -= (delta_seconds * 1.0f);
+		transparency--;
 	}
 	if (death_count <= 0.0)
 	{
@@ -118,7 +121,9 @@ void Boss2::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	if (image != -1)
 	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, transparency);
 		DrawRotaGraphF(location.x, location.y, 10.0f, 0.0f, image, TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
@@ -190,6 +195,11 @@ void Boss2::Animation()
 int Boss2::GetBoss2Hp()
 {
 	return ratio;
+}
+
+float Boss2::GetBoss2DeathCount()
+{
+	return death_count;
 }
 
 bool Boss2::GetDeathFlag()

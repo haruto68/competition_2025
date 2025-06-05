@@ -17,9 +17,8 @@ Enemy3::Enemy3()
 	z_layer = 2;
 	// ‰Â“®«Ý’è
 	is_mobility = true;
-	// ‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
-	// soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
-	// soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+
+	image = rm->GetImages("Resource/Images/enemy/ship.png")[0];
 }
 
 Enemy3::~Enemy3()
@@ -31,8 +30,6 @@ void Enemy3::Initialize()
 	
 	speed = 200.0f;
 
-	//‰æ‘œ“Ç‚Ýž‚Ý
-	image = LoadGraph("Resource/Images/enemy/ship.png");
 	// ‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
@@ -52,12 +49,6 @@ void Enemy3::Draw(const Vector2D& screeen_offset, bool file_flag) const
 	{
 		DrawRotaGraphF(location.x, location.y, 1.0f, radian + (-velocity.y / 2), image, TRUE);
 	}
-
-	// ‰¼(”’‚¢ŽlŠp‚ð•`‰æ‚·‚é)
-	/*Vector2D t1 = location - (collision.box_size / 2.0f);
-	Vector2D br = location + (collision.box_size / 2.0f);
-	DrawBoxAA(t1.x, t1.y, br.x, br.y, GetColor(255, 255, 255), TRUE);
-	DrawString(t1.x, t1.y, "3", GetColor(0, 0, 0), TRUE);*/
 }
 
 void Enemy3::Finalize()

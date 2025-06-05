@@ -12,6 +12,9 @@
 #include"../../Objects/Character/Enemy/Enemy4/Enemy4.h"
 #include"../../Objects/Character/Enemy/Enemy5/Enemy5.h"
 #include"../../Objects/Character/Enemy/Enemy6/Enemy6.h"
+#include"../../Objects/Character/Enemy/Enemy7/Enemy7.h"
+#include"../../Objects/Character/Enemy/Enemy8/Enemy8.h"
+#include"../../Objects/Character/Enemy/Enemy9/Enemy9.h"
 #include "../../Objects/Character/Enemy/Boss1/Boss1.h"
 #include "../../Objects/Character/Enemy/Boss2/Boss2.h"
 #include"../../Objects/Shot/PlayerShot/PlayerShot.h"
@@ -43,7 +46,7 @@ public:
 
 	int stage_level;							//ƒXƒe[ƒWƒŒƒxƒ‹
 
-	int back_ground_image[3];					//”wŒi‰æ‘œ
+	int back_ground_image[4];					//”wŒi‰æ‘œ
 	Vector2D back_ground_location;				//”wŒiÀ•W
 	int planets_image[4];						//˜f¯‰æ‘œ
 	Planet pla1;								//˜f¯1
@@ -62,7 +65,7 @@ public:
 	float time_count;							//ŠÔƒJƒEƒ“ƒg
 	int bgm[3];
 	int soundseffect[10];
-
+	int dark_alpha;
 
 
 public:
@@ -85,6 +88,7 @@ private:
 	void TestSpawn();										//ƒeƒXƒg¶¬
 	void Spawn1();											//G‹›¶¬1
 	void Spawn2();											//G‹›¶¬2
+	void Spawn3();											//G‹›¶¬3
 	void BossManager();										//ƒ{ƒX¶¬ŠÇ—ˆ—
 
 };

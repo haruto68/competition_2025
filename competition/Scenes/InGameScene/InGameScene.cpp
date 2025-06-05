@@ -27,7 +27,8 @@ InGameScene::InGameScene() :
 	time_stop(),
 	time_count(60),
 	bgm(),
-	soundseffect()
+	soundseffect(),
+	dark_alpha(600)
 {
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
@@ -39,6 +40,7 @@ InGameScene::InGameScene() :
 	//背景
 	back_ground_image[1] = rm->GetImages("Resource/Images/back_ground/universe_space02.png")[0];
 	back_ground_image[2] = rm->GetImages("Resource/Images/back_ground/universe_space03.png")[0];
+	back_ground_image[3] = rm->GetImages("Resource/Images/back_ground/universe_space05.png")[0];
 	back_ground_location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
 
 	// 惑星
@@ -107,10 +109,15 @@ eSceneType InGameScene::Update(const float& delta_second)
 	// シーン内オブジェクト更新
 	if(!time_stop)
 	{
-		//タイムカウント	
+		//タイムカウント
+		if (time_count > 50 && dark_alpha > 0)
+		{
+			dark_alpha--;
+		}
 		if(time_count >= 0.0f)
 		{
-			time_count -= (delta_second * 1.0f);
+			if (dark_alpha <= 0)
+				time_count -= (delta_second * 1.0f);
 		}
 		else
 		{
@@ -122,7 +129,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 		BackGroundManager(delta_second);
 
 		// 敵生成管理処理
-		EnemyManager(delta_second);
+		if (dark_alpha <= 0)
+			EnemyManager(delta_second);
 
 		// 生成するオブジェクトの確認
 		object_manager->CheckCreateObject();
@@ -219,19 +227,23 @@ eSceneType InGameScene::Update(const float& delta_second)
 		}
 	}
 
-	//アップグレード
+	//ポーズ画面
 	if ((input->GetKeyUp(KEY_INPUT_L) ||
-		input->GetButtonDown(XINPUT_BUTTON_START))
-		&& up_grade_stock > 0)
+		input->GetButtonDown(XINPUT_BUTTON_START)))
 	{
-		if (level_up_flg)
-			level_up_flg = false;
-		else
-			level_up_flg = true;
 		if (time_stop)
 			time_stop = false;
 		else
 			time_stop = true;
+	}
+
+	//アップグレード
+	if ((input->GetKeyUp(KEY_INPUT_L) ||
+		input->GetButtonDown(XINPUT_BUTTON_Y))
+		&& up_grade_stock > 0)
+	{
+		level_up_flg = true;
+		time_stop = true;
 	}
 	//レベルアップ時
 	if (player->GetPlayerStats().player_level != player_old_level)
@@ -278,6 +290,8 @@ void InGameScene::Draw() const
 		obj->Draw(screen_offset, false);
 		c++;
 	}
+	//オブジェクト数描画
+	//DrawFormatString(1100, 100, GetColor(255, 255, 255), "%d", c);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -286,23 +300,25 @@ void InGameScene::Draw() const
 	DrawBox(0, 0, 1280, 80, GetColor(50, 0, 100), TRUE);
 	DrawBox(0, 680, 1280, 720, GetColor(50, 0, 100), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	
+
 	//タイムカウント
 	SetFontSize(70);
-	if(time_count > 0)
+	if (time_count > 0)
 	{
 		DrawFormatString(1100, 10, GetColor(255, 255, 255), "%.1f", time_count);
 	}
 	//ステージレベル
 	SetFontSize(40);
-	DrawFormatString(500, 20, GetColor(255, 255, 255), "Stage Level");
+	DrawFormatString(570, 20, GetColor(255, 255, 255), "Stage");
 	int level_color = 0;
 	if (stage_level == 1)
 		level_color = GetColor(50, 255, 50);
 	else if (stage_level == 2)
 		level_color = GetColor(255, 255, 50);
+	else if (stage_level == 3)
+		level_color = GetColor(255, 50, 50);
 	SetFontSize(50);
-	DrawFormatString(740, 15, level_color, "%d", stage_level);
+	DrawFormatString(700, 15, level_color, "%d", stage_level);
 
 	// プレイヤーのHPのテーブルHPバーの描画
 	hp_ui->Draw();
@@ -312,7 +328,7 @@ void InGameScene::Draw() const
 	if (up_grade_stock > 0)
 	{
 		SetFontSize(40);
-		DrawFormatString(475, 680, GetColor(255, 0, 255), "Start to UpGrade");
+		DrawFormatString(475, 680, GetColor(255, 0, 255), "Y_button to UpGrade");
 	}
 
 	//レベルアップUI描画
@@ -321,6 +337,59 @@ void InGameScene::Draw() const
 		level_up_ui->Draw();
 	}
 
+	if (time_stop == true && level_up_flg == false)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 175);
+		DrawBox(0, 0, 1280, 720, GetColor(0, 0, 0), TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+		SetFontSize(70);
+		DrawFormatString(475, 150, GetColor(255, 255, 255), "P A U S E");
+	}
+
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//暗転
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, dark_alpha);
+	DrawBox(0, 0, 1280, 720, GetColor(0, 0, 0), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	//ゲーム開始
+	if (dark_alpha > 300)
+	{
+		SetFontSize(100);
+		DrawFormatString(425, 300, GetColor(255, 255, 255), "STAGE 1");
+	}
+
+	//ステージ遷移1>>2
+	if (boss1 != nullptr)
+	{
+		if (boss1->GetBoss1DeathCount() < 3.0f && boss1->GetBoss1DeathCount() > 1.5f)
+		{
+			SetFontSize(70);
+			DrawFormatString(425, 260, GetColor(255, 255, 255), "STAGE CLEAR");
+		}
+		else if (boss1->GetBoss1DeathCount() < 1.1 && boss1->GetBoss1DeathCount() > 0.0f)
+		{
+			SetFontSize(100);
+			DrawFormatString(425, 300, GetColor(255, 255, 255), "STAGE 2");
+		}
+	}
+	//ステージ遷移2>>3
+	if (boss2 != nullptr)
+	{
+		if (boss2->GetBoss2DeathCount() < 3.0f && boss2->GetBoss2DeathCount() > 1.5f)
+		{
+			SetFontSize(70);
+			DrawFormatString(425, 260, GetColor(255, 255, 255), "STAGE CLEAR");
+		}
+		else if (boss2->GetBoss2DeathCount() < 1.1 && boss2->GetBoss2DeathCount() > 0.0f)
+		{
+			SetFontSize(100);
+			DrawFormatString(425, 300, GetColor(255, 255, 255), "STAGE 3");
+		}
+	}
 
 	//エネミーランダム確認用
 	//DrawFormatString(1100, 100, GetColor(255, 255, 255), "%d", enemy_random);
@@ -398,6 +467,22 @@ void InGameScene::EnemyManager(const float& delta_second)
 			}
 			Spawn2();
 		}
+		//レベル3
+		if (stage_level == 3)
+		{
+			if (spawn_timer >= 1.0f)
+			{
+				pattern_timer += delta_second;
+			}
+			if (spawn_timer >= 5.0f)
+			{
+				spawn_timer = 0.0f;
+				enemy_random = rand() % 5 + 1;
+				enemy_random_y = rand() % 4 + 1;
+				pattern_timer = 0.0f;
+			}
+			Spawn3();
+		}
 	}
 	TestSpawn();
 }
@@ -427,7 +512,11 @@ void InGameScene::TestSpawn()
 	else if (input->GetKeyUp(KEY_INPUT_7))
 		object_manager->CreateGameObject<Enemy6>(Vector2D(1300, y_center));
 	else if (input->GetKeyUp(KEY_INPUT_8))
-		object_manager->CreateGameObject<Boss1>(Vector2D(1200, y_center));
+		object_manager->CreateGameObject<Enemy7>(Vector2D(1200, y_center));
+	else if (input->GetKeyUp(KEY_INPUT_9))
+		object_manager->CreateGameObject<Enemy8>(Vector2D(1200, y_center));
+	else if (input->GetKeyUp(KEY_INPUT_0))
+		object_manager->CreateGameObject<Enemy9>(Vector2D(1200, y_center));
 }
 
 //雑魚生成1
@@ -520,6 +609,47 @@ void InGameScene::Spawn2()
 	}
 }
 
+//雑魚生成3
+void InGameScene::Spawn3()
+{
+	int y_top = 95;
+	int y_center = 380;
+	int y_botom = 665;
+
+	int y_random = (150 * enemy_random_y) + 5;
+
+	switch (enemy_random)
+	{
+	case 0:
+		break;
+	case 1:	//
+	case 2:	//
+		if (pattern_timer >= 1.0f)
+		{
+			pattern_timer = 0.0f;
+			object_manager->CreateGameObject<Enemy7>(Vector2D(1300, y_random));
+		}
+		break;
+	case 3:	//
+	case 4:	//
+		if (pattern_timer >= 2.0f)
+		{
+			pattern_timer = 0.0f;
+			object_manager->CreateGameObject<Enemy8>(Vector2D(1300, y_random));
+		}
+		break;
+	case 5:	//
+		if (pattern_timer >= 3.0f)
+		{
+			pattern_timer = 0.0f;
+			object_manager->CreateGameObject<Enemy9>(Vector2D(1300, y_center));
+		}
+		break;
+	default:
+		break;
+	}
+}
+
 //ボス生成管理処理
 void InGameScene::BossManager()
 {
@@ -551,6 +681,21 @@ void InGameScene::BossManager()
 			stage_level += 1;
 			time_count = 60.0f;
 			object_manager->DestroyGameObject(boss2);
+		}
+	}
+
+	//ボス撃破後画面暗転
+	if (time_count <= 0.0f && boss_flag == true && dark_alpha < 255)
+	{
+		if (stage_level == 1 && boss1 != nullptr && 
+			boss1->GetBoss1Hp() <= 0 && boss1->GetBoss1DeathCount() < 4.0f)
+		{
+			dark_alpha++;
+		}
+		if (stage_level == 2 && boss1 != nullptr &&
+			boss2->GetBoss2Hp() <= 0 && boss2->GetBoss2DeathCount() < 4.0f)
+		{
+			dark_alpha++;
 		}
 	}
 }

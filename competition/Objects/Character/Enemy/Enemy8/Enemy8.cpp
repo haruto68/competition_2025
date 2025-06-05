@@ -1,6 +1,9 @@
-#include "Enemy6.h"
+#include "Enemy8.h"
 
-Enemy6::Enemy6()
+Enemy8::Enemy8() :
+	target(0),
+	turn_flag(false),
+	vel2(0.0f)
 {
 
 	//リソース管理インスタンス取得
@@ -20,76 +23,59 @@ Enemy6::Enemy6()
 	// 可動性設定
 	is_mobility = true;
 
-	image = rm->GetImages("Resource/Images/enemy/ship1_col2.png")[0];
-}
-
-Enemy6::~Enemy6()
-{
-
-}
-
-
-void Enemy6::Initialize()
-{
-	int random = rand() % 2;
-	if (random == 0)
-		velocity.y = -1.7f;
-	else
-		velocity.y = 1.7f;
-
-	velocity.x = -0.3f;
-
-	hp = 12.0f;
-
 	// 音源取得(0: 敵が破壊時の音 1: 敵が弾を撃った時の音)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+
+	image = rm->GetImages("Resource/Images/enemy/ship23.png")[0];
 }
 
-void Enemy6::Update(float delta_seconds)
+Enemy8::~Enemy8()
+{
+
+}
+
+
+void Enemy8::Initialize()
+{
+	//velocity.x = -1.0f;
+
+	hp = 15.0f;
+}
+
+void Enemy8::Update(float delta_seconds)
 {
 	Movement(delta_seconds);
 	Animation();
 
+	EnemyShot* shot;
 	//時間経過
 	shot_timer += delta_seconds;
+	shot_cooldown = 1.0f;
 
 	if (shot_timer >= shot_cooldown)
 	{
-		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
-		shot->SetShotType(eEnemy5);
+		if (target == 0)
+		{
+			shot = object_manager->CreateGameObject<EnemyShot>(this->location);
+			shot->SetShotType(eEnemy7);
+			target = 1;
+		}
+		else
+		{
+			shot = object_manager->CreateGameObject<EnemyShot>(this->location);
+			shot->SetShotType(eEnemy8);
+			target = 0;
+		}
 		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 
 		//タイマーリセット
 		shot_timer = 0.0f;
-
-		int random_cool = rand() % 5;
-
-		switch (random_cool)
-		{
-		case 0:
-			shot_cooldown = 1.2f;
-			break;
-		case 1:
-			shot_cooldown = 1.2f;
-			break;
-		case 2:
-			shot_cooldown = 1.3f;
-			break;
-		case 3:
-			shot_cooldown = 1.5f;
-			break;
-		case 4:
-			shot_cooldown = 1.6f;
-			break;
-		default:
-			break;
-		}
 	}
 
 }
 
-void Enemy6::Draw(const Vector2D& screeen_offset, bool file_flag) const
+void Enemy8::Draw(const Vector2D& screeen_offset, bool file_flag) const
 {
 	if (image != -1)
 	{
@@ -97,12 +83,12 @@ void Enemy6::Draw(const Vector2D& screeen_offset, bool file_flag) const
 	}
 }
 
-void Enemy6::Finalize()
+void Enemy8::Finalize()
 {
 
 }
 
-void Enemy6::OnHitCollision(GameObject* hit_object)
+void Enemy8::OnHitCollision(GameObject* hit_object)
 {
 	eObjectType type = hit_object->GetCollision().object_type;
 
@@ -133,23 +119,26 @@ void Enemy6::OnHitCollision(GameObject* hit_object)
 	}
 }
 
-void Enemy6::Movement(float delta_seconds)
+void Enemy8::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
 
-	if ((location.y + velocity.y) <= (65.0f + collision.box_size.y) || (location.y + velocity.y) >= (680 - collision.box_size.y))
-	{
-
-		if (velocity.y < 0)
-			velocity.y = 1.8f;
-		else
-			velocity.y = -1.8f;
-	}
+	//
+	if (turn_flag)
+		velocity.x += 0.01f;
+	else
+		velocity.x -= 0.01f;
+	//
+	if (velocity.x > 1.5f)
+		turn_flag = false;
+	else if (velocity.x < -1.5f)
+		turn_flag = true;
 
 	location += velocity * speed * delta_seconds;
+	location.x -= 0.05f;
 }
 
-void Enemy6::Animation()
+void Enemy8::Animation()
 {
 
 }

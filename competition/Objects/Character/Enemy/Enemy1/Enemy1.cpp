@@ -20,9 +20,8 @@ Enemy1::Enemy1()
 	// ‰Â“®«Ý’è
 	is_mobility = true;
 
-	// ‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
-	// soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
-	// soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+	//‰æ‘œ“Ç‚Ýž‚Ý
+	image = rm->GetImages("Resource/Images/enemy/ship1.png")[0];
 }
 
 Enemy1::~Enemy1()
@@ -40,9 +39,6 @@ void Enemy1::Initialize()
 		velocity.y = 1.0f;
 
 	velocity.x = -0.5f;
-
-	//‰æ‘œ“Ç‚Ýž‚Ý
-	image = LoadGraph("Resource/Images/enemy/ship1.png");
 
 	//‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
