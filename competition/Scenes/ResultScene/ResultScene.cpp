@@ -9,7 +9,7 @@ ResultScene::ResultScene(): m_selectedbutton(selectedbutton::Title), menu_num(0)
 	// ResourceManager* rm = ResourceManager::GetInstance();
 	// 
 	// //画像取得
-
+	
 	sounds_effect[0] = NULL;
 	sounds_effect[1] = NULL;
 }
@@ -43,6 +43,8 @@ eSceneType ResultScene::Update(const float& delta_second)
 {
 	//入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
+
+	level = score->GetStageLevel();
 
 	//入力情報の更新
 	input->Update();
@@ -115,6 +117,8 @@ void ResultScene::Draw() const
 		DrawBox(955, 600, 1255, 700, 0xffffff, TRUE);
 		DrawFormatString(955, 630, titleColor, "End");		// エンドボタンに変更
 	
+		DrawFormatString(500, 500, 0x00ffff, "%d", level);		// 到達したレベルを描画する
+
 		switch (menu_num)
 		{
 		case 0:

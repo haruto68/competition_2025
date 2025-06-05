@@ -1,5 +1,6 @@
 #pragma once
 #include"../SceneBase.h"
+#include"../UI/Score.h"
 
 class ResultScene : public SceneBase
 {
@@ -19,6 +20,8 @@ public:
 	int menu_num;
 	bool is_button;
 	int sounds_effect[2];
+	int level;
+	Score* score;
 
 	virtual void Initialize() override;
 	virtual eSceneType Update(const float& delta_second);

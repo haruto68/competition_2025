@@ -159,6 +159,7 @@
     <ClCompile Include="Scenes\UI\HpUI.cpp" />
     <ClCompile Include="Scenes\UI\LevelUI.cpp" />
     <ClCompile Include="Scenes\UI\LevelUpUI.cpp" />
+    <ClCompile Include="Scenes\UI\Score.cpp" />
     <ClCompile Include="Utility\Application.cpp" />
     <ClCompile Include="Utility\InputManager.cpp" />
     <ClCompile Include="Utility\Singleton.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="Scenes\UI\HpUI.h" />
     <ClInclude Include="Scenes\UI\LevelUI.h" />
     <ClInclude Include="Scenes\UI\LevelUpUI.h" />
+    <ClInclude Include="Scenes\UI\Score.h" />
     <ClInclude Include="Utility\Application.h" />
     <ClInclude Include="Utility\InputManager.h" />
     <ClInclude Include="Utility\Singleton.h" />
