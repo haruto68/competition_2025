@@ -230,7 +230,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	//ポーズ画面
 	if (((input->GetKeyUp(KEY_INPUT_L) ||
 		input->GetButtonDown(XINPUT_BUTTON_START)))
-		&& level_up_flg == false)
+		&& level_up_flg == false && dark_alpha <= 0)
 	{
 		if (time_stop)
 			time_stop = false;
@@ -242,7 +242,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	if (((input->GetKeyUp(KEY_INPUT_L) ||
 		input->GetButtonDown(XINPUT_BUTTON_Y))
 		&& time_stop == false)
-		&& up_grade_stock > 0)
+		&& up_grade_stock > 0 && dark_alpha <= 0)
 	{
 		level_up_flg = true;
 		time_stop = true;
@@ -331,6 +331,10 @@ void InGameScene::Draw() const
 	{
 		SetFontSize(40);
 		DrawFormatString(475, 680, GetColor(255, 0, 255), "Y_button to UpGrade");
+		if(up_grade_stock > 0)
+		{
+			DrawFormatString(600, 680, GetColor(255, 0, 255), "× %d", up_grade_stock);
+		}
 	}
 
 	//レベルアップUI描画
