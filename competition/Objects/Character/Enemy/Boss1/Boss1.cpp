@@ -83,6 +83,7 @@ void Boss1::Update(float delta_seconds)
 	//Ž€
 	if (hp <= 0.0f)
 	{
+		collision.is_blocking = false;
 		death_count -= (delta_seconds * 1.0f);
 		transparency--;
 	}

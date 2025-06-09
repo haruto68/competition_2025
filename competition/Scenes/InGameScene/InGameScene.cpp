@@ -228,8 +228,9 @@ eSceneType InGameScene::Update(const float& delta_second)
 	}
 
 	//ポーズ画面
-	if ((input->GetKeyUp(KEY_INPUT_L) ||
+	if (((input->GetKeyUp(KEY_INPUT_L) ||
 		input->GetButtonDown(XINPUT_BUTTON_START)))
+		&& level_up_flg == false)
 	{
 		if (time_stop)
 			time_stop = false;
@@ -238,8 +239,9 @@ eSceneType InGameScene::Update(const float& delta_second)
 	}
 
 	//アップグレード
-	if ((input->GetKeyUp(KEY_INPUT_L) ||
+	if (((input->GetKeyUp(KEY_INPUT_L) ||
 		input->GetButtonDown(XINPUT_BUTTON_Y))
+		&& time_stop == false)
 		&& up_grade_stock > 0)
 	{
 		level_up_flg = true;
