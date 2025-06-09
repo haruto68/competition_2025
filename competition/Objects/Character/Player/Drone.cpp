@@ -7,7 +7,9 @@ Drone::Drone() :
 	shot_timer(0.3f),
 	SHOT_INTERVAL(0.5f),
 	drone_hp(1),
-	image_rotation(0.0f)
+	image_rotation(0.0f),
+	death_count(255),
+	death_flag(false)
 {
 
 }
@@ -33,6 +35,7 @@ void Drone::Initialize()
 	// ‰Â“®«Ý’è
 	is_mobility = true;
 	// ‰¹Œ¹Žæ“¾
+	soundseffect = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/Drone_dead.mp3");
 
 	drone_image = rm->GetImages("Resource/Images/player/Drone.png", 1, 1, 1, 16, 16);
 
@@ -57,11 +60,26 @@ void Drone::Update(float delta_seconds)
 	}
 
 	Animation(delta_seconds);
+	if (death_flag == true)
+	{
+		if (drone_hp <= 0.0f)
+		{
+			death_count -= (delta_seconds * 1.0f);
+			transparency--;
+		}
+		if (death_count <= 0.0)
+		{
+			death_flag = false;
+		}
+	}
+
 }
 
 void Drone::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, transparency);
 	DrawRotaGraphF(location.x, location.y, 2.0, image_rotation, image, TRUE, this->flip_flag);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	//__super::Draw(0.0f, this->flip_flag);
 	//DrawCircle(location.x, location.y, 12, GetColor(243, 136, 19), true);
 }
@@ -82,12 +100,16 @@ void Drone::OnHitCollision(GameObject* hit_object)
 	case ePlayer:
 		break;
 	case eEnemy:
+		death_flag = true;
 		drone_hp--;
+		PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case ePlayerShot:
 		break;
 	case eEnemyShot:
+		death_flag = true;
 		drone_hp--;
+		PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eItem:
 		break;

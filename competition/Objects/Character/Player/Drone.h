@@ -17,6 +17,9 @@ private:
 	float SHOT_INTERVAL;
 	std::vector<int> drone_image;
 	float image_rotation;
+	int soundseffect;
+	float death_count;
+	bool death_flag;
 
 
 public:
