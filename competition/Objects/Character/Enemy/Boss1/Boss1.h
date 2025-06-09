@@ -23,6 +23,7 @@ public:
     void Animation();
 
     int GetBoss1Hp();
+    float GetBoss1DeathCount();
     bool GetDeathFlag();
 };
 

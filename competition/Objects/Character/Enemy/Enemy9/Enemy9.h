@@ -1,16 +1,15 @@
 #pragma once
 #include "../EnemyBase.h"
 
-class Enemy8 : public EnemyBase
+class Enemy9 : public EnemyBase
 {
 private:
     int target;
-    bool turn_flag;
-    float vel2;
+    bool turn;
 
 public:
-    Enemy8();
-    ~Enemy8();
+    Enemy9();
+    ~Enemy9();
 
     virtual void Initialize() override;
     virtual void Update(float) override;

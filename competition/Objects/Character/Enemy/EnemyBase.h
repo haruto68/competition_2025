@@ -19,7 +19,7 @@ public:
 	float shot_cooldown = 1.5f;	//クールタイム
 	int atack_pattern = 0;		//攻撃パターン
 
-	float death_count = 3.0f;	//死ぬまでの時間
+	float death_count = 7.0f;	//死ぬまでの時間
 	bool death_flag = false;	//死
 
 	int soundseffect[2];

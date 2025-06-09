@@ -108,6 +108,7 @@ void Boss2::Update(float delta_seconds)
 	if (hp <= 0.0f)
 	{
 		death_count -= (delta_seconds * 1.0f);
+		transparency--;
 	}
 	if (death_count <= 0.0)
 	{
@@ -120,7 +121,9 @@ void Boss2::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	if (image != -1)
 	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, transparency);
 		DrawRotaGraphF(location.x, location.y, 10.0f, 0.0f, image, TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
@@ -192,6 +195,11 @@ void Boss2::Animation()
 int Boss2::GetBoss2Hp()
 {
 	return ratio;
+}
+
+float Boss2::GetBoss2DeathCount()
+{
+	return death_count;
 }
 
 bool Boss2::GetDeathFlag()

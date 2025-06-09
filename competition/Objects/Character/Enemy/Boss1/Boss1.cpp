@@ -84,16 +84,12 @@ void Boss1::Update(float delta_seconds)
 	if (hp <= 0.0f)
 	{
 		death_count -= (delta_seconds * 1.0f);
+		transparency--;
 	}
 	if (death_count <= 0.0)
 	{
 		death_flag = true;
 	}
-	if (death_flag)
-	{
-		transparency--;
-	}
-
 }
 
 void Boss1::Draw(const Vector2D& screen_offset, bool flip_flag) const
@@ -166,6 +162,11 @@ void Boss1::Animation()
 int Boss1::GetBoss1Hp()
 {
 	return ratio;
+}
+
+float Boss1::GetBoss1DeathCount()
+{
+	return death_count;
 }
 
 bool Boss1::GetDeathFlag()
