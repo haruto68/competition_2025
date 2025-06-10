@@ -3,6 +3,7 @@
 #include"../UI/LevelUpUI.h"
 #include"../UI/HpUI.h"
 #include"../UI/LevelUI.h"
+#include"../UI/Score.h"
 
 #include"../../Objects/GameObject.h"
 #include"../../Objects/Character/Player/Player.h"
@@ -43,6 +44,7 @@ public:
 	LevelUpUI* level_up_ui;						//レベルアップUI
 	HpUI* hp_ui;								//HPUI
 	LevelUI* level_ui;							//レベルUI
+	Score* score;
 
 	int stage_level;							//ステージレベル
 

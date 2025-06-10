@@ -80,6 +80,9 @@ void InGameScene::Initialize()
 
 	level_ui = new LevelUI();
 	level_ui->Initialize();
+
+	score = new Score();
+	score->SetStageLevel(stage_level);
 	
 	// ‰¹Œ¹‚Ì‰¹—Ê‚ÌÝ’è
 	ChangeVolumeSoundMem(100, bgm[0]);
@@ -260,6 +263,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 	if (input->GetKeyUp(KEY_INPUT_SPACE) ||
 		player->GetPlayerStats().life_count <= 0 && player->death_animation_finished)
 	{
+		// ƒvƒŒƒCƒ„[‚Ìî•ñ‚ðŽæ“¾‚·‚é
+		score->SetPlayerStats(player->GetPlayerStats().player_level, player->GetPlayerStats().life_count, player->GetPlayerStats().attack_power, player->GetPlayerStats().move_speed, player->GetPlayerStats().shot_speed, player->GetPlayerStats().player_shot_hitrange_up, player->GetPlayerStats().threeway_flag);
 		return eSceneType::eResult;
 	}	
 
@@ -408,6 +413,8 @@ void InGameScene::Finalize()
 	level_up_ui->Finalize();
 	hp_ui->Finalize();
 	level_ui->Finalize();
+	StopSoundMem(bgm[0]);
+	StopSoundMem(bgm[1]);
 }
 
 eSceneType InGameScene::GetNowSceneType()const
@@ -674,6 +681,7 @@ void InGameScene::BossManager()
 			stage_level += 1;
 			time_count = 60.0f;
 			object_manager->DestroyGameObject(boss1);
+			// score->SetStageLevel(stage_level);
 		}
 	}
 	else if (stage_level == 2)
@@ -706,4 +714,6 @@ void InGameScene::BossManager()
 			dark_alpha++;
 		}
 	}
+
+	score->SetStageLevel(stage_level);
 }

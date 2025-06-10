@@ -36,6 +36,7 @@
     <ClCompile Include="Objects\Character\Enemy\Enemy7\Enemy7.cpp" />
     <ClCompile Include="Objects\Character\Enemy\Enemy8\Enemy8.cpp" />
     <ClCompile Include="Objects\Character\Enemy\Enemy9\Enemy9.cpp" />
+    <ClCompile Include="Scenes\UI\Score.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Objects\Character\Enemy\Boss1\Boss1.h" />
@@ -78,5 +79,6 @@
     <ClInclude Include="Objects\Character\Enemy\Enemy7\Enemy7.h" />
     <ClInclude Include="Objects\Character\Enemy\Enemy8\Enemy8.h" />
     <ClInclude Include="Objects\Character\Enemy\Enemy9\Enemy9.h" />
+    <ClInclude Include="Scenes\UI\Score.h" />
   </ItemGroup>
 </Project>
