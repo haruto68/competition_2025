@@ -18,6 +18,7 @@
 #include"../../Objects/Character/Enemy/Enemy9/Enemy9.h"
 #include "../../Objects/Character/Enemy/Boss1/Boss1.h"
 #include "../../Objects/Character/Enemy/Boss2/Boss2.h"
+#include "../../Objects/Character/Enemy/Boss3/Boss3.h"
 #include"../../Objects/Shot/PlayerShot/PlayerShot.h"
 #include"../../Objects/Shot/EnemyShot/EnemyShot.h"
 #include"../../Objects/Item/ExperiencePoints/ExperiencePoints.h"
@@ -41,6 +42,7 @@ public:
 	class Player* player;						//プレイヤーインスタンス
 	class Boss1* boss1;							//ボスインスタンス1
 	class Boss2* boss2;							//ボスインスタンス2
+	class Boss3* boss3;							//ボスインスタンス2
 	LevelUpUI* level_up_ui;						//レベルアップUI
 	HpUI* hp_ui;								//HPUI
 	LevelUI* level_ui;							//レベルUI
@@ -54,8 +56,8 @@ public:
 	Planet pla1;								//惑星1
 	Planet pla2;								//惑星2
 
-	int enemy_random;							//
-	int enemy_random_y;							//
+	int enemy_random;							//生成乱数
+	int enemy_random_y;							//生成座標乱数
 	float spawn_timer;							//敵生成クールタイム
 	float pattern_timer;						//caseの時間経過
 	bool boss_flag;								//ボス描画フラグ

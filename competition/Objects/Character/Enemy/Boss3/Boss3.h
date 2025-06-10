@@ -1,16 +1,13 @@
 #pragma once
 #include "../EnemyBase.h"
 
-class Enemy9 : public EnemyBase
+class Boss3 : public EnemyBase
 {
 private:
-    int target;
-    bool turn;
-    float birth_count;
 
 public:
-    Enemy9();
-    ~Enemy9();
+    Boss3();
+    ~Boss3();
 
     virtual void Initialize() override;
     virtual void Update(float) override;
@@ -22,4 +19,9 @@ public:
 public:
     void Movement(float);
     void Animation();
+
+    int GetBoss3Hp();
+    float GetBoss3DeathCount();
+    bool GetDeathFlag();
 };
+

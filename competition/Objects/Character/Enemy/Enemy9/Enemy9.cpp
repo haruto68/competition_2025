@@ -2,7 +2,8 @@
 
 Enemy9::Enemy9() :
 	target(4),
-	turn(false)
+	turn(false),
+	birth_count(0.0f)
 {
 
 	//リソース管理インスタンス取得
@@ -49,6 +50,7 @@ void Enemy9::Update(float delta_seconds)
 
 	EnemyShot* shot;
 	//時間経過
+	birth_count += delta_seconds;
 	shot_timer += delta_seconds;
 	shot_cooldown = 0.25f;
 
@@ -142,6 +144,8 @@ void Enemy9::OnHitCollision(GameObject* hit_object)
 	if (hp <= 0.0)
 	{
 		object_manager->CreateGameObject< ExperiencePoints>(this->location);
+		object_manager->CreateGameObject< ExperiencePoints>(this->location);
+		object_manager->CreateGameObject< ExperiencePoints>(this->location);
 		object_manager->DestroyGameObject(this);
 		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 	}
@@ -153,7 +157,12 @@ void Enemy9::Movement(float delta_seconds)
 
 	if (location.x <= 1180)
 	{
-		velocity.x = -0.075f;
+		velocity.x = 0.0f;
+		
+	}
+	if (birth_count > 8.0f)
+	{
+		velocity.x = 1.0f;
 	}
 
 	location += velocity * speed * delta_seconds;

@@ -22,6 +22,7 @@ enum eShotType
 	eEnemy12,	//é©ã@è„ë_Ç¢(225.0f)
 	eEnemy13,	//é©ã@â∫ë_Ç¢(225.0f)
 	eEnemy14,	//é©ã@ë_Ç¢2
+	eEnemy15,	//
 };
 
 class Shot : public GameObject
@@ -33,7 +34,7 @@ protected:
 	Vector2D turn_target[5] = {};
 
 	eShotType shot_type;
-	int shot_power = 0;
+	float birth_count = 0.0f;
 
 public:
 	bool flip_flag = false;
@@ -41,10 +42,6 @@ public:
 	void SetShotType(eShotType type)
 	{
 		shot_type = type;
-	}
-	void SetShowPower(int power)
-	{
-		shot_power = power;
 	}
 	
 };
