@@ -12,7 +12,6 @@ protected:
 private:
 	int Color;
 	float rotation_angle;
-	struct PlayerStats player_stats_copy;
 	float shot_timer;
 	float SHOT_INTERVAL;
 	std::vector<int> drone_image;
@@ -20,10 +19,11 @@ private:
 	int soundseffect;
 	float death_count;
 	bool death_flag;
+	PlayerStats* player_stats_ptr;
+
 
 
 public:
-	int drone_hp;
 
 public:
 	Drone();
@@ -39,9 +39,9 @@ public:
 
 public:
 	// ドローン用にプレイヤーの現在のステータスのコピーを設定します
-	void SetPlayerStatsCopy(const PlayerStats player_stats)
+	void SetPlayerStats(PlayerStats* player_stats) // 引数をポインタに変更
 	{
-		this->player_stats_copy = player_stats;
+		this->player_stats_ptr = player_stats;
 	}
 	void Animation(float);
 

@@ -113,20 +113,19 @@ void Player::Update(float delta_seconds)
 		shot_timer = SHOT_INTERVAL;
 		player_stats.shot_speed = SHOT_INTERVAL;
 	}
-	if (drone == nullptr && player_stats.drone_count > 0)
+	if (drone == nullptr && player_stats.drone_hp > 0)
 	{
 		if (player_stats.drone_flag == true)
 		{
 			drone = object_manager->CreateGameObject<Drone>(this->location);
-			drone->SetPlayerStats(this->GetPlayerStats());
+			drone->SetPlayerStats(&this->player_stats);
 		}
 		player_stats.drone_flag = false;
 	}
-	if (drone != nullptr && drone->drone_hp <= 0)
+	if (drone != nullptr && player_stats.drone_hp <= 0)
 	{
 		object_manager->DestroyGameObject(drone);
 		drone = nullptr;
-		player_stats.drone_count = 0;
 	}
 }
 
@@ -489,6 +488,7 @@ void Player::StatsUp(ePowerUp powerup)
 		break;
 	case ePowerUp::eDrone:
 		player_stats.drone_flag = true;
+		player_stats.drone_hp +=1 ;
 		player_stats.drone_count += 1;
 		break;
 	default:
