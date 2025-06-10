@@ -1,6 +1,8 @@
 #pragma once
 #include "../SceneBase.h"
 
+#define RANKING_DATA	(3)
+
 class RankingScene : public SceneBase
 {
 protected:
@@ -8,6 +10,9 @@ protected:
 private:
 	int back_ground_sound;	// BGM
 	int sounds_effect[2];	// 効果音
+	int score[RANKING_DATA];	// ランキングデータ
+	int rank[RANKING_DATA];		// ランク
+	int player_stats[8];		// プレイヤーステータス
 public:
 	RankingScene();
 	~RankingScene();
@@ -21,4 +26,14 @@ public:
 public:
 	virtual eSceneType GetNowSceneType() const override;
 
+	void SetRank(int);		// ランキングの入れ替え
+
+private:
+	void SortData();		// データ入れ替え処理
+
+public:
+	void GetScoreNo3()
+	{
+		return/*score[2]*/;
+	}
 };
