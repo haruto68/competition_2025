@@ -28,7 +28,7 @@ private:
 	std::vector<int> normal_image;
 	std::vector<int> dead_image;
 	bool is_invincible;
-	int soundseffect[2];
+	int soundseffect[3];
 
 	float blink_timer;
 	float blink_interval;

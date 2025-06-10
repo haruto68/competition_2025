@@ -31,7 +31,7 @@ void PlayerShot::Initialize()
 	// ‰Â“®«Ý’è
 	is_mobility = true;
 
-	bullet_image = rm->GetImages("Resource/Images/player/player_bullet.png", 1, 1, 1, 32, 32);
+	bullet_image = rm->GetImages("Resource/Images/player/player_bullet.png", 1, 1, 1, 16, 16);
 	image = bullet_image[0];
 }
 

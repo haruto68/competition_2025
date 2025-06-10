@@ -19,7 +19,7 @@ Player::Player() :
 	death_timer(0.0f),
 	death_image_index(0),
 	death_image_count(9),
-	death_animation_interval(0.1f),
+	death_animation_interval(0.175f),
 	death_animation_finished(false)
 {
 
@@ -52,6 +52,7 @@ void Player::Initialize()
 
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerShot.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerDamege.mp3");
+	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/Player_dead.mp3");
 
 	//画像読み込み
 	normal_image = rm->GetImages("Resource/Images/player/player.png", 1, 1, 1, 32, 32);
@@ -89,7 +90,7 @@ void Player::Update(float delta_seconds)
 	//入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
 
-	if ((InputManager::GetInstance()->GetButton(13) || CheckHitKey(KEY_INPUT_B)) && shot_timer <= 0.0f)
+	if ((InputManager::GetInstance()->GetButton(13) || CheckHitKey(KEY_INPUT_B)) && shot_timer <= 0.0f && is_dead == false)
 	{
 		PlayerShot* shot = object_manager->CreateGameObject<PlayerShot>(this->location);
 		shot->SetShotType(ePlayer1);
@@ -136,7 +137,7 @@ void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	{
 		if (image != -1)
 		{
-			DrawRotaGraphF(location.x, location.y, 2.0f, 0.0f, image, TRUE);
+			DrawRotaGraphF(location.x, location.y, 2.0f, velocity.y / 7, image, TRUE);
 		}
 	}
 	else if (is_dead == true)
@@ -170,7 +171,14 @@ void Player::OnHitCollision(GameObject* hit_object)
 		player_stats.life_count -= 1.0f;
 		is_invincible = true;
 		invincible_timer = 1.0f;
-		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
+		if (player_stats.life_count <= 0)
+		{
+			PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
+		}
+		else
+		{
+			PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
+		}
 		break;
 	case ePlayerShot:
 		break;
@@ -183,7 +191,14 @@ void Player::OnHitCollision(GameObject* hit_object)
 		player_stats.life_count -= 1.0f;
 		is_invincible = true;
 		invincible_timer = 1.0f;
-		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
+		if (player_stats.life_count <= 0)
+		{
+			PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
+		}
+		else
+		{
+			PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
+		}
 		break;
 	case eItem:
 		AddExperience(10);
