@@ -678,7 +678,7 @@ void InGameScene::BossManager()
 		if (boss_flag == false)
 		{
 			boss_flag = true;
-			boss1 = object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
+			boss1 = object_manager->CreateGameObject<Boss1>(Vector2D(1400, 400));
 		}
 		else if (boss1->GetDeathFlag())
 		{
@@ -694,7 +694,7 @@ void InGameScene::BossManager()
 		if (boss_flag == false)
 		{
 			boss_flag = true;
-			boss2 = object_manager->CreateGameObject<Boss2>(Vector2D(1200, 400));
+			boss2 = object_manager->CreateGameObject<Boss2>(Vector2D(1400, 400));
 		}
 		else if (boss2->GetDeathFlag())
 		{
@@ -709,7 +709,7 @@ void InGameScene::BossManager()
 		if (boss_flag == false)
 		{
 			boss_flag = true;
-			boss3 = object_manager->CreateGameObject<Boss3>(Vector2D(1200, 400));
+			boss3 = object_manager->CreateGameObject<Boss3>(Vector2D(1400, 400));
 		}
 		else if (boss3->GetDeathFlag())
 		{

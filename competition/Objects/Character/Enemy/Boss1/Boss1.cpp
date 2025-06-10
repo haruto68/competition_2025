@@ -153,6 +153,15 @@ void Boss1::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
 
+	if (location.x >= 1150)
+	{
+		velocity.x = -1.0f;
+	}
+	else
+	{
+		velocity.x = 0.0f;
+	}
+
 	location += velocity * speed * delta_seconds;
 }
 
