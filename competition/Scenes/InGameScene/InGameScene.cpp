@@ -2,11 +2,14 @@
 #include"../../Utility/InputManager.h"
 #include"../../Objects/GameObjectManager.h"
 
+#define TIME_SPEED	(1.0f)
+
 InGameScene::InGameScene() :
 	object_manager(nullptr),
 	player(),
 	boss1(nullptr),
 	boss2(nullptr),
+	boss3(nullptr),
 	level_up_ui(),
 	hp_ui(),
 	level_ui(),
@@ -117,7 +120,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		if(time_count >= 0.0f)
 		{
 			if (dark_alpha <= 0)
-				time_count -= (delta_second * 1.0f);
+				time_count -= (delta_second * TIME_SPEED);
 		}
 		else
 		{
@@ -150,7 +153,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 			// オブジェクトをスクロールと一緒に動かす処理
 			if (obj->GetCollision().object_type != eObjectType::ePlayer)
 			{
-				obj->SetLocation(Vector2D(obj->GetLocation().x + screen_offset.x, obj->GetLocation().y));
+				//obj->SetLocation(Vector2D(obj->GetLocation().x + screen_offset.x, obj->GetLocation().y));
 			}
 			// オブジェクトマネージャーのインスタンス引き渡し
 			if (obj->CheckInstance() == nullptr)
@@ -172,7 +175,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		// 画面外へでたオブジェクトを破壊する
 		for (GameObject* obj : scene_objects_list)
 		{
-			if (obj->GetLocation().x <= -50 || obj->GetLocation().x >= D_WIN_MAX_X + 50 ||
+			if (obj->GetLocation().x <= -640 || obj->GetLocation().x >= D_WIN_MAX_X + 650 ||
 				obj->GetLocation().y <= -50 || obj->GetLocation().y >= D_WIN_MAX_Y + 50)
 			{
 				object_manager->DestroyGameObject(obj);
@@ -332,10 +335,12 @@ void InGameScene::Draw() const
 	if (up_grade_stock > 0)
 	{
 		SetFontSize(40);
-		DrawFormatString(475, 680, GetColor(255, 0, 255), "Y_button to UpGrade");
-		if(up_grade_stock > 0)
+		DrawFormatString(476, 681, GetColor(0, 0, 0), "Y_button to UpGrade");
+		DrawFormatString(475, 680, GetColor(125, 0, 175), "Y_button to UpGrade");
+		if(up_grade_stock > 1)
 		{
-			DrawFormatString(600, 680, GetColor(255, 0, 255), "× %d", up_grade_stock);
+			DrawFormatString(900, 680, GetColor(0, 0, 0), "× %d", up_grade_stock);
+			DrawFormatString(901, 681, GetColor(125, 0, 175), "× %d", up_grade_stock);
 		}
 	}
 
@@ -371,7 +376,7 @@ void InGameScene::Draw() const
 	}
 
 	//ステージ遷移1>>2
-	if (boss1 != nullptr)
+	if (boss1 != nullptr && stage_level == 1)
 	{
 		if (boss1->GetBoss1DeathCount() < 3.0f && boss1->GetBoss1DeathCount() > 1.5f)
 		{
@@ -385,7 +390,7 @@ void InGameScene::Draw() const
 		}
 	}
 	//ステージ遷移2>>3
-	if (boss2 != nullptr)
+	if (boss2 != nullptr && stage_level == 2)
 	{
 		if (boss2->GetBoss2DeathCount() < 3.0f && boss2->GetBoss2DeathCount() > 1.5f)
 		{
@@ -689,6 +694,21 @@ void InGameScene::BossManager()
 			stage_level += 1;
 			time_count = 60.0f;
 			object_manager->DestroyGameObject(boss2);
+		}
+	}
+	else if (stage_level == 3)
+	{
+		if (boss_flag == false)
+		{
+			boss_flag = true;
+			boss3 = object_manager->CreateGameObject<Boss3>(Vector2D(1200, 400));
+		}
+		else if (boss3->GetDeathFlag())
+		{
+			boss_flag = false;
+			stage_level += 1;
+			time_count = 60.0f;
+			object_manager->DestroyGameObject(boss3);
 		}
 	}
 

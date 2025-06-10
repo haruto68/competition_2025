@@ -109,12 +109,15 @@ void GameObjectManager::HitCheck(GameObject* a, GameObject* b)
 	Vector2D a_loc = a->GetLocation();
 	Vector2D b_loc = b->GetLocation();
 
-	if (a_col.IsCheckHitTarget(b_col.object_type) || b_col.IsCheckHitTarget(a_col.object_type))
+	if(a_col.is_blocking && b_col.is_blocking)
 	{
-		if (IsCheckCollision(a_col, b_col, a_loc, b_loc))
+		if (a_col.IsCheckHitTarget(b_col.object_type) || b_col.IsCheckHitTarget(a_col.object_type))
 		{
-			a->OnHitCollision(b);
-			b->OnHitCollision(a);
+			if (IsCheckCollision(a_col, b_col, a_loc, b_loc))
+			{
+				a->OnHitCollision(b);
+				b->OnHitCollision(a);
+			}
 		}
 	}
 
