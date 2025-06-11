@@ -249,7 +249,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	if (((input->GetKeyUp(KEY_INPUT_L) ||
 		input->GetButtonDown(XINPUT_BUTTON_Y))
 		&& time_stop == false)
-		&& up_grade_stock > 0 && dark_alpha <= 0
+		/*&& up_grade_stock > 0 && dark_alpha <= 0*/
 		&& player->GetPlayerStats().life_count > 0)
 	{
 		level_up_flg = true;
@@ -264,7 +264,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 	//リザルトシーンへ遷移
 	if (input->GetKeyUp(KEY_INPUT_SPACE) ||
-		player->GetPlayerStats().life_count <= 0 && player->death_animation_finished)
+		player->GetPlayerStats().life_count <= 0 && player->death_animation_finished ||
+		stage_level == 4)
 	{
 		// プレイヤーの情報を取得する
 		score->SetPlayerStats(player->GetPlayerStats().player_level, player->GetPlayerStats().life_count, player->GetPlayerStats().attack_power, player->GetPlayerStats().move_speed, player->GetPlayerStats().shot_speed, player->GetPlayerStats().player_shot_hitrange_up, player->GetPlayerStats().threeway_flag);
@@ -406,6 +407,20 @@ void InGameScene::Draw() const
 		{
 			SetFontSize(100);
 			DrawFormatString(425, 300, GetColor(255, 255, 255), "STAGE 3");
+		}
+	}
+	//ステージ遷移3>>クリア
+	if (boss3 != nullptr && stage_level == 3)
+	{
+		if (boss3->GetBoss3DeathCount() < 3.0f && boss3->GetBoss3DeathCount() > 1.5f)
+		{
+			SetFontSize(70);
+			DrawFormatString(425, 260, GetColor(255, 255, 255), "STAGE CLEAR");
+		}
+		else if (boss3->GetBoss3DeathCount() < 1.1 && boss3->GetBoss3DeathCount() > 0.0f)
+		{
+			SetFontSize(100);
+			DrawFormatString(375, 300, GetColor(255, 255, 255), "GAME CLEAR");
 		}
 	}
 
@@ -730,6 +745,11 @@ void InGameScene::BossManager()
 		}
 		if (stage_level == 2 && boss1 != nullptr &&
 			boss2->GetBoss2Hp() <= 0 && boss2->GetBoss2DeathCount() < 4.0f)
+		{
+			dark_alpha++;
+		}
+		if (stage_level == 3 && boss1 != nullptr &&
+			boss3->GetBoss3Hp() <= 0 && boss3->GetBoss3DeathCount() < 4.0f)
 		{
 			dark_alpha++;
 		}

@@ -4,7 +4,7 @@ Boss1::Boss1()
 {
 	// コリジョン設定
 	collision.is_blocking = true;
-	collision.box_size = Vector2D(150, 150);						//当たり判定の大きさ
+	collision.box_size = Vector2D(150, 200);						//当たり判定の大きさ
 	collision.object_type = eObjectType::eEnemy;					//オブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayer);		//ぶつかるオブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayerShot);	//ぶつかるオブジェクトのタイプ
