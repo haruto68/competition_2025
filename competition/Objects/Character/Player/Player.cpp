@@ -53,6 +53,7 @@ void Player::Initialize()
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerShot.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerDamege.mp3");
 	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/Player_dead.mp3");
+	soundseffect[3] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/Exp_get.mp3");
 
 	//‰æ‘œ“Ç‚Ýž‚Ý
 	normal_image = rm->GetImages("Resource/Images/player/player.png", 1, 1, 1, 32, 32);
@@ -103,10 +104,20 @@ void Player::Update(float delta_seconds)
 			angled_shot_up->SetPlayerStats(this->GetPlayerStats());
 			angled_shot_up->SetAngle(10.0f);
 
+			//PlayerShot* angled_shot_up2 = object_manager->CreateGameObject<PlayerShot>(this->location);
+			//angled_shot_up2->SetShotType(ePlayer1);
+			//angled_shot_up2->SetPlayerStats(this->GetPlayerStats());
+			//angled_shot_up2->SetAngle(20.0f);
+
 			PlayerShot* angled_shot_down = object_manager->CreateGameObject<PlayerShot>(this->location);
 			angled_shot_down->SetShotType(ePlayer1);
 			angled_shot_down->SetPlayerStats(this->GetPlayerStats());
 			angled_shot_down->SetAngle(-10.0f);
+
+			//PlayerShot* angled_shot_down2 = object_manager->CreateGameObject<PlayerShot>(this->location);
+			//angled_shot_down2->SetShotType(ePlayer1);
+			//angled_shot_down2->SetPlayerStats(this->GetPlayerStats());
+			//angled_shot_down2->SetAngle(-20.0f);
 		}
 
 		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
@@ -170,11 +181,11 @@ void Player::OnHitCollision(GameObject* hit_object)
 		player_stats.life_count -= 1.0f;
 		is_invincible = true;
 		invincible_timer = 1.0f;
-		if (player_stats.life_count <= 0)
+		if (player_stats.life_count == 0)
 		{
 			PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
 		}
-		else
+		else if (player_stats.life_count > 0)
 		{
 			PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 		}
@@ -190,17 +201,18 @@ void Player::OnHitCollision(GameObject* hit_object)
 		player_stats.life_count -= 1.0f;
 		is_invincible = true;
 		invincible_timer = 1.0f;
-		if (player_stats.life_count <= 0)
+		if (player_stats.life_count == 0)
 		{
 			PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
 		}
-		else
+		else if(player_stats.life_count > 0)
 		{
 			PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 		}
 		break;
 	case eItem:
 		AddExperience(10);
+		PlaySoundMem(soundseffect[3], DX_PLAYTYPE_BACK, TRUE);
 		break;
 	default:
 		break;

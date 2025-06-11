@@ -148,7 +148,19 @@ eSceneType InGameScene::Update(const float& delta_second)
 		// リスト内のオブジェクトを更新する
 		for (GameObject* obj : scene_objects_list)
 		{
-			obj->Update(delta_second);
+
+			if (dark_alpha <= 0)
+			{
+				obj->Update(delta_second);
+			}
+			else if (obj->GetCollision().object_type != eObjectType::ePlayer)
+			{
+				obj->Update(delta_second);
+			}
+			else if (dark_alpha >= 255)
+			{
+				player->SetLocation(Vector2D(160, 360));
+			}
 			// プレイヤー座標受け渡し
 			obj->SetPlayerLocation(player->GetLocation());
 			//プレイヤーステータス受け渡し
@@ -166,12 +178,16 @@ eSceneType InGameScene::Update(const float& delta_second)
 		}
 
 		//当たり判定チェック処理
-		for (int a = 0; a < scene_objects_list.size(); a++)
+
+		if (dark_alpha <= 0)
 		{
-			for (int b = a + 1; b < scene_objects_list.size(); b++)
+			for (int a = 0; a < scene_objects_list.size(); a++)
 			{
-				object_manager->HitCheck(scene_objects_list[a], scene_objects_list[b]);
-				object_manager->HitCheck(scene_objects_list[b], scene_objects_list[a]);
+				for (int b = a + 1; b < scene_objects_list.size(); b++)
+				{
+					object_manager->HitCheck(scene_objects_list[a], scene_objects_list[b]);
+					object_manager->HitCheck(scene_objects_list[b], scene_objects_list[a]);
+				}
 			}
 		}
 
@@ -234,7 +250,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	}
 
 	//ポーズ画面
-	if (((input->GetKeyUp(KEY_INPUT_L) ||
+	if (((input->GetKeyUp(KEY_INPUT_TAB) ||
 		input->GetButtonDown(XINPUT_BUTTON_START)))
 		&& level_up_flg == false && dark_alpha <= 0
 		&& player->GetPlayerStats().life_count > 0)
@@ -246,7 +262,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	}
 
 	//アップグレード
-	if (((input->GetKeyUp(KEY_INPUT_L) ||
+	if (((input->GetKeyUp(KEY_INPUT_SPACE) ||
 		input->GetButtonDown(XINPUT_BUTTON_Y))
 		&& time_stop == false)
 		&& up_grade_stock > 0 && dark_alpha <= 0
@@ -263,8 +279,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	player_old_level = player->GetPlayerStats().player_level;
 
 	//リザルトシーンへ遷移
-	if (input->GetKeyUp(KEY_INPUT_SPACE) ||
-		player->GetPlayerStats().life_count <= 0 && player->death_animation_finished)
+	if (player->GetPlayerStats().life_count <= 0 && player->death_animation_finished)
 	{
 		// プレイヤーの情報を取得する
 		score->SetPlayerStats(player->GetPlayerStats().player_level, player->GetPlayerStats().life_count, player->GetPlayerStats().attack_power, player->GetPlayerStats().move_speed, player->GetPlayerStats().shot_speed, player->GetPlayerStats().player_shot_hitrange_up, player->GetPlayerStats().threeway_flag);

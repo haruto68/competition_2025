@@ -8,6 +8,7 @@ protected:
 
 private:
 	bool track_flag;
+	std::vector<int> exp_image;
 
 public:
 	ExperiencePoints();
