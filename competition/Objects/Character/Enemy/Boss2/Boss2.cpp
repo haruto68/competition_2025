@@ -17,7 +17,7 @@ Boss2::Boss2()
 	is_mobility = true;
 
 	//Å‘åHPİ’è
-	max_hp = 650;
+	max_hp = 550;
 	hp = float(max_hp);
 
 	//‰æ‘œ“Ç‚İ‚İ
@@ -107,6 +107,7 @@ void Boss2::Update(float delta_seconds)
 	//€
 	if (hp <= 0.0f)
 	{
+		collision.is_blocking = false;
 		death_count -= (delta_seconds * 1.0f);
 		transparency--;
 	}
@@ -175,6 +176,15 @@ void Boss2::OnHitCollision(GameObject* hit_object)
 void Boss2::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
+
+	if (location.x >= 1150)
+	{
+		velocity.x = -1.0f;
+	}
+	else
+	{
+		velocity.x = 0.0f;
+	}
 
 	if ((location.y + velocity.y) <= (65.0f + collision.box_size.y) || (location.y + velocity.y) >= (680 - collision.box_size.y))
 	{

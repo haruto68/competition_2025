@@ -6,6 +6,7 @@ class Enemy9 : public EnemyBase
 private:
     int target;
     bool turn;
+    float birth_count;
 
 public:
     Enemy9();

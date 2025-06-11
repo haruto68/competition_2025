@@ -4,7 +4,7 @@
 EnemyShot::EnemyShot() :
 	screen_velocity(0.0),
 	shot_image(),
-	birth_count(800),
+	caveat_time(0.0f),
 	old_velocity(0.0f)
 {
 
@@ -46,9 +46,21 @@ void EnemyShot::Initialize()
 
 void EnemyShot::Update(float delta_seconds)
 {
+	birth_count += delta_seconds;
+
 	Movement(delta_seconds);
 
 	Animation();
+
+	if (shot_type == eShotType::eEnemy15)
+	{
+		caveat_time = 1.75f;
+		collision.box_size = Vector2D(1280, 30);
+		if (birth_count > caveat_time)
+		{
+			velocity.x = -6.0f;
+		}
+	}
 }
 
 void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
@@ -73,6 +85,16 @@ void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 		break;
 	case eEnemy5:
 		image = shot_image[1];
+		break;
+	case eEnemy15:
+		image = -1; if (birth_count < caveat_time)
+		{
+			//—\‘ªü
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 175);
+			DrawBox(0, location.y - (collision.box_size.y / 2), 1280, location.y + (collision.box_size.y / 2), GetColor(255, 0, 0), TRUE);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
+		DrawBox(location.x - 640, location.y - (collision.box_size.y / 2), location.x + 640, location.y + (collision.box_size.y / 2), GetColor(205, 205, 205), TRUE);
 		break;
 	default:
 		image = shot_image[1];
@@ -100,7 +122,10 @@ void EnemyShot::OnHitCollision(GameObject* hit_object)
 	case eNone:
 		break;
 	case ePlayer:
+	if(shot_type != eEnemy15)
+	{
 		object_manager->DestroyGameObject(this);
+	}
 		break;
 	case eEnemy:
 		break;
@@ -154,7 +179,7 @@ void EnemyShot::Movement(float delta_seconds)
 	case eEnemy4:	//Ž©‹@‘_‚¢
 		if(location.x > old_player_location.x)
 		{
-			velocity = Tracking(location, old_player_location);
+			velocity = Tracking(location, old_player_location) * 1.2;
 			old_velocity = velocity;
 		}
 		else
@@ -255,6 +280,8 @@ void EnemyShot::Movement(float delta_seconds)
 		}
 		else
 			velocity = old_velocity;
+		break;
+	case eEnemy15:
 		break;
 	default:
 		break;

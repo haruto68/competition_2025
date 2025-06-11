@@ -39,7 +39,7 @@ void Enemy6::Initialize()
 
 	velocity.x = -0.3f;
 
-	hp = 12.0f;
+	hp = 9.0f;
 
 	// ‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");

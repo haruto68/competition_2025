@@ -83,6 +83,7 @@ void Boss1::Update(float delta_seconds)
 	//Ž€
 	if (hp <= 0.0f)
 	{
+		collision.is_blocking = false;
 		death_count -= (delta_seconds * 1.0f);
 		transparency--;
 	}
@@ -151,6 +152,15 @@ void Boss1::OnHitCollision(GameObject* hit_object)
 void Boss1::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
+
+	if (location.x >= 1150)
+	{
+		velocity.x = -1.0f;
+	}
+	else
+	{
+		velocity.x = 0.0f;
+	}
 
 	location += velocity * speed * delta_seconds;
 }

@@ -11,7 +11,7 @@ private:
 
 	int shot_image[3];
 
-	int birth_count;
+	float caveat_time;
 
 	Vector2D old_velocity;
 

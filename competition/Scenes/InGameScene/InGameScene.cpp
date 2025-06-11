@@ -2,11 +2,14 @@
 #include"../../Utility/InputManager.h"
 #include"../../Objects/GameObjectManager.h"
 
+#define TIME_SPEED	(1.0f)
+
 InGameScene::InGameScene() :
 	object_manager(nullptr),
 	player(),
 	boss1(nullptr),
 	boss2(nullptr),
+	boss3(nullptr),
 	level_up_ui(),
 	hp_ui(),
 	level_ui(),
@@ -80,6 +83,9 @@ void InGameScene::Initialize()
 
 	level_ui = new LevelUI();
 	level_ui->Initialize();
+
+	score = new Score();
+	score->SetStageLevel(stage_level);
 	
 	// 音源の音量の設定
 	ChangeVolumeSoundMem(100, bgm[0]);
@@ -117,7 +123,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		if(time_count >= 0.0f)
 		{
 			if (dark_alpha <= 0)
-				time_count -= (delta_second * 1.0f);
+				time_count -= (delta_second * TIME_SPEED);
 		}
 		else
 		{
@@ -150,7 +156,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 			// オブジェクトをスクロールと一緒に動かす処理
 			if (obj->GetCollision().object_type != eObjectType::ePlayer)
 			{
-				obj->SetLocation(Vector2D(obj->GetLocation().x + screen_offset.x, obj->GetLocation().y));
+				//obj->SetLocation(Vector2D(obj->GetLocation().x + screen_offset.x, obj->GetLocation().y));
 			}
 			// オブジェクトマネージャーのインスタンス引き渡し
 			if (obj->CheckInstance() == nullptr)
@@ -172,7 +178,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		// 画面外へでたオブジェクトを破壊する
 		for (GameObject* obj : scene_objects_list)
 		{
-			if (obj->GetLocation().x <= -50 || obj->GetLocation().x >= D_WIN_MAX_X + 50 ||
+			if (obj->GetLocation().x <= -640 || obj->GetLocation().x >= D_WIN_MAX_X + 650 ||
 				obj->GetLocation().y <= -50 || obj->GetLocation().y >= D_WIN_MAX_Y + 50)
 			{
 				object_manager->DestroyGameObject(obj);
@@ -228,8 +234,10 @@ eSceneType InGameScene::Update(const float& delta_second)
 	}
 
 	//ポーズ画面
-	if ((input->GetKeyUp(KEY_INPUT_L) ||
+	if (((input->GetKeyUp(KEY_INPUT_L) ||
 		input->GetButtonDown(XINPUT_BUTTON_START)))
+		&& level_up_flg == false && dark_alpha <= 0
+		&& player->GetPlayerStats().life_count > 0)
 	{
 		if (time_stop)
 			time_stop = false;
@@ -238,9 +246,11 @@ eSceneType InGameScene::Update(const float& delta_second)
 	}
 
 	//アップグレード
-	if ((input->GetKeyUp(KEY_INPUT_L) ||
+	if (((input->GetKeyUp(KEY_INPUT_L) ||
 		input->GetButtonDown(XINPUT_BUTTON_Y))
-		&& up_grade_stock > 0)
+		&& time_stop == false)
+		&& up_grade_stock > 0 && dark_alpha <= 0
+		&& player->GetPlayerStats().life_count > 0)
 	{
 		level_up_flg = true;
 		time_stop = true;
@@ -256,6 +266,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 	if (input->GetKeyUp(KEY_INPUT_SPACE) ||
 		player->GetPlayerStats().life_count <= 0 && player->death_animation_finished)
 	{
+		// プレイヤーの情報を取得する
+		score->SetPlayerStats(player->GetPlayerStats().player_level, player->GetPlayerStats().life_count, player->GetPlayerStats().attack_power, player->GetPlayerStats().move_speed, player->GetPlayerStats().shot_speed, player->GetPlayerStats().player_shot_hitrange_up, player->GetPlayerStats().threeway_flag);
 		return eSceneType::eResult;
 	}	
 
@@ -328,7 +340,13 @@ void InGameScene::Draw() const
 	if (up_grade_stock > 0)
 	{
 		SetFontSize(40);
-		DrawFormatString(475, 680, GetColor(255, 0, 255), "Y_button to UpGrade");
+		DrawFormatString(476, 681, GetColor(0, 0, 0), "Y_button to UpGrade");
+		DrawFormatString(475, 680, GetColor(125, 0, 175), "Y_button to UpGrade");
+		if(up_grade_stock > 1)
+		{
+			DrawFormatString(900, 680, GetColor(0, 0, 0), "× %d", up_grade_stock);
+			DrawFormatString(901, 681, GetColor(125, 0, 175), "× %d", up_grade_stock);
+		}
 	}
 
 	//レベルアップUI描画
@@ -363,7 +381,7 @@ void InGameScene::Draw() const
 	}
 
 	//ステージ遷移1>>2
-	if (boss1 != nullptr)
+	if (boss1 != nullptr && stage_level == 1)
 	{
 		if (boss1->GetBoss1DeathCount() < 3.0f && boss1->GetBoss1DeathCount() > 1.5f)
 		{
@@ -377,7 +395,7 @@ void InGameScene::Draw() const
 		}
 	}
 	//ステージ遷移2>>3
-	if (boss2 != nullptr)
+	if (boss2 != nullptr && stage_level == 2)
 	{
 		if (boss2->GetBoss2DeathCount() < 3.0f && boss2->GetBoss2DeathCount() > 1.5f)
 		{
@@ -400,6 +418,8 @@ void InGameScene::Finalize()
 	level_up_ui->Finalize();
 	hp_ui->Finalize();
 	level_ui->Finalize();
+	StopSoundMem(bgm[0]);
+	StopSoundMem(bgm[1]);
 }
 
 eSceneType InGameScene::GetNowSceneType()const
@@ -658,7 +678,7 @@ void InGameScene::BossManager()
 		if (boss_flag == false)
 		{
 			boss_flag = true;
-			boss1 = object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));
+			boss1 = object_manager->CreateGameObject<Boss1>(Vector2D(1400, 400));
 		}
 		else if (boss1->GetDeathFlag())
 		{
@@ -666,6 +686,7 @@ void InGameScene::BossManager()
 			stage_level += 1;
 			time_count = 60.0f;
 			object_manager->DestroyGameObject(boss1);
+			// score->SetStageLevel(stage_level);
 		}
 	}
 	else if (stage_level == 2)
@@ -673,7 +694,7 @@ void InGameScene::BossManager()
 		if (boss_flag == false)
 		{
 			boss_flag = true;
-			boss2 = object_manager->CreateGameObject<Boss2>(Vector2D(1200, 400));
+			boss2 = object_manager->CreateGameObject<Boss2>(Vector2D(1400, 400));
 		}
 		else if (boss2->GetDeathFlag())
 		{
@@ -681,6 +702,21 @@ void InGameScene::BossManager()
 			stage_level += 1;
 			time_count = 60.0f;
 			object_manager->DestroyGameObject(boss2);
+		}
+	}
+	else if (stage_level == 3)
+	{
+		if (boss_flag == false)
+		{
+			boss_flag = true;
+			boss3 = object_manager->CreateGameObject<Boss3>(Vector2D(1400, 400));
+		}
+		else if (boss3->GetDeathFlag())
+		{
+			boss_flag = false;
+			stage_level += 1;
+			time_count = 60.0f;
+			object_manager->DestroyGameObject(boss3);
 		}
 	}
 
@@ -698,4 +734,6 @@ void InGameScene::BossManager()
 			dark_alpha++;
 		}
 	}
+
+	score->SetStageLevel(stage_level);
 }
