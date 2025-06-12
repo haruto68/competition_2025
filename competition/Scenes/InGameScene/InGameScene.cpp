@@ -187,49 +187,56 @@ eSceneType InGameScene::Update(const float& delta_second)
 	}
 	else
 	{
-		//カーソル左
-		if (input->GetKeyUp(KEY_INPUT_A) || input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
+		if(level_up_flg == true)
 		{
-			if (level_up_ui->cursor == 0)
+			//カーソル左
+			if (input->GetKeyUp(KEY_INPUT_A) || input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
 			{
-				level_up_ui->cursor = 2;
+				if (level_up_ui->cursor == 0)
+				{
+					level_up_ui->cursor = 2;
+				}
+				else if (level_up_ui->cursor == 1)
+				{
+					level_up_ui->cursor = 0;
+				}
+				else
+				{
+					level_up_ui->cursor = 1;
+				}
 			}
-			else if (level_up_ui->cursor == 1)
+			//カーソル右
+			if (input->GetKeyUp(KEY_INPUT_D) || input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
 			{
-				level_up_ui->cursor = 0;
+				if (level_up_ui->cursor == 0)
+				{
+					level_up_ui->cursor = 1;
+				}
+				else if (level_up_ui->cursor == 1)
+				{
+					level_up_ui->cursor = 2;
+				}
+				else
+				{
+					level_up_ui->cursor = 0;
+				}
 			}
-			else
+			//カーソル決定
+			if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A))
 			{
-				level_up_ui->cursor = 1;
-			}
-		}
-		//カーソル右
-		if (input->GetKeyUp(KEY_INPUT_D) || input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
-		{
-			if (level_up_ui->cursor == 0)
-			{
-				level_up_ui->cursor = 1;
-			}
-			else if (level_up_ui->cursor == 1)
-			{
-				level_up_ui->cursor = 2;
-			}
-			else
-			{
-				level_up_ui->cursor = 0;
-			}
-		}
-		//カーソル決定
-		if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A))
-		{
-			//強化内容取得
-			ePowerUp strengthen = level_up_ui->GetLottery();
-			//強化
-			player->StatsUp(strengthen);
-			time_stop = false;
-			level_up_flg = false;
+				//強化内容取得
+				ePowerUp strengthen = level_up_ui->GetLottery();
+				//強化
+				player->StatsUp(strengthen);
+				time_stop = false;
+				level_up_flg = false;
 
-			up_grade_stock--;
+				up_grade_stock--;
+			}
+		}
+		else
+		{
+
 		}
 	}
 
@@ -249,7 +256,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	if (((input->GetKeyUp(KEY_INPUT_L) ||
 		input->GetButtonDown(XINPUT_BUTTON_Y))
 		&& time_stop == false)
-		/*&& up_grade_stock > 0 && dark_alpha <= 0*/
+		&& up_grade_stock > 0 && dark_alpha <= 0
 		&& player->GetPlayerStats().life_count > 0)
 	{
 		level_up_flg = true;
@@ -748,7 +755,7 @@ void InGameScene::BossManager()
 		{
 			dark_alpha++;
 		}
-		if (stage_level == 3 && boss1 != nullptr &&
+		if (stage_level == 3 && boss3 != nullptr &&
 			boss3->GetBoss3Hp() <= 0 && boss3->GetBoss3DeathCount() < 4.0f)
 		{
 			dark_alpha++;
