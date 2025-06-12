@@ -261,13 +261,14 @@ eSceneType InGameScene::Update(const float& delta_second)
 		up_grade_stock++;
 	}
 	player_old_level = player->GetPlayerStats().player_level;
-
+	
 	//リザルトシーンへ遷移
 	if (input->GetKeyUp(KEY_INPUT_SPACE) ||
 		player->GetPlayerStats().life_count <= 0 && player->death_animation_finished)
 	{
 		// プレイヤーの情報を取得する
-		score->SetPlayerStats(player->GetPlayerStats().player_level, player->GetPlayerStats().life_count, player->GetPlayerStats().attack_power, player->GetPlayerStats().move_speed, player->GetPlayerStats().shot_speed, player->GetPlayerStats().player_shot_hitrange_up, player->GetPlayerStats().threeway_flag);
+		//score->SetPlayerStats(player->GetPlayerStats().player_level, player->GetPlayerStats().life_count, player->GetPlayerStats().attack_power, player->GetPlayerStats().move_speed, player->GetPlayerStats().shot_speed, player->GetPlayerStats().player_shot_hitrange_up, player->GetPlayerStats().threeway_flag);
+		score->SetPlayerLevel(player->GetPlayerStats().player_level);
 		return eSceneType::eResult;
 	}	
 
