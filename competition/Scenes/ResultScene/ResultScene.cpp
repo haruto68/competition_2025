@@ -3,7 +3,7 @@
 #include"../../Resource/ResourceManager.h"
 //#define DEBUG 1
 
-ResultScene::ResultScene(): m_selectedbutton(selectedbutton::Title), menu_num(0), is_button(true), back_ground_sound(0)			//初期はタイトル選択
+ResultScene::ResultScene(): m_selectedbutton(selectedbutton::Title), menu_num(0), is_button(true), back_ground_sound(0), score(0)			//初期はタイトル選択
 {
 	// //リソース管理インスタンス取得
 	// ResourceManager* rm = ResourceManager::GetInstance();
@@ -44,7 +44,7 @@ void ResultScene::Initialize()
 	ChangeVolumeSoundMem(100, back_ground_sound);
 	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_BACK, TRUE);
 
-	// ranking = new RankingScene();
+	ranking = new RankingScene();
 	// ranking->Initialize();
 }
 
@@ -54,7 +54,7 @@ eSceneType ResultScene::Update(const float& delta_second)
 	InputManager* input = InputManager::GetInstance();
 
 	stagelevel = score->GetStageLevel();
-	level = score->GetPlayerStats();
+	level = score->GetStageLevel();
 	//入力情報の更新
 	input->Update();
 
@@ -158,7 +158,7 @@ void ResultScene::Draw() const
 
 void ResultScene::Finalize()
 {
-	//ranking->SetRank(level);
+	ranking->SetRank(stagelevel);
 	//StopSoundMem()
 	StopSoundMem(back_ground_sound);
 	score->Finalize();

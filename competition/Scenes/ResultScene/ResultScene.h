@@ -22,14 +22,15 @@ public:
 	bool is_button;
 	int back_ground_sound;
 	int sounds_effect[2];
+	// リザルトシーンからのスコアの情報を入れる変数
 	int level;
 	int stagelevel;
-	int power;
-	int hp;
-	int speed;
-	int cool_time;
-	int hit_range;
-	int three_way;
+	//int power;
+	//int hp;
+	//int speed;
+	//int cool_time;
+	//int hit_range;
+	//int three_way;
 	Score* score;
 	RankingScene* ranking;
 
