@@ -59,28 +59,33 @@ eSceneType TitleScene::Update(const float& delta_second)
 		return eSceneType::eExit;
 	}
 
-	// カーソル上移動
-	if ((input->GetButtonDown(XINPUT_BUTTON_DPAD_UP) || input->GetKeyDown(KEY_INPUT_W)) && is_button == true)
+	// ヘルプが開かれていると操作を停止する
+	if (help != true)
 	{
-		PlaySoundMem(sounds_effect[1], DX_PLAYTYPE_BACK, TRUE);
-
-		menu_num--;
-		if (menu_num < 0)
+		// カーソル上移動
+		if ((input->GetButtonDown(XINPUT_BUTTON_DPAD_UP) || input->GetKeyDown(KEY_INPUT_W)) && is_button == true)
 		{
-			menu_num = 2;
+			PlaySoundMem(sounds_effect[1], DX_PLAYTYPE_BACK, TRUE);
+
+			menu_num--;
+			if (menu_num < 0)
+			{
+				menu_num = 2;
+			}
 		}
-	}
 
-	// カーソル下移動
-	if ((input->GetButtonDown(XINPUT_BUTTON_DPAD_DOWN) || input->GetKeyDown(KEY_INPUT_S)) && is_button == true)
-	{
-		PlaySoundMem(sounds_effect[1], DX_PLAYTYPE_BACK, TRUE);
-
-		menu_num++;
-		if (menu_num > 2)
+		// カーソル下移動
+		if ((input->GetButtonDown(XINPUT_BUTTON_DPAD_DOWN) || input->GetKeyDown(KEY_INPUT_S)) && is_button == true)
 		{
-			menu_num = 0;
+			PlaySoundMem(sounds_effect[1], DX_PLAYTYPE_BACK, TRUE);
+
+			menu_num++;
+			if (menu_num > 2)
+			{
+				menu_num = 0;
+			}
 		}
+
 	}
 
 	// カーソル決定(決定した画面に移動する)
@@ -148,7 +153,7 @@ void TitleScene::Draw() const
 	DrawFormatString(70, 500, GetColor(255, 255, 255), "      カーソル移動");
 	DrawFormatString(70, 580, GetColor(0, 255, 0), "A　決定");
 
-	// 仮カーソルUI	時間があれば治します。
+	// 仮カーソルUI	
 	switch (menu_num)
 	{
 		case 0:
