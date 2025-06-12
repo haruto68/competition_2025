@@ -13,6 +13,9 @@ private:
 	int sounds_effect[2];	// Œø‰Ê‰¹
 	//int button_sound0;		// ‘I‘ğ‰¹
 	//int button_sound1;		// Œˆ’è‰¹
+	int back_ground_image;				// ”wŒi‰æ‘œ
+	Vector2D back_ground_location;		// ”wŒiÀ•W
+	int font_name;
 
 public:
 	TitleScene();
