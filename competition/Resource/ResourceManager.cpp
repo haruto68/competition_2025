@@ -92,7 +92,7 @@ int ResourceManager::GetSounds(std::string file_path)
 }
 int ResourceManager::GetSounds(const char* file_path)
 {
-	//return 0;//‰¹‚¯‚µ
+	return 0;//‰¹‚¯‚µ
 	return GetSounds(std::string(file_path));
 }
 

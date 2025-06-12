@@ -2,7 +2,7 @@
 #include"../../Utility/InputManager.h"
 #include"../../Objects/GameObjectManager.h"
 
-#define TIME_SPEED	(1.0f)
+#define TIME_SPEED	(30.0f)
 
 InGameScene::InGameScene() :
 	object_manager(nullptr),

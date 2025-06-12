@@ -1,6 +1,6 @@
 #include "Boss1.h"
 
-Boss1::Boss1()
+Boss1::Boss1() : images()
 {
 	// ƒRƒŠƒWƒ‡ƒ“Ý’è
 	collision.is_blocking = true;
@@ -22,6 +22,14 @@ Boss1::Boss1()
 
 	//‰æ‘œ“Ç‚Ýž‚Ý
 	image = rm->GetImages("Resource/Images/enemy/ship3.png")[0];
+
+	images[0] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/Enemy_Tank_Base.png")[0];
+	images[1] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip1_Base.png")[0];
+	images[2] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip1_Base_Tilt1.png")[0];
+	images[3] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip1_Base_Tilt2.png")[0];
+	images[4] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip1_Upgraded.png")[0];
+	images[5] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip1_Upgraded_Tilt1.png")[0];
+	images[6] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip1_Upgraded_Tilt2.png")[0];
 }
 
 Boss1::~Boss1()
@@ -98,7 +106,8 @@ void Boss1::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	if (image != -1)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, transparency);
-		DrawRotaGraphF(location.x, location.y, 10.0f, 0.0f, image, TRUE);
+		DrawRotaGraphF(location.x + 50, location.y, 1.0f, ƒÎ / 2, images[0], TRUE);
+		DrawRotaGraphF(location.x, location.y, 2.75f, ƒÎ / 2, images[1], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 
@@ -153,7 +162,7 @@ void Boss1::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
 
-	if (location.x >= 1150)
+	if (location.x >= 1100)
 	{
 		velocity.x = -1.0f;
 	}
