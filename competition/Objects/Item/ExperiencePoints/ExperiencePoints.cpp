@@ -3,24 +3,7 @@
 ExperiencePoints::ExperiencePoints() :
 	track_flag(false)
 {
-	//リソース管理インスタンス取得
-	ResourceManager* rm = ResourceManager::GetInstance();
 
-	// コリジョン設定
-	collision.is_blocking = true;
-	collision.box_size = Vector2D(20, 20);
-	collision.object_type = eObjectType::eItem;
-	collision.hit_object_type.push_back(eObjectType::ePlayer);
-	// 画像設定
-	
-	//スピード設定
-	speed = 200.0f;
-	// レイヤー設定
-	z_layer = 2;
-	// 可動性設定
-	is_mobility = true;
-
-	item_type = eItemType::eExp;
 }
 
 ExperiencePoints::~ExperiencePoints()
@@ -30,7 +13,26 @@ ExperiencePoints::~ExperiencePoints()
 
 void ExperiencePoints::Initialize()
 {
+	//リソース管理インスタンス取得
+	ResourceManager* rm = ResourceManager::GetInstance();
 
+	// コリジョン設定
+	collision.is_blocking = true;
+	collision.box_size = Vector2D(20, 20);
+	collision.object_type = eObjectType::eItem;
+	collision.hit_object_type.push_back(eObjectType::ePlayer);
+	// 画像設定
+
+	//スピード設定
+	speed = 200.0f;
+	// レイヤー設定
+	z_layer = 2;
+	// 可動性設定
+	is_mobility = true;
+
+	item_type = eItemType::eExp;
+	exp_image = rm->GetImages("Resource/Images/player/Exp_image.png", 1, 1, 1, 32, 32);
+	image = exp_image[0];
 }
 
 void ExperiencePoints::Update(float delta_seconds)
@@ -43,9 +45,6 @@ void ExperiencePoints::Update(float delta_seconds)
 void ExperiencePoints::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 	__super::Draw(0.0f, this->flip_flag);
-
-	//DrawBox(location.x - 10, location.y - 10, location.x + 10, location.y + 10, GetColor(200, 100, 100), TRUE);
-	DrawCircle(location.x, location.y, 10, GetColor(0, 200, 0), TRUE, TRUE);
 }
 
 void ExperiencePoints::Finalize()
