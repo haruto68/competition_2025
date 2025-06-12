@@ -44,7 +44,7 @@ public:
 public:
 	void Initialize();							//初期化処理
 	void Update(bool flag, PlayerStats stats);	//更新処理
-	void Draw() const;							//描画処理
+	void Draw(bool, bool) const;				//描画処理
 	void Finalize();							//終了処理
 	
 	int Probability();							//確率調整

@@ -67,9 +67,10 @@ public:
 	bool level_up_flg;							//レベルアップフラグ
 	bool time_stop;								//一時停止フラグ
 	float time_count;							//時間カウント
-	int bgm[3];
-	int soundseffect[10];
-	int dark_alpha;
+	int bgm[3];									//BGM
+	int soundseffect[10];						//SE
+	int dark_alpha;								//画面暗転アルファ値
+	int pause_cursor;							//ポーズカーソル番号
 
 
 public:

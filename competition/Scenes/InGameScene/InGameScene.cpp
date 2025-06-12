@@ -31,7 +31,8 @@ InGameScene::InGameScene() :
 	time_count(60),
 	bgm(),
 	soundseffect(),
-	dark_alpha(600)
+	dark_alpha(600),
+	pause_cursor(0)
 {
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
@@ -193,33 +194,21 @@ eSceneType InGameScene::Update(const float& delta_second)
 			if (input->GetKeyUp(KEY_INPUT_A) || input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
 			{
 				if (level_up_ui->cursor == 0)
-				{
 					level_up_ui->cursor = 2;
-				}
 				else if (level_up_ui->cursor == 1)
-				{
 					level_up_ui->cursor = 0;
-				}
 				else
-				{
 					level_up_ui->cursor = 1;
-				}
 			}
 			//カーソル右
 			if (input->GetKeyUp(KEY_INPUT_D) || input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
 			{
 				if (level_up_ui->cursor == 0)
-				{
 					level_up_ui->cursor = 1;
-				}
 				else if (level_up_ui->cursor == 1)
-				{
 					level_up_ui->cursor = 2;
-				}
 				else
-				{
 					level_up_ui->cursor = 0;
-				}
 			}
 			//カーソル決定
 			if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A))
@@ -236,7 +225,31 @@ eSceneType InGameScene::Update(const float& delta_second)
 		}
 		else
 		{
-
+			//カーソル上
+			if (input->GetKeyUp(KEY_INPUT_W) || input->GetButtonDown(XINPUT_BUTTON_DPAD_UP))
+			{
+				if (pause_cursor == 1)
+					pause_cursor = 0;
+			}
+			//カーソル下
+			if (input->GetKeyUp(KEY_INPUT_S) || input->GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
+			{
+				if (pause_cursor == 0)
+					pause_cursor = 1;
+			}
+			//カーソル決定
+			if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A))
+			{
+				
+				if (pause_cursor == 0)
+				{
+					time_stop = false;
+				}
+				else
+				{
+					return eSceneType::eTitle;
+				}
+			}
 		}
 	}
 
@@ -246,6 +259,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		&& level_up_flg == false && dark_alpha <= 0
 		&& player->GetPlayerStats().life_count > 0)
 	{
+		pause_cursor = 0;
 		if (time_stop)
 			time_stop = false;
 		else
@@ -357,22 +371,31 @@ void InGameScene::Draw() const
 		}
 	}
 
-	//レベルアップUI描画
-	if (level_up_flg)
-	{
-		level_up_ui->Draw();
-	}
-
+	//ポーズ画面描画
 	if (time_stop == true && level_up_flg == false)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 175);
 		DrawBox(0, 0, 1280, 720, GetColor(0, 0, 0), TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-		SetFontSize(70);
-		DrawFormatString(475, 150, GetColor(255, 255, 255), "P A U S E");
+		SetFontSize(100);
+		DrawFormatString(425, 125, GetColor(255, 255, 255), "P A U S E");
+
+		int pause_font[2] = { 40,40 };
+		if(pause_cursor == 0)
+			pause_font[0] = 80;
+		else if(pause_cursor == 1)
+			pause_font[1] = 80;
+
+		SetFontSize(pause_font[0]);
+		DrawFormatString(500, 350, GetColor(255, 255, 255), "B A C K");
+		SetFontSize(pause_font[1]);
+		DrawFormatString(475, 500, GetColor(255, 255, 255), "T I T L E");
 	}
 
+
+	//レベルアップUI描画
+	level_up_ui->Draw(level_up_flg, time_stop);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
