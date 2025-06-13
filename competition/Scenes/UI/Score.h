@@ -8,7 +8,7 @@ class Score
 protected:
 
 private:
-	static int stagelevel;		// 代用(構造体でも代用可能)
+	static int stagelevel;		
 	static int power;
 	static int hp;
 	static int speed;
