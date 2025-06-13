@@ -31,7 +31,8 @@ InGameScene::InGameScene() :
 	time_count(60),
 	bgm(),
 	soundseffect(),
-	dark_alpha(600)
+	dark_alpha(600),
+	pause_cursor(0)
 {
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
@@ -187,49 +188,68 @@ eSceneType InGameScene::Update(const float& delta_second)
 	}
 	else
 	{
-		//カーソル左
-		if (input->GetKeyUp(KEY_INPUT_A) || input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
+		if(level_up_flg == true)
 		{
-			if (level_up_ui->cursor == 0)
+			//カーソル左
+			if (input->GetKeyUp(KEY_INPUT_A) || input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
 			{
-				level_up_ui->cursor = 2;
+				if (level_up_ui->cursor == 0)
+					level_up_ui->cursor = 2;
+				else if (level_up_ui->cursor == 1)
+					level_up_ui->cursor = 0;
+				else
+					level_up_ui->cursor = 1;
 			}
-			else if (level_up_ui->cursor == 1)
+			//カーソル右
+			if (input->GetKeyUp(KEY_INPUT_D) || input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
 			{
-				level_up_ui->cursor = 0;
+				if (level_up_ui->cursor == 0)
+					level_up_ui->cursor = 1;
+				else if (level_up_ui->cursor == 1)
+					level_up_ui->cursor = 2;
+				else
+					level_up_ui->cursor = 0;
 			}
-			else
+			//カーソル決定
+			if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A))
 			{
-				level_up_ui->cursor = 1;
-			}
-		}
-		//カーソル右
-		if (input->GetKeyUp(KEY_INPUT_D) || input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
-		{
-			if (level_up_ui->cursor == 0)
-			{
-				level_up_ui->cursor = 1;
-			}
-			else if (level_up_ui->cursor == 1)
-			{
-				level_up_ui->cursor = 2;
-			}
-			else
-			{
-				level_up_ui->cursor = 0;
-			}
-		}
-		//カーソル決定
-		if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A))
-		{
-			//強化内容取得
-			ePowerUp strengthen = level_up_ui->GetLottery();
-			//強化
-			player->StatsUp(strengthen);
-			time_stop = false;
-			level_up_flg = false;
+				//強化内容取得
+				ePowerUp strengthen = level_up_ui->GetLottery();
+				//強化
+				player->StatsUp(strengthen);
+				time_stop = false;
+				level_up_flg = false;
 
-			up_grade_stock--;
+				up_grade_stock--;
+			}
+		}
+		else
+		{
+			//カーソル上
+			if (input->GetKeyUp(KEY_INPUT_W) || input->GetButtonDown(XINPUT_BUTTON_DPAD_UP))
+			{
+				if (pause_cursor == 1)
+					pause_cursor = 0;
+			}
+			//カーソル下
+			if (input->GetKeyUp(KEY_INPUT_S) || input->GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
+			{
+				if (pause_cursor == 0)
+					pause_cursor = 1;
+			}
+			//カーソル決定
+			if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A))
+			{
+				
+				if (pause_cursor == 0)
+				{
+					time_stop = false;
+				}
+				else
+				{
+					return eSceneType::eTitle;
+				}
+			}
 		}
 	}
 
@@ -239,6 +259,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		&& level_up_flg == false && dark_alpha <= 0
 		&& player->GetPlayerStats().life_count > 0)
 	{
+		pause_cursor = 0;
 		if (time_stop)
 			time_stop = false;
 		else
@@ -264,7 +285,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 	
 	//リザルトシーンへ遷移
 	if (input->GetKeyUp(KEY_INPUT_SPACE) ||
-		player->GetPlayerStats().life_count <= 0 && player->death_animation_finished)
+		player->GetPlayerStats().life_count <= 0 && player->death_animation_finished ||
+		stage_level == 4)
 	{
 		// プレイヤーの情報を取得する
 		//score->SetPlayerStats(player->GetPlayerStats().player_level, player->GetPlayerStats().life_count, player->GetPlayerStats().attack_power, player->GetPlayerStats().move_speed, player->GetPlayerStats().shot_speed, player->GetPlayerStats().player_shot_hitrange_up, player->GetPlayerStats().threeway_flag);
@@ -350,22 +372,31 @@ void InGameScene::Draw() const
 		}
 	}
 
-	//レベルアップUI描画
-	if (level_up_flg)
-	{
-		level_up_ui->Draw();
-	}
-
+	//ポーズ画面描画
 	if (time_stop == true && level_up_flg == false)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 175);
 		DrawBox(0, 0, 1280, 720, GetColor(0, 0, 0), TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-		SetFontSize(70);
-		DrawFormatString(475, 150, GetColor(255, 255, 255), "P A U S E");
+		SetFontSize(100);
+		DrawFormatString(425, 125, GetColor(255, 255, 255), "P A U S E");
+
+		int pause_font[2] = { 40,40 };
+		if(pause_cursor == 0)
+			pause_font[0] = 80;
+		else if(pause_cursor == 1)
+			pause_font[1] = 80;
+
+		SetFontSize(pause_font[0]);
+		DrawFormatString(500, 350, GetColor(255, 255, 255), "B A C K");
+		SetFontSize(pause_font[1]);
+		DrawFormatString(475, 500, GetColor(255, 255, 255), "T I T L E");
 	}
 
+
+	//レベルアップUI描画
+	level_up_ui->Draw(level_up_flg, time_stop);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -407,6 +438,20 @@ void InGameScene::Draw() const
 		{
 			SetFontSize(100);
 			DrawFormatString(425, 300, GetColor(255, 255, 255), "STAGE 3");
+		}
+	}
+	//ステージ遷移3>>クリア
+	if (boss3 != nullptr && stage_level == 3)
+	{
+		if (boss3->GetBoss3DeathCount() < 3.0f && boss3->GetBoss3DeathCount() > 1.5f)
+		{
+			SetFontSize(70);
+			DrawFormatString(425, 260, GetColor(255, 255, 255), "STAGE CLEAR");
+		}
+		else if (boss3->GetBoss3DeathCount() < 1.1 && boss3->GetBoss3DeathCount() > 0.0f)
+		{
+			SetFontSize(100);
+			DrawFormatString(375, 300, GetColor(255, 255, 255), "GAME CLEAR");
 		}
 	}
 
@@ -731,6 +776,11 @@ void InGameScene::BossManager()
 		}
 		if (stage_level == 2 && boss1 != nullptr &&
 			boss2->GetBoss2Hp() <= 0 && boss2->GetBoss2DeathCount() < 4.0f)
+		{
+			dark_alpha++;
+		}
+		if (stage_level == 3 && boss3 != nullptr &&
+			boss3->GetBoss3Hp() <= 0 && boss3->GetBoss3DeathCount() < 4.0f)
 		{
 			dark_alpha++;
 		}

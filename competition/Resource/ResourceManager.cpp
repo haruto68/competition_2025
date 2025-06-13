@@ -92,7 +92,7 @@ int ResourceManager::GetSounds(std::string file_path)
 }
 int ResourceManager::GetSounds(const char* file_path)
 {
-	//return 0;//音けし
+	//return 0;//デバッグ用無音
 	return GetSounds(std::string(file_path));
 }
 

@@ -6,7 +6,6 @@ Drone::Drone() :
 	rotation_angle(0.0f),
 	shot_timer(0.3f),
 	SHOT_INTERVAL(0.5f),
-	drone_hp(1),
 	image_rotation(0.0f),
 	death_count(255),
 	death_flag(false)
@@ -62,10 +61,12 @@ void Drone::Update(float delta_seconds)
 	Animation(delta_seconds);
 	if (death_flag == true)
 	{
-		if (drone_hp <= 0.0f)
+		
+		if (player_stats.drone_hp <= 0.0f)
 		{
+			
 			death_count -= (delta_seconds * 1.0f);
-			transparency--;
+			transparency -= 1;
 		}
 		if (death_count <= 0.0)
 		{
@@ -101,14 +102,20 @@ void Drone::OnHitCollision(GameObject* hit_object)
 		break;
 	case eEnemy:
 		death_flag = true;
-		drone_hp--;
+		if (player_stats_ptr)
+		{
+			player_stats_ptr->drone_hp--;
+		}
 		PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case ePlayerShot:
 		break;
 	case eEnemyShot:
 		death_flag = true;
-		drone_hp--;
+		if (player_stats_ptr)
+		{
+			player_stats_ptr->drone_hp--;
+		}
 		PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eItem:
