@@ -1,10 +1,10 @@
 #include "Boss2.h"
 
-Boss2::Boss2()
+Boss2::Boss2() : images()
 {
 	// コリジョン設定
 	collision.is_blocking = true;
-	collision.box_size = Vector2D(150, 200);						//当たり判定の大きさ
+	collision.box_size = Vector2D(110, 240);						//当たり判定の大きさ
 	collision.object_type = eObjectType::eEnemy;					//オブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayer);		//ぶつかるオブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayerShot);	//ぶつかるオブジェクトのタイプ
@@ -22,6 +22,14 @@ Boss2::Boss2()
 
 	//画像読み込み
 	image = rm->GetImages("Resource/Images/enemy/ship3_col2.png")[0];
+
+	images[0] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/Enemy_Tank_Base.png")[0];
+	images[1] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip2_Base.png")[0];
+	images[2] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip2_Base_Tilt1.png")[0];
+	images[3] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip2_Base_Tilt2.png")[0];
+	images[4] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip2_Upgraded.png")[0];
+	images[5] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip2_Upgraded_Tilt1.png")[0];
+	images[6] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip2_Upgraded_Tilt2.png")[0];
 }
 
 Boss2::~Boss2()
@@ -123,7 +131,8 @@ void Boss2::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	if (image != -1)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, transparency);
-		DrawRotaGraphF(location.x, location.y, 10.0f, 0.0f, image, TRUE);
+		DrawRotaGraphF(location.x + 50, location.y, 1.0f, π / 2, images[0], TRUE);
+		DrawRotaGraphF(location.x, location.y, 2.75f, π / 2, images[1], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 
@@ -186,7 +195,7 @@ void Boss2::Movement(float delta_seconds)
 		velocity.x = 0.0f;
 	}
 
-	if ((location.y + velocity.y) <= (65.0f + collision.box_size.y) || (location.y + velocity.y) >= (680 - collision.box_size.y))
+	if ((location.y + velocity.y) <= (65.0f + collision.box_size.y / 2) || (location.y + velocity.y) >= (680 - collision.box_size.y / 2))
 	{
 
 		if (velocity.y < 0)

@@ -1,10 +1,10 @@
 #include "Boss1.h"
 
-Boss1::Boss1()
+Boss1::Boss1() : images()
 {
 	// コリジョン設定
 	collision.is_blocking = true;
-	collision.box_size = Vector2D(150, 200);						//当たり判定の大きさ
+	collision.box_size = Vector2D(120, 260);						//当たり判定の大きさ
 	collision.object_type = eObjectType::eEnemy;					//オブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayer);		//ぶつかるオブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayerShot);	//ぶつかるオブジェクトのタイプ
@@ -22,6 +22,14 @@ Boss1::Boss1()
 
 	//画像読み込み
 	image = rm->GetImages("Resource/Images/enemy/ship3.png")[0];
+
+	images[0] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/Enemy_Tank_Base.png")[0];
+	images[1] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip1_Base.png")[0];
+	images[2] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip1_Base_Tilt1.png")[0];
+	images[3] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip1_Base_Tilt2.png")[0];
+	images[4] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip1_Upgraded.png")[0];
+	images[5] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip1_Upgraded_Tilt1.png")[0];
+	images[6] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip1_Upgraded_Tilt2.png")[0];
 }
 
 Boss1::~Boss1()
@@ -56,20 +64,20 @@ void Boss1::Update(float delta_seconds)
 		switch (atack_pattern)
 		{
 		case 0:
-			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y));
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x - 100, location.y + 130));
+			shot->SetShotType(eEnemy1);
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x - 100, location.y - 130));
 			shot->SetShotType(eEnemy1);
 			atack_pattern = 1;
 			break;
 		case 1:
-			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y + 150));
-			shot->SetShotType(eEnemy1);
-			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y - 150));
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y));
 			shot->SetShotType(eEnemy1);
 			atack_pattern = 2;
 			break;
 		case 2:
-			object_manager->CreateGameObject<Enemy3>(Vector2D(location.x, location.y + 150));
-			object_manager->CreateGameObject<Enemy3>(Vector2D(location.x, location.y - 150));
+			object_manager->CreateGameObject<Enemy3>(Vector2D(location.x + 100, location.y + 180));
+			object_manager->CreateGameObject<Enemy3>(Vector2D(location.x + 100, location.y - 180));
 			atack_pattern = 0;
 			break;
 		default:
@@ -98,7 +106,8 @@ void Boss1::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	if (image != -1)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, transparency);
-		DrawRotaGraphF(location.x, location.y, 10.0f, 0.0f, image, TRUE);
+		DrawRotaGraphF(location.x + 50, location.y, 1.0f, π / 2, images[0], TRUE);
+		DrawRotaGraphF(location.x, location.y, 2.75f, π / 2, images[1], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 
@@ -153,7 +162,7 @@ void Boss1::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
 
-	if (location.x >= 1150)
+	if (location.x >= 1100)
 	{
 		velocity.x = -1.0f;
 	}
