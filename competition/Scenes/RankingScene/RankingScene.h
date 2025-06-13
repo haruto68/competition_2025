@@ -13,6 +13,9 @@ private:
 	int score[RANKING_DATA];	// ランキングデータ
 	int rank[RANKING_DATA];		// ランク
 	int player_stats[8];		// プレイヤーステータス
+	int back_ground_image;		// 背景画像
+	Vector2D back_ground_location;		// 背景座標
+
 public:
 	RankingScene();
 	~RankingScene();

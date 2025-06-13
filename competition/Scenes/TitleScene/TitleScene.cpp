@@ -128,30 +128,30 @@ void TitleScene::Draw() const
 	font[menu_num] = 60;
 
 	// タイトルの大見出し
-	DrawBox(50, 20, 1230, 420, 0xffffff, TRUE);
-	SetFontSize(40);
-	 DrawFormatString(50, 175, 0x000000, "ゲームの名前(仮)");
+	// DrawBox(50, 20, 1230, 420, 0xffffff, TRUE);
+	SetFontSize(150);
+	 DrawFormatString(100, 175, 0xffffff, "Nebula striker");
 
 	/*シーン選択*/
 	// Startボタン(ゲームメインに遷移する)
-	DrawBox(480, 435, 800, 510, 0xffffff, TRUE);
+	// DrawBox(480, 435, 800, 510, 0xffffff, TRUE);
 	SetFontSize(font[0]);
-	DrawFormatString(480, 450, 0x000000, "Game Start");
+	DrawFormatString(480, 450, 0xffffff, "Game Start");
 
 	// Helpボタン(ヘルプ画面に遷移する)
-	DrawBox(480, 525, 800, 600, 0xffffff, TRUE);
+	// DrawBox(480, 525, 800, 600, 0xffffff, TRUE);
 	SetFontSize(font[1]);
-	DrawFormatString(480, 540, 0x000000, "Help");
+	DrawFormatString(480, 540, 0xffffff, "Help");
 
 	// Rankingボタン(ランキング画面に遷移する)
-	DrawBox(480, 615, 800, 690, 0xffffff, TRUE);
+	// DrawBox(480, 615, 800, 690, 0xffffff, TRUE);
 	SetFontSize(font[2]);
-	DrawFormatString(480, 630, 0x000000, "Ranking");
+	DrawFormatString(480, 630, 0xffffff, "Ranking");
 
 	SetFontSize(40);
-	DrawFormatString(70, 450, GetColor(255, 255, 255), "十字ボタン");
-	DrawFormatString(70, 500, GetColor(255, 255, 255), "      カーソル移動");
-	DrawFormatString(70, 580, GetColor(0, 255, 0), "A　決定");
+	DrawFormatString(65, 450, GetColor(255, 255, 255), "十字ボタン");
+	DrawFormatString(65, 500, GetColor(255, 255, 255), "      カーソル移動");
+	DrawFormatString(65, 580, GetColor(0, 255, 0), "A　決定");
 
 	// 仮カーソルUI	
 	switch (menu_num)
@@ -172,11 +172,11 @@ void TitleScene::Draw() const
 	if (help)
 	{
 		SetFontSize(50);
-		DrawBox(0, 0, 1280, 720, GetColor(0,150,200), TRUE);
-		DrawFormatString(0, 0, 0x000000, "一応ヘルプ");
-		DrawFormatString(0, 200, 0x000000, "左スティックで移動");
-		DrawFormatString(0, 300, 0x000000, "Bボタンで弾の発射");
-		DrawFormatString(0, 400, 0x000000, "STARTボタンでアップグレード");
+		DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
+		DrawFormatString(0, 0, 0xffffff, "HELP");
+		DrawFormatString(0, 200, 0xffffff, "・左スティックで移動");
+		DrawFormatString(0, 300, 0xffffff, "・Bボタンで弾の発射");
+		DrawFormatString(0, 400, 0xffffff, "・Yボタンでアップグレード");
 		// DrawFormatString(0, 500, 0x000000, "Bボタンでタイトルに戻る");
 		SetFontSize(40);
 	}

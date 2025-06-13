@@ -24,7 +24,7 @@ void RankingScene::Initialize()
 	ResourceManager* rm = ResourceManager::GetInstance();
 
 	// 画像取得
-
+	back_ground_image = rm->GetImages("Resource/Images/back_ground/universe_asteroid03.png")[0];		// 背景画像
 	// 音源取得
 	back_ground_sound = rm->GetSounds("Resource/Sounds/BGM/Title/Title.mp3");
 	// ボタン決定音
@@ -39,6 +39,8 @@ void RankingScene::Initialize()
 	ChangeVolumeSoundMem(200, sounds_effect[1]);
 	// 音源の再生
 	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_LOOP, TRUE);
+
+	back_ground_location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
 
 
 	// ランキングデータの読み込み
@@ -89,6 +91,9 @@ eSceneType RankingScene::Update(const float& delta_second)
 
 void RankingScene::Draw() const
 {
+	// 背景画像
+	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
+
 	DrawFormatString(10, 10, GetColor(255, 255, 255), "RANKING");
 	DrawFormatString(10, 110, GetColor(255, 0, 0), "Bボタンでタイトルに戻る");
 
