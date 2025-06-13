@@ -4,7 +4,7 @@ Boss1::Boss1() : images()
 {
 	// コリジョン設定
 	collision.is_blocking = true;
-	collision.box_size = Vector2D(150, 200);						//当たり判定の大きさ
+	collision.box_size = Vector2D(120, 260);						//当たり判定の大きさ
 	collision.object_type = eObjectType::eEnemy;					//オブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayer);		//ぶつかるオブジェクトのタイプ
 	collision.hit_object_type.push_back(eObjectType::ePlayerShot);	//ぶつかるオブジェクトのタイプ
@@ -64,20 +64,20 @@ void Boss1::Update(float delta_seconds)
 		switch (atack_pattern)
 		{
 		case 0:
-			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y));
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x - 100, location.y + 130));
+			shot->SetShotType(eEnemy1);
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x - 100, location.y - 130));
 			shot->SetShotType(eEnemy1);
 			atack_pattern = 1;
 			break;
 		case 1:
-			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y + 150));
-			shot->SetShotType(eEnemy1);
-			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y - 150));
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(location.x, location.y));
 			shot->SetShotType(eEnemy1);
 			atack_pattern = 2;
 			break;
 		case 2:
-			object_manager->CreateGameObject<Enemy3>(Vector2D(location.x, location.y + 150));
-			object_manager->CreateGameObject<Enemy3>(Vector2D(location.x, location.y - 150));
+			object_manager->CreateGameObject<Enemy3>(Vector2D(location.x + 100, location.y + 180));
+			object_manager->CreateGameObject<Enemy3>(Vector2D(location.x + 100, location.y - 180));
 			atack_pattern = 0;
 			break;
 		default:

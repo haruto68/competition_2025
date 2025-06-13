@@ -1,6 +1,6 @@
 #include "Boss3.h"
 
-Boss3::Boss3()
+Boss3::Boss3() : images()
 {
 	// ƒRƒŠƒWƒ‡ƒ“Ý’è
 	collision.is_blocking = true;
@@ -22,6 +22,14 @@ Boss3::Boss3()
 
 	//‰æ‘œ“Ç‚Ýž‚Ý
 	image = rm->GetImages("Resource/Images/enemy/ship3_col3.png")[0];
+
+	images[0] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/Enemy_Tank_Base.png")[0];
+	images[1] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip3_Base.png")[0];
+	images[2] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip3_Base_Tilt1.png")[0];
+	images[3] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip3_Base_Tilt2.png")[0];
+	images[4] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip3_Upgraded.png")[0];
+	images[5] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip3_Upgraded_Tilt1.png")[0];
+	images[6] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip3_Upgraded_Tilt2.png")[0];
 }
 
 Boss3::~Boss3()
@@ -105,7 +113,8 @@ void Boss3::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	if (image != -1)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, transparency);
-		DrawRotaGraphF(location.x, location.y, 10.0f, 0.0f, image, TRUE);
+		DrawRotaGraphF(location.x + 50, location.y, 1.0f, ƒÎ / 2, images[0], TRUE);
+		DrawRotaGraphF(location.x, location.y, 2.75f, ƒÎ / 2, images[1], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 

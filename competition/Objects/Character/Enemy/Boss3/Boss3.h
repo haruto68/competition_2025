@@ -4,6 +4,7 @@
 class Boss3 : public EnemyBase
 {
 private:
+    int images[7];
 
 public:
     Boss3();
