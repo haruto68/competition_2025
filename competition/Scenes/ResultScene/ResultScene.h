@@ -22,6 +22,9 @@ public:
 	bool is_button;
 	int back_ground_sound;
 	int sounds_effect[2];
+	int back_ground_image;
+	Vector2D back_ground_location;		// 背景座標
+
 	// リザルトシーンからのスコアの情報を入れる変数
 	int level;
 	int stagelevel;

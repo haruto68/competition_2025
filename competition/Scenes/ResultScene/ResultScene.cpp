@@ -23,9 +23,10 @@ void ResultScene::Initialize()
 {
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
+	back_ground_location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
 
 	//画像取得
-	
+	back_ground_image = rm->GetImages("Resource/Images/back_ground/universe_asteroid03.png")[0];		// 背景画像
 	// 音源取得
 	back_ground_sound = rm->GetSounds("Resource/Sounds/BGM/Title/Title.mp3");
 
@@ -54,7 +55,7 @@ eSceneType ResultScene::Update(const float& delta_second)
 	InputManager* input = InputManager::GetInstance();
 
 	stagelevel = score->GetStageLevel();
-	level = score->GetStageLevel();
+	level = score->GetPlayerLevel();
 	//入力情報の更新
 	input->Update();
 
@@ -123,23 +124,26 @@ void ResultScene::Draw() const
 
 #endif // DEBUG
 
-	DrawBox(50, 20, 1230, 550, 0xffffff, TRUE);
-	DrawFormatString(50, 20, 0x000000, "Result");
+	// 背景画像
+	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
 
-	DrawFormatString(50, 80, 0x000000, "到達したステージ");		
-	DrawFormatString(1200, 80, 0x000000, "%d", stagelevel);		// 到達したレベルを描画する
+	//DrawBox(50, 20, 1230, 550, 0xffffff, TRUE);
+	DrawFormatString(50, 20, 0xffffff, "Result");
 
-	DrawFormatString(50, 140, 0x000000, "現在のレベル");
-	DrawFormatString(1200, 140, 0x000000, "%d", level);		// プレイヤーの現在の死亡時のレベルを描画する
+	DrawFormatString(50, 80, 0xffffff, "到達したステージ");
+	DrawFormatString(1200, 80, 0xffffff, "%d", stagelevel);		// 到達したレベルを描画する
+
+	DrawFormatString(50, 140, 0xffffff, "現在のレベル");
+	DrawFormatString(1200, 140, 0xffffff, "%d", level);		// プレイヤーの現在の死亡時のレベルを描画する
 
 	// エンドボタン
 	int endColor = (m_selectedbutton == selectedbutton::Title) ? GetColor(255, 0, 0) : GetColor(128, 128, 128);
-	DrawBox(25, 600, 325, 700, 0xffffff, TRUE);
+	//DrawBox(25, 600, 325, 700, 0xffffff, TRUE);
 	DrawFormatString(25, 630, endColor, "Title");		// タイトルボタンに変更
 
 	// タイトルボタン
-	int titleColor = (m_selectedbutton == selectedbutton::End) ? GetColor(255, 0, 0) : GetColor(128, 128, 128);
-	DrawBox(955, 600, 1255, 700, 0xffffff, TRUE);
+	int titleColor = (m_selectedbutton == selectedbutton::End) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
+	//DrawBox(955, 600, 1255, 700, 0xffffff, TRUE);
 	DrawFormatString(955, 630, titleColor, "End");		// エンドボタンに変更
 
 
