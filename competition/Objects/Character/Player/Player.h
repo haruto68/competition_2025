@@ -64,8 +64,6 @@ public:
 
 	void AddExperience(float exp);
 	void LevelUp();
-	void SubtractLife();
-	void AddShield(int shield);
 
 	void SetPlayerStats(float attack, int life, int level)
 	{
