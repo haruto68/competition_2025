@@ -15,8 +15,18 @@ private:
 	//int button_sound1;		// 決定音
 	int back_ground_image;				// 背景画像
 	Vector2D back_ground_location;		// 背景座標
-	int font_name;
 
+	// フォントの登録
+	int title_name;
+	int button;
+	int push_button;
+	int help_font;
+	int help_font_title;
+
+	// ボタン画像		test			0 :	十字カーソル 1: Aボタン	2:　Bボタン
+	std::vector<int> ui_button;
+	std::vector<Vector2D> ui_location;
+	std::vector<Vector2D> font_location;
 public:
 	TitleScene();
 	~TitleScene();

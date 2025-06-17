@@ -9,7 +9,7 @@ TitleScene::TitleScene() : menu_num(0), help(false), is_button(true), back_groun
 	// ResourceManager* rm = ResourceManager::GetInstance();
 
 	// 画像取得
-		// // 音源取得
+	// 音源取得
 	// back_ground_sound = rm->GetSounds("Resource/Sounds/BGM/Title/Title.mp3");
 	sounds_effect[0] = NULL;
 	sounds_effect[1] = NULL;
@@ -27,6 +27,20 @@ void TitleScene::Initialize()
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
 
+	// UI画像の格納
+	ui_button.push_back(rm->GetImages("Resource/Images/Buttons/steamcontroller/steam_dpad.png")[0]);
+	ui_button.push_back(rm->GetImages("Resource/Images/Buttons/steamcontroller/steam_button_color_a.png")[0]);
+	ui_button.push_back(rm->GetImages("Resource/Images/Buttons/steamcontroller/steam_button_color_b.png")[0]);
+
+	// 画像の位置座標の設定
+	ui_location.push_back(Vector2D(32, D_WIN_MAX_Y - 32));
+	ui_location.push_back(Vector2D(((D_WIN_MAX_X / 2) + 200), D_WIN_MAX_Y - 32));
+
+	// フォントの座標の設定
+	font_location.push_back(Vector2D(64, D_WIN_MAX_Y - 50));
+	font_location.push_back(Vector2D(904, D_WIN_MAX_Y - 50));
+
+
 	// 画像取得
 	back_ground_image = rm->GetImages("Resource/Images/back_ground/universe_asteroid03.png")[0];		// 背景画像
 	// 音源取得
@@ -43,6 +57,15 @@ void TitleScene::Initialize()
 	ChangeVolumeSoundMem(200, sounds_effect[1]);
 	// 音源の再生
 	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_LOOP, TRUE);
+	
+	// フォントを設定する
+	title_name = CreateFontToHandle("魔導太丸ゴシック", 150, 6);
+	button = CreateFontToHandle("魔導太丸ゴシック", 40, 6);
+	push_button = CreateFontToHandle("魔導太丸ゴシック", 60, 6);
+
+	// ヘルプ画面のフォントの設定
+	help_font = CreateFontToHandle("魔導太丸ゴシック", 50, 6);
+	help_font_title = CreateFontToHandle("魔導太丸ゴシック", 70, 6);
 }
 
 eSceneType TitleScene::Update(const float& delta_second)
@@ -129,41 +152,62 @@ void TitleScene::Draw() const
 
 	// タイトルの大見出し
 	// DrawBox(50, 20, 1230, 420, 0xffffff, TRUE);
-	SetFontSize(150);
-	 DrawFormatString(100, 175, 0xffffff, "Nebula striker");
+	// SetFontSize(150);
+
+	// DrawFormatString(100, 175, 0xffffff, "Nebula striker");
 
 	/*シーン選択*/
 	// Startボタン(ゲームメインに遷移する)
 	// DrawBox(480, 435, 800, 510, 0xffffff, TRUE);
-	SetFontSize(font[0]);
-	DrawFormatString(480, 450, 0xffffff, "Game Start");
+	// SetFontSize(font[0]);
+	// DrawFormatString(480, 450, 0xffffff, "Game Start");
 
 	// Helpボタン(ヘルプ画面に遷移する)
 	// DrawBox(480, 525, 800, 600, 0xffffff, TRUE);
-	SetFontSize(font[1]);
-	DrawFormatString(480, 540, 0xffffff, "Help");
+	// SetFontSize(font[1]);
+	// DrawFormatString(480, 540, 0xffffff, "Help");
 
 	// Rankingボタン(ランキング画面に遷移する)
 	// DrawBox(480, 615, 800, 690, 0xffffff, TRUE);
-	SetFontSize(font[2]);
-	DrawFormatString(480, 630, 0xffffff, "Ranking");
+	// SetFontSize(font[2]);
+	// DrawFormatString(480, 630, 0xffffff, "Ranking");
 
-	SetFontSize(40);
-	DrawFormatString(65, 450, GetColor(255, 255, 255), "十字ボタン");
-	DrawFormatString(65, 500, GetColor(255, 255, 255), "      カーソル移動");
-	DrawFormatString(65, 580, GetColor(0, 255, 0), "A　決定");
+	// SetFontSize(40);
+	// DrawFormatString(65, 450, GetColor(255, 255, 255), "十字ボタン");
+	// DrawFormatString(65, 500, GetColor(255, 255, 255), "      カーソル移動");
+	// DrawFormatString(65, 580, GetColor(0, 255, 0), "A　決定");
+	
+	// タイトルの描画
+	DrawStringToHandle(100, 175, "Nebula Striker", GetColor(255, 0, 255), title_name);
+
+	// 十字キーでカーソル移動
+	DrawRotaGraphF(ui_location[0].x, ui_location[0].y, 0.5, 0.0, ui_button[0], TRUE);
+	DrawStringToHandle(font_location[0].x, font_location[0].y, "カーソル移動", GetColor(255, 0, 255), button);
+
+	// Aボタンで決定
+	DrawRotaGraphF(ui_location[1].x, ui_location[1].y, 0.5, 0.0, ui_button[1], TRUE);
+	DrawStringToHandle(font_location[1].x, font_location[1].y, "決定", GetColor(255, 0, 255), button);
 
 	// 仮カーソルUI	
 	switch (menu_num)
 	{
 		case 0:
 			DrawCircle(465, 473, 7, 0xff0000, TRUE);
+			DrawStringToHandle(480, 450, "Game Start", GetColor(255, 0, 0), push_button);
+			DrawStringToHandle(480, 540, "Help", GetColor(255, 0, 255), button);
+			DrawStringToHandle(480, 630, "Ranking", GetColor(255, 0, 255), button);
 			break;
 		case 1:
 			DrawCircle(465, 563, 7, 0xff0000, TRUE);
+			DrawStringToHandle(480, 450, "Game Start", GetColor(255, 0, 255), button);
+			DrawStringToHandle(480, 540, "Help", GetColor(255, 0, 0), push_button);
+			DrawStringToHandle(480, 630, "Ranking", GetColor(255, 0, 255), button);
 			break;
 		case 2:
 			DrawCircle(465, 653, 7, 0xff0000, TRUE);
+			DrawStringToHandle(480, 450, "Game Start", GetColor(255, 0, 255), button);
+			DrawStringToHandle(480, 540, "Help", GetColor(255, 0, 255), button);
+			DrawStringToHandle(480, 630, "Ranking", GetColor(255, 0, 0), push_button);
 			break;
 		default:
 			break;
@@ -171,14 +215,23 @@ void TitleScene::Draw() const
 
 	if (help)
 	{
-		SetFontSize(50);
+		// SetFontSize(50);
 		DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
-		DrawFormatString(0, 0, 0xffffff, "HELP");
-		DrawFormatString(0, 200, 0xffffff, "・左スティックで移動");
-		DrawFormatString(0, 300, 0xffffff, "・Bボタンで弾の発射");
-		DrawFormatString(0, 400, 0xffffff, "・Yボタンでアップグレード");
+		// DrawFormatString(0, 0, 0xffffff, "HELP");
+		// DrawFormatString(0, 200, 0xffffff, "・左スティックで移動");
+		// DrawFormatString(0, 300, 0xffffff, "・Bボタンで弾の発射");
+		// DrawFormatString(0, 400, 0xffffff, "・Yボタンでアップグレード");
 		// DrawFormatString(0, 500, 0x000000, "Bボタンでタイトルに戻る");
 		SetFontSize(40);
+		
+		// test
+		DrawStringToHandle(10, 10, "HELP", GetColor(255, 0, 255), help_font_title);
+		DrawStringToHandle(10, 210, "左スティック移動", GetColor(255, 0, 255), help_font);
+		DrawStringToHandle(10, 310, "Bボタンで弾の発射", GetColor(255, 0, 255), help_font);
+		DrawStringToHandle(10, 410, "Yボタンでアップグレード", GetColor(255, 0, 255), help_font);
+		DrawRotaGraphF(870, 685, 0.5, 0.0, ui_button[2], TRUE);
+		DrawStringToHandle(900, 660, "タイトルに戻る", 0xff00ff, help_font);
+		// DrawStringToHandle(0, 400, "HELP", 0xfff00ff, help_font);
 	}
 }
 

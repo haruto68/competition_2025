@@ -58,6 +58,7 @@ InGameScene::InGameScene() :
 	// 音源取得
 	bgm[0] = rm->GetSounds("Resource/Sounds/BGM/InGame/GameMain_Stage1.mp3");
 	bgm[1] = rm->GetSounds("Resource/Sounds/BGM/InGame/GameMain_Upgrade.mp3");
+
 }
 
 InGameScene::~InGameScene()
@@ -94,6 +95,14 @@ void InGameScene::Initialize()
 	PlaySoundMem(bgm[0], DX_PLAYTYPE_LOOP, TRUE);
 	
 	/*object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));*/
+
+		// フォントの登録
+	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 70, 6));
+	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 40, 6));
+	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 50, 6));
+	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 100, 6));
+	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 80, 6));
+
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
@@ -182,7 +191,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 			if (obj->GetLocation().x <= -640 || obj->GetLocation().x >= D_WIN_MAX_X + 650 ||
 				obj->GetLocation().y <= -50 || obj->GetLocation().y >= D_WIN_MAX_Y + 50)
 			{
-				object_manager->DestroyGameObject(obj);
+				if (obj != boss3)
+					object_manager->DestroyGameObject(obj);
 			}
 		}
 	}
@@ -336,15 +346,20 @@ void InGameScene::Draw() const
 	DrawBox(0, 680, 1280, 720, GetColor(50, 0, 100), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
+	char buf[128];		// textを格納する変数
+
 	//タイムカウント
 	SetFontSize(70);
 	if (time_count > 0)
 	{
-		DrawFormatString(1100, 10, GetColor(255, 255, 255), "%.1f", time_count);
+		// DrawFormatString(1100, 10, GetColor(255, 255, 255), "%.1f", time_count);
+		snprintf(buf, sizeof(buf), "%.1f", time_count);
+		DrawStringToHandle(1100, 10, buf, GetColor(255, 255, 255), font_name[0]);
 	}
 	//ステージレベル
 	SetFontSize(40);
-	DrawFormatString(570, 20, GetColor(255, 255, 255), "Stage");
+	// DrawFormatString(570, 20, GetColor(255, 255, 255), "Stage");
+	DrawStringToHandle(570, 20, "Stage", GetColor(255, 255, 255), font_name[1]);
 	int level_color = 0;
 	if (stage_level == 1)
 		level_color = GetColor(50, 255, 50);
@@ -353,7 +368,9 @@ void InGameScene::Draw() const
 	else if (stage_level == 3)
 		level_color = GetColor(255, 50, 50);
 	SetFontSize(50);
-	DrawFormatString(700, 15, level_color, "%d", stage_level);
+	// DrawFormatString(700, 15, level_color, "%d", stage_level);
+	snprintf(buf, sizeof(buf), "%d", stage_level);
+	DrawStringToHandle(700, 15, buf, GetColor(255, 255, 255), font_name[2]);
 
 	// プレイヤーのHPのテーブルHPバーの描画
 	hp_ui->Draw();
@@ -363,12 +380,17 @@ void InGameScene::Draw() const
 	if (up_grade_stock > 0)
 	{
 		SetFontSize(40);
-		DrawFormatString(476, 681, GetColor(0, 0, 0), "Y_button to UpGrade");
-		DrawFormatString(475, 680, GetColor(125, 0, 175), "Y_button to UpGrade");
+		// DrawFormatString(476, 681, GetColor(0, 0, 0), "Y_button to UpGrade");
+		// DrawFormatString(475, 680, GetColor(125, 0, 175), "Y_button to UpGrade");
+		DrawStringToHandle(475, 680, "Y_button to UpGrade", GetColor(0, 0, 0), font_name[1]);
+		DrawStringToHandle(475, 681, "Y_button to UpGrade", GetColor(125, 0, 175), font_name[1]);
 		if(up_grade_stock > 1)
 		{
-			DrawFormatString(900, 680, GetColor(0, 0, 0), "× %d", up_grade_stock);
-			DrawFormatString(901, 681, GetColor(125, 0, 175), "× %d", up_grade_stock);
+			// DrawFormatString(900, 680, GetColor(0, 0, 0), "× %d", up_grade_stock);
+			// DrawFormatString(901, 681, GetColor(125, 0, 175), "× %d", up_grade_stock);
+			snprintf(buf, sizeof(buf), "× %d", up_grade_stock);
+			DrawStringToHandle(900, 680, buf, GetColor(0, 0, 0), font_name[1]);
+			DrawStringToHandle(901, 681, buf, GetColor(125, 0, 175), font_name[1]);
 		}
 	}
 
@@ -380,18 +402,31 @@ void InGameScene::Draw() const
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 		SetFontSize(100);
-		DrawFormatString(425, 125, GetColor(255, 255, 255), "P A U S E");
+		// DrawFormatString(425, 125, GetColor(255, 255, 255), "P A U S E");
+		DrawStringToHandle(425, 125, "P A U S E", GetColor(255, 255, 255), font_name[3]);
+		// int pause_font[2] = { 40,40 };
+		// if(pause_cursor == 0)
+		// 	pause_font[0] = 80;
+		// else if(pause_cursor == 1)
+		// 	pause_font[1] = 80;
 
-		int pause_font[2] = { 40,40 };
-		if(pause_cursor == 0)
-			pause_font[0] = 80;
-		else if(pause_cursor == 1)
-			pause_font[1] = 80;
-
-		SetFontSize(pause_font[0]);
-		DrawFormatString(500, 350, GetColor(255, 255, 255), "B A C K");
-		SetFontSize(pause_font[1]);
-		DrawFormatString(475, 500, GetColor(255, 255, 255), "T I T L E");
+		// SetFontSize(pause_font[0]);
+		// DrawFormatString(500, 350, GetColor(255, 255, 255), "B A C K");
+		// SetFontSize(pause_font[1]);
+		// DrawFormatString(475, 500, GetColor(255, 255, 255), "T I T L E");
+		switch (pause_cursor)
+		{
+			case 0:
+				DrawStringToHandle(500, 350, "B A C K", GetColor(255, 255, 255), font_name[4]);
+				DrawStringToHandle(475, 500, "T I T L E", GetColor(255, 255, 255), font_name[1]);
+				break;
+			case 1:
+				DrawStringToHandle(500, 350, "B A C K", GetColor(255, 255, 255), font_name[1]);
+				DrawStringToHandle(475, 500, "T I T L E", GetColor(255, 255, 255), font_name[4]);
+				break;
+			default:
+				break;
+		}
 	}
 
 

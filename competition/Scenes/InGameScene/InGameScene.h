@@ -72,6 +72,8 @@ public:
 	int dark_alpha;								//画面暗転アルファ値
 	int pause_cursor;							//ポーズカーソル番号
 
+	std::vector<int> font_name;					// フォント設定
+
 
 public:
 	InGameScene();	//コンストラクタ

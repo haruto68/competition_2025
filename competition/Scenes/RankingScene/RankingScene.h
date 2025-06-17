@@ -16,6 +16,11 @@ private:
 	int back_ground_image;		// ”wŒi‰æ‘œ
 	Vector2D back_ground_location;		// ”wŒiÀ•W
 
+	std::vector<int> button_image;
+
+	// ƒtƒHƒ“ƒg‚Ì“o˜^
+	std::vector<int> font;
+
 public:
 	RankingScene();
 	~RankingScene();
