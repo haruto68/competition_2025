@@ -1,6 +1,8 @@
 #include "Boss3.h"
 
-Boss3::Boss3() : images()
+Boss3::Boss3() :
+	images(),
+	atack_interval(0.0f)
 {
 	// ÉRÉäÉWÉáÉìê›íË
 	collision.is_blocking = true;
@@ -17,7 +19,7 @@ Boss3::Boss3() : images()
 	is_mobility = true;
 
 	//ç≈ëÂHPê›íË
-	max_hp = 650;
+	max_hp = 750;
 	hp = float(max_hp);
 
 	//âÊëúì«Ç›çûÇ›
@@ -38,13 +40,8 @@ Boss3::~Boss3()
 
 void Boss3::Initialize()
 {
-	int random = rand() % 2;
-	if (random == 0)
-		velocity.y = -0.7f;
-	else
-		velocity.y = 0.7f;
-
-
+	atack_pattern = 0;
+	atack_interval = 0.6f;
 }
 
 void Boss3::Update(float delta_seconds)
@@ -65,28 +62,44 @@ void Boss3::Update(float delta_seconds)
 	EnemyShot* shot;
 
 	//çUåÇ
-	if (hp > 0 && shot_timer >= 0.6f)
+	if (hp > 0 && shot_timer >= atack_interval)
 	{
 		switch (atack_pattern)
 		{
 		case 0:
-			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 640, location.y));
-			shot->SetShotType(eEnemy15);
-			atack_pattern = 1;
-			break;
-		case 1:
-			atack_pattern = 2;
-			break;
-		case 2:
-			atack_pattern = 3;
 			break;
 		case 3:
-			atack_pattern = 4;
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 640, location.y));
+			shot->SetShotType(eEnemy15);
+			atack_pattern = 5;
 			break;
-		case 4:
-			atack_pattern = 0;
+		case 7:
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 640, location.y));
+			shot->SetShotType(eEnemy15);
+			atack_pattern = 9;
+		case 11:
+			atack_pattern = 99;
+			atack_interval = 2.0f;
+			break;
+
+			//ìÀêi
+		case 99:
+			atack_pattern = 100;
+			break;
+		case 100:
+			break;
+		case 101:
+			atack_interval = 2.0f;
+			atack_pattern += 1;
+			break;
+		case 102:
+			break;
+		case 103:
+			atack_interval = 0.6f;
+			atack_pattern = 1;
 			break;
 		default:
+			atack_pattern += 1;
 			break;
 		}
 
@@ -117,6 +130,19 @@ void Boss3::Draw(const Vector2D& screen_offset, bool flip_flag) const
 		DrawRotaGraphF(location.x, location.y, 2.75f, ÉŒ / 2, images[1], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
+
+	if (atack_pattern == 99 || atack_pattern == 101)
+	{
+		int upper_left_x = 0;
+		int upper_left_y = location.y - collision.box_size.y / 2;
+		int lower_right_x = 1280;
+		int lower_right_y = location.y + collision.box_size.y / 2;
+
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 175);
+		DrawBox(upper_left_x, upper_left_y, lower_right_x, lower_right_y, GetColor(255, 0, 0), TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
+
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 	// åªç›ÇÃHPÇÃÉoÅ[ÇÃï`âÊ
@@ -168,22 +194,58 @@ void Boss3::Movement(float delta_seconds)
 {
 	float speed = 200.0f;
 
-	if (location.x >= 1150)
+	if (atack_pattern == 0)//ìoèÍéûÇÃÇ›
 	{
-		velocity.x = -1.0f;
-	}
-	else
-	{
-		velocity.x = 0.0f;
-	}
-
-	if ((location.y + velocity.y) <= (65.0f + collision.box_size.y) || (location.y + velocity.y) >= (680 - collision.box_size.y))
-	{
-
-		if (velocity.y < 0)
-			velocity.y = 0.7f;
+		if (location.x >= 1150)
+		{
+			velocity.x = -1.0f;
+		}
 		else
-			velocity.y = -0.7f;
+		{
+			velocity.x = 0.0f;
+			velocity.y = 0.7f;
+			atack_pattern = 1;
+		}
+	}
+	else//ìoèÍéûà»ç~
+	{
+		//è„â∫
+		if ((location.y + velocity.y) <= (65.0f + collision.box_size.y) || (location.y + velocity.y) >= (680 - collision.box_size.y))
+		{
+
+			if (velocity.y < 0)
+				velocity.y = 0.7f;
+			else
+				velocity.y = -0.7f;
+		}
+
+
+		if (atack_pattern == 99)
+		{
+			velocity.y = 0.0f;
+			velocity.x = 2.0f;
+		}
+		if(atack_pattern == 100)
+		{
+			velocity.y = 0.0f;
+			velocity.x -= 0.125f;
+			if (location.x < -300.0f)
+			{
+				velocity.x = 0.0f;
+				atack_pattern = 101;
+			}
+		}
+		if (atack_pattern == 102)
+		{
+			velocity.y = 0.0f;
+			velocity.x = 2.5f;
+			if (location.x > 1150.0f)
+			{
+				velocity.x = 0.0f;
+				velocity.y = 0.7f;
+				atack_pattern = 103;
+			}
+		}
 	}
 
 	location += velocity * speed * delta_seconds;

@@ -60,7 +60,7 @@ eSceneType ResultScene::Update(const float& delta_second)
 	input->Update();
 
 	// カーソル右移動
-	if (input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT) && is_button == true)
+	if (input->GetKeyUp(KEY_INPUT_D) || input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT) && is_button == true)
 	{
 		PlaySoundMem(sounds_effect[1], DX_PLAYTYPE_BACK, TRUE);
 
@@ -72,7 +72,7 @@ eSceneType ResultScene::Update(const float& delta_second)
 	}
 
 	// カーソル左移動
-	if (input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT) && is_button == true)
+	if (input->GetKeyUp(KEY_INPUT_A) || input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT) && is_button == true)
 	{
 		PlaySoundMem(sounds_effect[1], DX_PLAYTYPE_BACK, TRUE);
 
@@ -84,7 +84,7 @@ eSceneType ResultScene::Update(const float& delta_second)
 	}
 
 
-	if (input->GetButtonDown(XINPUT_BUTTON_A) && is_button == true)
+	if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A) && is_button == true)
 	{
 		switch (menu_num)
 		{
