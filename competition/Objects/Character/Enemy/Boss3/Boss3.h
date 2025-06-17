@@ -5,6 +5,7 @@ class Boss3 : public EnemyBase
 {
 private:
     int images[7];
+    float atack_interval;
 
 public:
     Boss3();
