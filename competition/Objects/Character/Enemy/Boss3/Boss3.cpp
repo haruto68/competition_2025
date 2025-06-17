@@ -17,7 +17,7 @@ Boss3::Boss3() : images()
 	is_mobility = true;
 
 	//Å‘åHPİ’è
-	max_hp = 650;
+	max_hp = 750;
 	hp = float(max_hp);
 
 	//‰æ‘œ“Ç‚İ‚İ

@@ -43,7 +43,7 @@ void Enemy7::Initialize()
 
 	velocity.x = -1.2f;
 
-	hp = 16.0f;
+	hp = 19.0f;
 }
 
 void Enemy7::Update(float delta_seconds)
