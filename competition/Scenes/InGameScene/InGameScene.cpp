@@ -10,6 +10,7 @@ InGameScene::InGameScene() :
 	boss1(nullptr),
 	boss2(nullptr),
 	boss3(nullptr),
+	drone(nullptr),
 	level_up_ui(),
 	hp_ui(),
 	level_ui(),
@@ -169,6 +170,11 @@ eSceneType InGameScene::Update(const float& delta_second)
 			else if (dark_alpha >= 255)
 			{
 				player->SetLocation(Vector2D(160, 360));
+				if (drone != nullptr)
+				{
+					drone->SetLocation(Vector2D(player->GetLocation().x - 50, player->GetLocation().y));
+				}
+				
 			}
 			// プレイヤー座標受け渡し
 			obj->SetPlayerLocation(player->GetLocation());
