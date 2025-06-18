@@ -158,7 +158,18 @@ eSceneType InGameScene::Update(const float& delta_second)
 		// リスト内のオブジェクトを更新する
 		for (GameObject* obj : scene_objects_list)
 		{
-			obj->Update(delta_second);
+			if (dark_alpha <= 0)
+			{
+				obj->Update(delta_second);
+			}
+			else if (obj->GetCollision().object_type != eObjectType::ePlayer)
+			{
+				obj->Update(delta_second);
+			}
+			else if (dark_alpha >= 255)
+			{
+				player->SetLocation(Vector2D(160, 360));
+			}
 			// プレイヤー座標受け渡し
 			obj->SetPlayerLocation(player->GetLocation());
 			//プレイヤーステータス受け渡し
@@ -176,12 +187,15 @@ eSceneType InGameScene::Update(const float& delta_second)
 		}
 
 		//当たり判定チェック処理
-		for (int a = 0; a < scene_objects_list.size(); a++)
+		if(dark_alpha <= 0)
 		{
-			for (int b = a + 1; b < scene_objects_list.size(); b++)
+			for (int a = 0; a < scene_objects_list.size(); a++)
 			{
-				object_manager->HitCheck(scene_objects_list[a], scene_objects_list[b]);
-				object_manager->HitCheck(scene_objects_list[b], scene_objects_list[a]);
+				for (int b = a + 1; b < scene_objects_list.size(); b++)
+				{
+					object_manager->HitCheck(scene_objects_list[a], scene_objects_list[b]);
+					object_manager->HitCheck(scene_objects_list[b], scene_objects_list[a]);
+				}
 			}
 		}
 
