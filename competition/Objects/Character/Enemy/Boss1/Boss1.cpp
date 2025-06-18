@@ -148,6 +148,7 @@ void Boss1::OnHitCollision(GameObject* hit_object)
 		break;
 	case ePlayerShot:
 		hp -= player_stats.attack_power / 2;
+		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eEnemyShot:
 		break;

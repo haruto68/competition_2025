@@ -7,6 +7,7 @@
 
 #include"../../Objects/GameObject.h"
 #include"../../Objects/Character/Player/Player.h"
+#include"../../Objects/Character/Player/Drone.h"
 #include"../../Objects/Character/Enemy/Enemy1/Enemy1.h"
 #include"../../Objects/Character/Enemy/Enemy2/Enemy2.h"
 #include"../../Objects/Character/Enemy/Enemy3/Enemy3.h"
@@ -43,6 +44,7 @@ public:
 	class Boss1* boss1;							//ボスインスタンス1
 	class Boss2* boss2;							//ボスインスタンス2
 	class Boss3* boss3;							//ボスインスタンス2
+	class Drone* drone;							//ドローンインスタンス
 	LevelUpUI* level_up_ui;						//レベルアップUI
 	HpUI* hp_ui;								//HPUI
 	LevelUI* level_ui;							//レベルUI
