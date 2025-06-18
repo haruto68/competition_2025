@@ -2,7 +2,7 @@
 #include "../../Utility/InputManager.h"
 #include "../../Resource/ResourceManager.h"
 
-RankingScene::RankingScene() : back_ground_sound(NULL), score{}, rank{}
+RankingScene::RankingScene() : back_ground_sound(NULL), score{}, rank{}, font{}
 {
 	// //リソース管理インスタンス取得
 	// ResourceManager* rm = ResourceManager::GetInstance();
@@ -44,8 +44,11 @@ void RankingScene::Initialize()
 	back_ground_location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
 
 	// フォントの登録
-	font.push_back(CreateFontToHandle("魔導太丸ゴシック", 70, 6));
-	font.push_back(CreateFontToHandle("魔導太丸ゴシック", 50, 6));
+	// font.push_back(CreateFontToHandle("魔導太丸ゴシック", 70, 6));
+	// font.push_back(CreateFontToHandle("魔導太丸ゴシック", 50, 6));
+
+	font[0] = CreateFontToHandle("魔導太丸ゴシック", 70, 6);
+	font[1] = CreateFontToHandle("魔導太丸ゴシック", 50, 6);
 
 	// ランキングデータの読み込み
 	FILE* fp = nullptr;
@@ -126,6 +129,10 @@ void RankingScene::Draw() const
 void RankingScene::Finalize()
 {
 	StopSoundMem(back_ground_sound);
+	for (int i = 0; i < 2; i++)
+	{
+		DeleteFontToHandle(font[i]);
+	}
 }
 
 eSceneType RankingScene::GetNowSceneType() const

@@ -17,16 +17,18 @@ private:
 	Vector2D back_ground_location;		// 背景座標
 
 	// フォントの登録
-	int title_name;
-	int button;
-	int push_button;
-	int help_font;
-	int help_font_title;
+	// int title_name;
+	// int button;
+	// int push_button;
+	// int help_font;
+	// int help_font_title;
 
 	// ボタン画像		test			0 :	十字カーソル 1: Aボタン	2:　Bボタン
 	std::vector<int> ui_button;
 	std::vector<Vector2D> ui_location;
 	std::vector<Vector2D> font_location;
+
+	int font[5];
 public:
 	TitleScene();
 	~TitleScene();

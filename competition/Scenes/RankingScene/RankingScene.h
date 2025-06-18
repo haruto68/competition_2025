@@ -19,7 +19,8 @@ private:
 	std::vector<int> button_image;
 
 	// ƒtƒHƒ“ƒg‚Ì“o˜^
-	std::vector<int> font;
+	// std::vector<int> font;
+	int font[2];
 
 public:
 	RankingScene();
