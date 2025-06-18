@@ -37,6 +37,8 @@ public:
 	Score* score;
 	RankingScene* ranking;
 
+	std::vector<int> font_name;					// ƒtƒHƒ“ƒgİ’è
+
 	virtual void Initialize() override;
 	virtual eSceneType Update(const float& delta_second);
 	virtual void Draw() const override;

@@ -47,6 +47,15 @@ void ResultScene::Initialize()
 
 	ranking = new RankingScene();
 	// ranking->Initialize();
+
+	// フォントの登録
+	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 70, 6));
+	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 40, 6));
+	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 50, 6));
+	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 100, 6));
+	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 80, 6));
+
+
 }
 
 eSceneType ResultScene::Update(const float& delta_second)
@@ -124,27 +133,41 @@ void ResultScene::Draw() const
 
 #endif // DEBUG
 
+	char buf[256];
+
 	// 背景画像
 	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image, TRUE);
 
 	//DrawBox(50, 20, 1230, 550, 0xffffff, TRUE);
-	DrawFormatString(50, 20, 0xffffff, "Result");
+	// DrawFormatString(50, 20, 0xffffff, "Result");
+	DrawStringToHandle(50, 20, "RESULT", GetColor(255, 255, 255), font_name[2]);
 
-	DrawFormatString(50, 80, 0xffffff, "到達したステージ");
-	DrawFormatString(1200, 80, 0xffffff, "%d", stagelevel);		// 到達したレベルを描画する
 
-	DrawFormatString(50, 140, 0xffffff, "現在のレベル");
-	DrawFormatString(1200, 140, 0xffffff, "%d", level);		// プレイヤーの現在の死亡時のレベルを描画する
+	// DrawFormatString(50, 80, 0xffffff, "到達したステージ");
+	DrawStringToHandle(50, 80, "到達したステージ", GetColor(255, 255, 255), font_name[2]);
+
+	snprintf(buf, sizeof(buf), "%d", stagelevel);
+	// DrawFormatString(1200, 80, 0xffffff, "%d", stagelevel);		// 到達したレベルを描画する
+	DrawStringToHandle(1200, 80, buf, GetColor(255, 255, 255), font_name[2]);
+
+	// DrawFormatString(50, 140, 0xffffff, "現在のレベル");
+	DrawStringToHandle(50, 140, "現在のレベル", GetColor(255, 255, 255), font_name[2]);
+
+	snprintf(buf, sizeof(buf), "%d", level);
+	// DrawFormatString(1200, 140, 0xffffff, "%d", level);		// プレイヤーの現在の死亡時のレベルを描画する
+	DrawStringToHandle(1200, 140, buf, GetColor(255, 255, 255), font_name[2]);
 
 	// エンドボタン
 	int endColor = (m_selectedbutton == selectedbutton::Title) ? GetColor(255, 0, 0) : GetColor(128, 128, 128);
 	//DrawBox(25, 600, 325, 700, 0xffffff, TRUE);
-	DrawFormatString(25, 630, endColor, "Title");		// タイトルボタンに変更
+	// DrawFormatString(25, 630, endColor, "Title");		// タイトルボタンに変更
+	DrawStringToHandle(25, 630, "Title", GetColor(255, 0, 0), font_name[2]);
 
 	// タイトルボタン
 	int titleColor = (m_selectedbutton == selectedbutton::End) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
 	//DrawBox(955, 600, 1255, 700, 0xffffff, TRUE);
-	DrawFormatString(955, 630, titleColor, "End");		// エンドボタンに変更
+	// DrawFormatString(955, 630, titleColor, "End");		// エンドボタンに変更
+	DrawStringToHandle(955, 630, "End", GetColor(255, 255, 255), font_name[2]);
 
 
 		switch (menu_num)

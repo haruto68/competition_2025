@@ -444,7 +444,8 @@ void InGameScene::Draw() const
 	if (dark_alpha > 300)
 	{
 		SetFontSize(100);
-		DrawFormatString(425, 300, GetColor(255, 255, 255), "STAGE 1");
+		// DrawFormatString(425, 300, GetColor(255, 255, 255), "STAGE 1");
+		DrawStringToHandle(425, 300, "STAGE 1", GetColor(255, 255, 255), font_name[3]);
 	}
 
 	//ステージ遷移1>>2
@@ -453,12 +454,14 @@ void InGameScene::Draw() const
 		if (boss1->GetBoss1DeathCount() < 3.0f && boss1->GetBoss1DeathCount() > 1.5f)
 		{
 			SetFontSize(70);
-			DrawFormatString(425, 260, GetColor(255, 255, 255), "STAGE CLEAR");
+			// DrawFormatString(425, 260, GetColor(255, 255, 255), "STAGE CLEAR");
+			DrawStringToHandle(425, 260, "STAGE CLEAR", GetColor(255, 255, 255), font_name[0]);
 		}
 		else if (boss1->GetBoss1DeathCount() < 1.1 && boss1->GetBoss1DeathCount() > 0.0f)
 		{
 			SetFontSize(100);
-			DrawFormatString(425, 300, GetColor(255, 255, 255), "STAGE 2");
+			// DrawFormatString(425, 300, GetColor(255, 255, 255), "STAGE 2");
+			DrawStringToHandle(425, 300, "STAGE 2", GetColor(255, 255, 255), font_name[3]);
 		}
 	}
 	//ステージ遷移2>>3
@@ -467,12 +470,15 @@ void InGameScene::Draw() const
 		if (boss2->GetBoss2DeathCount() < 3.0f && boss2->GetBoss2DeathCount() > 1.5f)
 		{
 			SetFontSize(70);
-			DrawFormatString(425, 260, GetColor(255, 255, 255), "STAGE CLEAR");
+			// DrawFormatString(425, 260, GetColor(255, 255, 255), "STAGE CLEAR");
+			DrawStringToHandle(425, 260, "STAGE CLEAR", GetColor(255, 255, 255), font_name[0]);
+
 		}
 		else if (boss2->GetBoss2DeathCount() < 1.1 && boss2->GetBoss2DeathCount() > 0.0f)
 		{
 			SetFontSize(100);
-			DrawFormatString(425, 300, GetColor(255, 255, 255), "STAGE 3");
+			// DrawFormatString(425, 300, GetColor(255, 255, 255), "STAGE 3");
+			DrawStringToHandle(425, 260, "STAGE 3", GetColor(255, 255, 255), font_name[3]);
 		}
 	}
 	//ステージ遷移3>>クリア
@@ -481,12 +487,14 @@ void InGameScene::Draw() const
 		if (boss3->GetBoss3DeathCount() < 3.0f && boss3->GetBoss3DeathCount() > 1.5f)
 		{
 			SetFontSize(70);
-			DrawFormatString(425, 260, GetColor(255, 255, 255), "STAGE CLEAR");
+			// DrawFormatString(425, 260, GetColor(255, 255, 255), "STAGE CLEAR");
+			DrawStringToHandle(425, 260, "STAGE CLEAR", GetColor(255, 255, 255), font_name[0]);
 		}
 		else if (boss3->GetBoss3DeathCount() < 1.1 && boss3->GetBoss3DeathCount() > 0.0f)
 		{
 			SetFontSize(100);
-			DrawFormatString(375, 300, GetColor(255, 255, 255), "GAME CLEAR");
+			// DrawFormatString(375, 300, GetColor(255, 255, 255), "GAME CLEAR");
+			DrawStringToHandle(375, 360, "GAME CLEAR", GetColor(255, 255, 255), font_name[3]);
 		}
 	}
 
