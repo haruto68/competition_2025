@@ -2,8 +2,11 @@
 #include"GameObject.h"
 #include"GameObjectManager.h"
 
+#include"Item/ExperiencePoints/ExperiencePoints.h"
+
 GameObject::GameObject() :
 	location(0.0f),
+	death_location(0.0f),
 	speed(0),
 	image(NULL),
 	transparency(255),
@@ -11,9 +14,27 @@ GameObject::GameObject() :
 	is_mobility(false),
 	player_location(0.0f),
 	player_stats(),
-	object_manager(nullptr)
+	object_manager(nullptr),
+	explosions(),
+	death_timer(0),
+	anim_num(0),
+	explosion_flag(false)
 {
+	//リソース管理インスタンス取得
+	ResourceManager* rm = ResourceManager::GetInstance();
 
+	explosions[0] = rm->GetImages("Resource/Images/GameMaker/Effects/Explosion/Explosion1.png")[0];
+	explosions[1] = rm->GetImages("Resource/Images/GameMaker/Effects/Explosion/Explosion2.png")[0];
+	explosions[2] = rm->GetImages("Resource/Images/GameMaker/Effects/Explosion/Explosion3.png")[0];
+	explosions[3] = rm->GetImages("Resource/Images/GameMaker/Effects/Explosion/Explosion4.png")[0];
+	explosions[4] = rm->GetImages("Resource/Images/GameMaker/Effects/Explosion/Explosion5.png")[0];
+	explosions[5] = rm->GetImages("Resource/Images/GameMaker/Effects/Explosion/Explosion6.png")[0];
+	explosions[6] = rm->GetImages("Resource/Images/GameMaker/Effects/Explosion/Explosion7.png")[0];
+	explosions[7] = rm->GetImages("Resource/Images/GameMaker/Effects/Explosion/Explosion8.png")[0];
+	explosions[8] = rm->GetImages("Resource/Images/GameMaker/Effects/Explosion/Explosion9.png")[0];
+	explosions[9] = rm->GetImages("Resource/Images/GameMaker/Effects/Explosion/Explosion10.png")[0];
+	explosions[10] = rm->GetImages("Resource/Images/GameMaker/Effects/Explosion/Explosion11.png")[0];
+	explosions[11] = 0;
 }
 
 GameObject::~GameObject()
@@ -44,9 +65,12 @@ void GameObject::Update(float delta_second)
 /// <param name="screen_offset">オフセット値</param>
 void GameObject::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
-	// オフセット値を基に画像の描画を行う
-	Vector2D graph_location = this->location + screen_offset;
-	DrawRotaGraphF(graph_location.x, graph_location.y, SIZE, 0.0, image, TRUE, flip_flag);
+	if(!explosion_flag)
+	{
+		// オフセット値を基に画像の描画を行う
+		Vector2D graph_location = this->location + screen_offset;
+		DrawRotaGraphF(graph_location.x, graph_location.y, SIZE, 0.0, image, TRUE, flip_flag);
+	}
 }
 
 /// <summary>
@@ -91,6 +115,20 @@ const unsigned char GameObject::GetZLayer() const
 const bool GameObject::GetMobility() const
 {
 	return is_mobility;
+}
+
+//死亡座標設定処理
+void GameObject::SetDeathLocation()
+{
+	this->death_location = location;
+}
+
+//死亡座標固定処理
+void GameObject::KeepDeathLocation()
+{
+	this->explosion_flag = true;
+	collision.is_blocking = false;
+	location = this->death_location;
 }
 
 //プレイヤー座標設定処理
@@ -138,4 +176,34 @@ const GameObjectManager* GameObject::CheckInstance() const
 void GameObject::SetInstance(GameObjectManager* instance)
 {
 	object_manager = instance;
+}
+
+void GameObject::Explosion(float delta_second)
+{
+	death_timer += delta_second;
+
+	if (death_timer >= 0.08f)
+	{
+		death_timer = 0.0f;
+
+		if (anim_num < 10)
+		{
+			anim_num += 1;
+		}
+		else
+		{
+			object_manager->CreateGameObject<ExperiencePoints>(location);
+			object_manager->DestroyGameObject(this);
+		}
+	}
+}
+
+bool GameObject::GetExplosionFlag()
+{
+	return this->explosion_flag;
+}
+
+void GameObject::DrawExplosion() const
+{
+	DrawRotaGraphF(location.x, location.y, 0.5, 0.0, explosions[anim_num], TRUE, false);
 }

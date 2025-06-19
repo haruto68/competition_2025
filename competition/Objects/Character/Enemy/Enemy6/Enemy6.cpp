@@ -57,7 +57,7 @@ void Enemy6::Update(float delta_seconds)
 	if (shot_timer >= shot_cooldown)
 	{
 		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
-		shot->SetShotType(eEnemy5);
+		shot->SetShotType(eEnemy16);
 		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 
 		//タイマーリセット

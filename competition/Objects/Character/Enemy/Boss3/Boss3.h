@@ -7,6 +7,9 @@ private:
     int images[7];
     float atack_interval;
 
+    float shot_timer_2 = 0.0f;	    //時間経過2
+    float shot_cooldown_2 = 1.5f;	//クールタイム2
+
 public:
     Boss3();
     ~Boss3();

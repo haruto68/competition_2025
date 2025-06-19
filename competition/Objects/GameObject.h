@@ -7,6 +7,7 @@ class GameObject
 {
 protected:
 	Vector2D location;				//座標
+	Vector2D death_location;		//死亡座標
 	float speed;
 	Collision collision;			//コリジョン
 	int image;						//画像
@@ -19,6 +20,12 @@ protected:
 
 	// オブジェクトマネージャーのインスタンス
 	class GameObjectManager* object_manager;
+
+	// 死亡時
+	int explosions[12];
+	float death_timer;
+	int anim_num;
+	bool explosion_flag;
 
 public:
 	GameObject();
@@ -37,6 +44,8 @@ public:
 	const unsigned char GetZLayer() const;		//レイヤー取得処理
 	const bool GetMobility() const;				//可動性取得処理
 
+	void SetDeathLocation();					//死亡座標設定処理
+	void KeepDeathLocation();					//死亡座標固定処理
 
 	void SetPlayerLocation(Vector2D location);	//プレイヤー座標設定処理
 	void SetPlayerStats(PlayerStats stats);		//プレイヤーステータス設定処理
@@ -44,4 +53,8 @@ public:
 
 	const GameObjectManager* CheckInstance() const;	//インスタンス確認処理
 	void SetInstance(GameObjectManager* instance);	//インスタンス設定処理
+
+	void Explosion(float);
+	bool GetExplosionFlag();
+	void DrawExplosion() const;
 };
