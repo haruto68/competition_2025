@@ -9,7 +9,8 @@ LevelUpUI::LevelUpUI() :
 	lot(),
 	lot_str(),
 	lot_icon(),
-	power_icon()
+	power_icon(),
+	font_size{}
 {
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
@@ -47,6 +48,10 @@ void LevelUpUI::Initialize()
 			bility[i] += proba[j];
 		}
 	}
+
+	font_size[0] = CreateFontToHandle("魔導太丸ゴシック", 37, 6);
+	font_size[1] = CreateFontToHandle("魔導太丸ゴシック", 40, 6);
+	font_size[2] = CreateFontToHandle("魔導太丸ゴシック", 120, 6);
 }
 
 void LevelUpUI::Update(bool flag, PlayerStats stats)
@@ -110,7 +115,8 @@ void LevelUpUI::Draw(bool up_grade, bool now_stats) const
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
 		DrawRotaGraph(pluse_x + 640, 360, 0.9, 0, window[0], 1, 0);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-		DrawRotaGraph(pluse_x + 640, 80, 1.0, 0, window[1], 1, 0);
+		// DrawRotaGraph(pluse_x + 640, 80, 1.0, 0, window[1], 1, 0);
+		DrawStringToHandle(539, 25, "UPGRADE", GetColor(255, 255, 255), font_size[2]);			//  限りなく真ん中に近いけど、多分違う
 		//内枠
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 		DrawRotaGraph(pluse_x + 360, 400, 0.6 * choice_size[0], 0, window[2], 1, 0);
@@ -129,29 +135,66 @@ void LevelUpUI::Draw(bool up_grade, bool now_stats) const
 
 	if(now_stats)
 	{
+		// テスト
+		//外枠
+		// SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
+		// DrawRotaGraph(120 + 640, 360, 0.9, 0, window[0], 1, 0);
+		// SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		// DrawStringToHandle(539, 25, "UPGRADE", GetColor(255, 255, 255), font_size[2]);			//  限りなく真ん中に近いけど、多分違う
+		// DrawRotaGraph(120 + 640, 80, 1.0, 0, window[1], 1, 0);
+
 		//現在ステータス描画
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
 		DrawRotaGraph(70, 400, 0.4, 0, window[3], 1, 0);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		int font = 40;
 		SetFontSize(font);
-		DrawFormatString(10, 130, GetColor(255, 255, 255), "Level  %d", player_stats.player_level);
+		// DrawFormatString(10, 130, GetColor(255, 255, 255), "Level  %d", player_stats.player_level);
 		font = 37;
-		SetFontSize(font);
+		// SetFontSize(font);
 		int y = 160;
-		DrawFormatString(10, y + (font * 1), GetColor(255, 255, 255), "hp");
-		DrawFormatString(60, y + (font * 2), GetColor(255, 255, 255), "%d", player_stats.life_count);
-		DrawFormatString(10, y + (font * 3), GetColor(255, 255, 255), "power");
-		DrawFormatString(60, y + (font * 4), GetColor(255, 255, 255), "%.2f", player_stats.attack_power);
-		DrawFormatString(10, y + (font * 5), GetColor(255, 255, 255), "speed");
-		DrawFormatString(60, y + (font * 6), GetColor(255, 255, 255), "%.2f", player_stats.move_speed);
+		// DrawFormatString(10, y + (font * 1), GetColor(255, 255, 255), "hp");
+		// DrawFormatString(60, y + (font * 2), GetColor(255, 255, 255), "%d", player_stats.life_count);
+		// DrawFormatString(10, y + (font * 3), GetColor(255, 255, 255), "power");
+		// DrawFormatString(60, y + (font * 4), GetColor(255, 255, 255), "%.2f", player_stats.attack_power);
+		// DrawFormatString(10, y + (font * 5), GetColor(255, 255, 255), "speed");
+		// DrawFormatString(60, y + (font * 6), GetColor(255, 255, 255), "%.2f", player_stats.move_speed);
+		
+		// y += font * 6 + 15;
+		// DrawFormatString(10, y + (font * 1), GetColor(255, 255, 255), "--shot--");
+		// DrawFormatString(10, y + (font * 2), GetColor(255, 255, 255), "cool_time");
+		// DrawFormatString(60, y + (font * 3), GetColor(255, 255, 255), "%.2f", player_stats.shot_speed);
+		// DrawFormatString(10, y + (font * 4), GetColor(255, 255, 255), "hit_range");
+		// DrawFormatString(60, y + (font * 5), GetColor(255, 255, 255), "%.2f", float(player_stats.player_shot_hitrange_up));
+
+		char buf[256];		// textを格納する変数
+		// プレイヤーレベル
+		snprintf(buf, sizeof(buf), "LEVEL  %d", player_stats.player_level);
+		DrawStringToHandle(10, 130, buf, GetColor(255, 255, 255), font_size[1]);
+		// 体力
+		DrawStringToHandle(10, y + (font * 1), "HP", GetColor(255, 255, 255), font_size[0]);
+		snprintf(buf, sizeof(buf), "%d", player_stats.life_count);
+		DrawStringToHandle(60, y + (font * 2), buf, GetColor(255, 255, 255), font_size[0]);
+		// パワー
+		DrawStringToHandle(10, y + (font * 3), "POWER", GetColor(255, 255, 255), font_size[0]);
+		snprintf(buf, sizeof(buf), "%.2f", player_stats.attack_power);
+		DrawStringToHandle(60, y + (font * 4), buf, GetColor(255, 255, 255), font_size[0]);
+		// スピード
+		DrawStringToHandle(10, y + (font * 5), "SPEED", GetColor(255, 255, 255), font_size[0]);
+		snprintf(buf, sizeof(buf), "%.2f", player_stats.move_speed);
+		DrawStringToHandle(60, y + (font * 6), buf, GetColor(255, 255, 255), font_size[0]);
 
 		y += font * 6 + 15;
-		DrawFormatString(10, y + (font * 1), GetColor(255, 255, 255), "--shot--");
-		DrawFormatString(10, y + (font * 2), GetColor(255, 255, 255), "cool_time");
-		DrawFormatString(60, y + (font * 3), GetColor(255, 255, 255), "%.2f", player_stats.shot_speed);
-		DrawFormatString(10, y + (font * 4), GetColor(255, 255, 255), "hit_range");
-		DrawFormatString(60, y + (font * 5), GetColor(255, 255, 255), "%.2f", float(player_stats.player_shot_hitrange_up));
+		// ショット
+		DrawStringToHandle(10, y + (font * 1), "--shot--", GetColor(255, 255, 255), font_size[0]);
+		// クールタイム
+		DrawStringToHandle(10, y + (font * 2), "COOL_TIME", GetColor(255, 255, 255), font_size[0]);
+		snprintf(buf, sizeof(buf), "%.2f", player_stats.shot_speed);
+		DrawStringToHandle(60, y + (font * 3), buf, GetColor(255, 255, 255), font_size[0]);
+		// 弾の当たり判定
+		DrawStringToHandle(10, y + (font * 4), "HIT_RANGE", GetColor(255, 255, 255), font_size[0]);
+		snprintf(buf, sizeof(buf), "%.2f", player_stats.shot_speed);
+		DrawStringToHandle(60, y + (font * 5), buf, GetColor(255, 255, 255), font_size[0]);
 	}
 }
 

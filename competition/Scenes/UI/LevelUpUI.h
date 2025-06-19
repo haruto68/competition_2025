@@ -19,6 +19,8 @@ class LevelUpUI
 public:
 	bool old_flag;
 	int cursor;
+	int font_size[3];					// ƒtƒHƒ“ƒgİ’è
+
 private:
 	//‰æ‘œ
 	int window[4];

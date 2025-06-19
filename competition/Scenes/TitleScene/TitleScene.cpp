@@ -249,6 +249,8 @@ void TitleScene::Finalize()
 {
 	// BGM‚ÌÄ¶‚ğ~‚ß‚é
 	StopSoundMem(back_ground_sound);
+
+	// İ’è‚µ‚½ƒtƒHƒ“ƒg‚ğíœ‚·‚é
 	for (int i = 0; i < 5; i++)
 	{
 		DeleteFontToHandle(font[i]);

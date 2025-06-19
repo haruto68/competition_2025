@@ -33,7 +33,9 @@ InGameScene::InGameScene() :
 	bgm(),
 	soundseffect(),
 	dark_alpha(600),
-	pause_cursor(0)
+	pause_cursor(0),
+	score(),
+	font{}
 {
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
@@ -98,12 +100,18 @@ void InGameScene::Initialize()
 	/*object_manager->CreateGameObject<Boss1>(Vector2D(1200, 400));*/
 
 		// フォントの登録
-	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 70, 6));
-	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 40, 6));
-	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 50, 6));
-	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 100, 6));
-	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 80, 6));
+	// font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 70, 6));
+	// font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 40, 6));
+	// font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 50, 6));
+	// font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 100, 6));
+	// font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 80, 6));
 
+	// フォントの登録
+	font[0] = CreateFontToHandle("魔導太丸ゴシック", 40, 6);
+	font[1] = CreateFontToHandle("魔導太丸ゴシック", 50, 6);
+	font[2] = CreateFontToHandle("魔導太丸ゴシック", 70, 6);
+	font[3] = CreateFontToHandle("魔導太丸ゴシック", 80, 6);
+	font[4] = CreateFontToHandle("魔導太丸ゴシック", 100, 6);
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
@@ -374,12 +382,14 @@ void InGameScene::Draw() const
 	{
 		// DrawFormatString(1100, 10, GetColor(255, 255, 255), "%.1f", time_count);
 		snprintf(buf, sizeof(buf), "%.1f", time_count);
-		DrawStringToHandle(1100, 10, buf, GetColor(255, 255, 255), font_name[0]);
+		// DrawStringToHandle(1100, 10, buf, GetColor(255, 255, 255), font_name[0]);
+		DrawStringToHandle(1100, 10, buf, GetColor(255, 255, 255), font[3]);
 	}
 	//ステージレベル
 	SetFontSize(40);
 	// DrawFormatString(570, 20, GetColor(255, 255, 255), "Stage");
-	DrawStringToHandle(570, 20, "Stage", GetColor(255, 255, 255), font_name[1]);
+	// DrawStringToHandle(570, 20, "Stage", GetColor(255, 255, 255), font_name[1]);
+	DrawStringToHandle(570, 20, "Stage", GetColor(255, 255, 255), font[0]);
 	int level_color = 0;
 	if (stage_level == 1)
 		level_color = GetColor(50, 255, 50);
@@ -390,7 +400,22 @@ void InGameScene::Draw() const
 	SetFontSize(50);
 	// DrawFormatString(700, 15, level_color, "%d", stage_level);
 	snprintf(buf, sizeof(buf), "%d", stage_level);
-	DrawStringToHandle(700, 15, buf, GetColor(255, 255, 255), font_name[2]);
+	// DrawStringToHandle(700, 15, buf, GetColor(255, 255, 255), font_name[2]);
+
+	switch (stage_level)
+	{
+	case 1:
+		DrawStringToHandle(700, 15, buf, GetColor(50, 255, 50), font[1]);
+		break;
+	case 2:
+		DrawStringToHandle(700, 15, buf, GetColor(255, 255, 50), font[1]);
+		break;
+	case 3:
+		DrawStringToHandle(700, 15, buf, GetColor(255, 50, 50), font[1]);
+		break;
+	default:
+		break;
+	}
 
 	// プレイヤーのHPのテーブルHPバーの描画
 	hp_ui->Draw();
@@ -402,15 +427,19 @@ void InGameScene::Draw() const
 		SetFontSize(40);
 		// DrawFormatString(476, 681, GetColor(0, 0, 0), "Y_button to UpGrade");
 		// DrawFormatString(475, 680, GetColor(125, 0, 175), "Y_button to UpGrade");
-		DrawStringToHandle(475, 680, "Y_button to UpGrade", GetColor(0, 0, 0), font_name[1]);
-		DrawStringToHandle(475, 681, "Y_button to UpGrade", GetColor(125, 0, 175), font_name[1]);
+		// DrawStringToHandle(475, 680, "Y_button to UpGrade", GetColor(0, 0, 0), font_name[1]);
+		// DrawStringToHandle(475, 681, "Y_button to UpGrade", GetColor(125, 0, 175), font_name[1]);
+		DrawStringToHandle(475, 680, "Y_button to UpGrade", GetColor(0, 0, 0), font[0]);
+		DrawStringToHandle(475, 681, "Y_button to UpGrade", GetColor(125, 0, 175), font[0]);
 		if(up_grade_stock > 1)
 		{
 			// DrawFormatString(900, 680, GetColor(0, 0, 0), "× %d", up_grade_stock);
 			// DrawFormatString(901, 681, GetColor(125, 0, 175), "× %d", up_grade_stock);
 			snprintf(buf, sizeof(buf), "× %d", up_grade_stock);
-			DrawStringToHandle(900, 680, buf, GetColor(0, 0, 0), font_name[1]);
-			DrawStringToHandle(901, 681, buf, GetColor(125, 0, 175), font_name[1]);
+			// DrawStringToHandle(900, 680, buf, GetColor(0, 0, 0), font_name[1]);
+			// DrawStringToHandle(901, 681, buf, GetColor(125, 0, 175), font_name[1]);
+			DrawStringToHandle(900, 680, buf, GetColor(0, 0, 0), font[0]);
+			DrawStringToHandle(901, 681, buf, GetColor(125, 0, 175), font[0]);
 		}
 	}
 
@@ -423,7 +452,8 @@ void InGameScene::Draw() const
 
 		SetFontSize(100);
 		// DrawFormatString(425, 125, GetColor(255, 255, 255), "P A U S E");
-		DrawStringToHandle(425, 125, "P A U S E", GetColor(255, 255, 255), font_name[3]);
+		// DrawStringToHandle(425, 125, "P A U S E", GetColor(255, 255, 255), font_name[3]);
+		DrawStringToHandle(425, 125, "P A U S E", GetColor(255, 255, 255), font[4]);
 		// int pause_font[2] = { 40,40 };
 		// if(pause_cursor == 0)
 		// 	pause_font[0] = 80;
@@ -437,12 +467,14 @@ void InGameScene::Draw() const
 		switch (pause_cursor)
 		{
 			case 0:
-				DrawStringToHandle(500, 350, "B A C K", GetColor(255, 255, 255), font_name[4]);
-				DrawStringToHandle(475, 500, "T I T L E", GetColor(255, 255, 255), font_name[1]);
+				// DrawStringToHandle(500, 350, "B A C K", GetColor(255, 255, 255), font_name[4]);
+				// DrawStringToHandle(475, 500, "T I T L E", GetColor(255, 255, 255), font_name[1]);
+				DrawStringToHandle(500, 350, "B A C K", GetColor(255, 255, 255), font[3]);
+				DrawStringToHandle(475, 500, "T I T L E", GetColor(255, 255, 255), font[0]);
 				break;
 			case 1:
-				DrawStringToHandle(500, 350, "B A C K", GetColor(255, 255, 255), font_name[1]);
-				DrawStringToHandle(475, 500, "T I T L E", GetColor(255, 255, 255), font_name[4]);
+				DrawStringToHandle(500, 350, "B A C K", GetColor(255, 255, 255), font[0]);
+				DrawStringToHandle(475, 500, "T I T L E", GetColor(255, 255, 255), font[3]);
 				break;
 			default:
 				break;
@@ -465,7 +497,8 @@ void InGameScene::Draw() const
 	{
 		SetFontSize(100);
 		// DrawFormatString(425, 300, GetColor(255, 255, 255), "STAGE 1");
-		DrawStringToHandle(425, 300, "STAGE 1", GetColor(255, 255, 255), font_name[3]);
+		// DrawStringToHandle(425, 300, "STAGE 1", GetColor(255, 255, 255), font_name[3]);
+		DrawStringToHandle(425, 300, "STAGE 1", GetColor(255, 255, 255), font[4]);
 	}
 
 	//ステージ遷移1>>2
@@ -475,13 +508,15 @@ void InGameScene::Draw() const
 		{
 			SetFontSize(70);
 			// DrawFormatString(425, 260, GetColor(255, 255, 255), "STAGE CLEAR");
-			DrawStringToHandle(425, 260, "STAGE CLEAR", GetColor(255, 255, 255), font_name[0]);
+			// DrawStringToHandle(425, 260, "STAGE CLEAR", GetColor(255, 255, 255), font_name[0]);
+			DrawStringToHandle(425, 260, "STAGE CLEAR", GetColor(255, 255, 255), font[2]);
 		}
 		else if (boss1->GetBoss1DeathCount() < 1.1 && boss1->GetBoss1DeathCount() > 0.0f)
 		{
 			SetFontSize(100);
 			// DrawFormatString(425, 300, GetColor(255, 255, 255), "STAGE 2");
-			DrawStringToHandle(425, 300, "STAGE 2", GetColor(255, 255, 255), font_name[3]);
+			// DrawStringToHandle(425, 300, "STAGE 2", GetColor(255, 255, 255), font_name[3]);
+			DrawStringToHandle(425, 300, "STAGE 2", GetColor(255, 255, 255), font[4]);
 		}
 	}
 	//ステージ遷移2>>3
@@ -491,14 +526,15 @@ void InGameScene::Draw() const
 		{
 			SetFontSize(70);
 			// DrawFormatString(425, 260, GetColor(255, 255, 255), "STAGE CLEAR");
-			DrawStringToHandle(425, 260, "STAGE CLEAR", GetColor(255, 255, 255), font_name[0]);
+			// DrawStringToHandle(425, 260, "STAGE CLEAR", GetColor(255, 255, 255), font_name[0]);
+			DrawStringToHandle(425, 260, "STAGE CLEAR", GetColor(255, 255, 255), font[2]);
 
 		}
 		else if (boss2->GetBoss2DeathCount() < 1.1 && boss2->GetBoss2DeathCount() > 0.0f)
 		{
 			SetFontSize(100);
 			// DrawFormatString(425, 300, GetColor(255, 255, 255), "STAGE 3");
-			DrawStringToHandle(425, 260, "STAGE 3", GetColor(255, 255, 255), font_name[3]);
+			DrawStringToHandle(425, 260, "STAGE 3", GetColor(255, 255, 255), font[4]);
 		}
 	}
 	//ステージ遷移3>>クリア
@@ -508,13 +544,13 @@ void InGameScene::Draw() const
 		{
 			SetFontSize(70);
 			// DrawFormatString(425, 260, GetColor(255, 255, 255), "STAGE CLEAR");
-			DrawStringToHandle(425, 260, "STAGE CLEAR", GetColor(255, 255, 255), font_name[0]);
+			DrawStringToHandle(425, 260, "STAGE CLEAR", GetColor(255, 255, 255), font[2]);
 		}
 		else if (boss3->GetBoss3DeathCount() < 1.1 && boss3->GetBoss3DeathCount() > 0.0f)
 		{
 			SetFontSize(100);
 			// DrawFormatString(375, 300, GetColor(255, 255, 255), "GAME CLEAR");
-			DrawStringToHandle(375, 360, "GAME CLEAR", GetColor(255, 255, 255), font_name[3]);
+			DrawStringToHandle(375, 360, "GAME CLEAR", GetColor(255, 255, 255), font[4]);
 		}
 	}
 
@@ -529,6 +565,12 @@ void InGameScene::Finalize()
 	level_ui->Finalize();
 	StopSoundMem(bgm[0]);
 	StopSoundMem(bgm[1]);
+
+	// 設定したフォントを削除する
+	for (int i = 0; i < 5; i++)
+	{
+		DeleteFontToHandle(font[i]);
+	}
 }
 
 eSceneType InGameScene::GetNowSceneType()const
