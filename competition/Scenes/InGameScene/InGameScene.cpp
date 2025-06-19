@@ -160,6 +160,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		// リスト内のオブジェクトを更新する
 		for (GameObject* obj : scene_objects_list)
 		{
+			//Update
 			if (dark_alpha <= 0)
 			{
 				obj->Update(delta_second);
@@ -176,6 +177,11 @@ eSceneType InGameScene::Update(const float& delta_second)
 					drone->SetLocation(Vector2D(player->GetLocation().x - 50, player->GetLocation().y));
 				}
 				
+			}
+			//爆発
+			if (obj->GetExplosionFlag())
+			{
+				obj->Explosion(delta_second);
 			}
 			// プレイヤー座標受け渡し
 			obj->SetPlayerLocation(player->GetLocation());
@@ -285,7 +291,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	}
 
 	//ポーズ画面
-	if (((input->GetKeyUp(KEY_INPUT_L) ||
+	if (((input->GetKeyUp(KEY_INPUT_TAB) ||
 		input->GetButtonDown(XINPUT_BUTTON_START)))
 		&& level_up_flg == false && dark_alpha <= 0
 		&& player->GetPlayerStats().life_count > 0)
@@ -353,7 +359,10 @@ void InGameScene::Draw() const
 	// オブジェクト描画
 	for (GameObject* obj : scene_objects_list)
 	{
-		obj->Draw(screen_offset, false);
+		if(!obj->GetExplosionFlag())
+			obj->Draw(screen_offset, false);
+		else
+			obj->DrawExplosion();
 		c++;
 	}
 	//オブジェクト数描画
@@ -785,21 +794,13 @@ void InGameScene::BossManager()
 {
 	if (stage_level == 1)
 	{
+		//ボスの生成
 		if (boss_flag == false)
 		{
 			boss_flag = true;
 			boss1 = object_manager->CreateGameObject<Boss1>(Vector2D(1400, 400));
 		}
-		if (boss1->GetBoss1Hp() <= 0)
-		{
-			for (GameObject* obj : scene_objects_list)
-			{
-				if (obj != player && obj != boss1)
-				{
-					object_manager->DestroyGameObject(obj);
-				}
-			}
-		}
+		//ボス削除
 		if (boss1->GetDeathFlag())
 		{
 			boss_flag = false;
@@ -808,35 +809,97 @@ void InGameScene::BossManager()
 			object_manager->DestroyGameObject(boss1);
 			// score->SetStageLevel(stage_level);
 		}
+
+		//ボス死亡時画面内に残ったものを爆発
+		if (boss1->GetBoss1Hp() <= 0)
+		{
+			for (GameObject* obj : scene_objects_list)
+			{
+				eObjectType type = obj->GetCollision().object_type;
+				if (obj != boss1 && type == eEnemy || type == eEnemyShot)
+				{
+					obj->KeepDeathLocation();
+				}
+			}
+		}
+		else
+		{
+			for (GameObject* obj : scene_objects_list)
+			{
+				obj->SetDeathLocation();
+			}
+		}
 	}
 	else if (stage_level == 2)
 	{
+		//ボスの生成
 		if (boss_flag == false)
 		{
 			boss_flag = true;
 			boss2 = object_manager->CreateGameObject<Boss2>(Vector2D(1400, 400));
 		}
-		else if (boss2->GetDeathFlag())
+		//ボス削除
+		if (boss2->GetDeathFlag())
 		{
 			boss_flag = false;
 			stage_level += 1;
 			time_count = 60.0f;
 			object_manager->DestroyGameObject(boss2);
 		}
+		//ボス死亡時画面内に残ったものを爆発
+		if (boss2->GetBoss2Hp() <= 0)
+		{
+			for (GameObject* obj : scene_objects_list)
+			{
+				eObjectType type = obj->GetCollision().object_type;
+				if (obj != boss2 && type == eEnemy || type == eEnemyShot)
+				{
+					obj->KeepDeathLocation();
+				}
+			}
+		}
+		else
+		{
+			for (GameObject* obj : scene_objects_list)
+			{
+				obj->SetDeathLocation();
+			}
+		}
 	}
 	else if (stage_level == 3)
 	{
+		//ボスの生成
 		if (boss_flag == false)
 		{
 			boss_flag = true;
 			boss3 = object_manager->CreateGameObject<Boss3>(Vector2D(1400, 400));
 		}
-		else if (boss3->GetDeathFlag())
+		//ボス削除
+		if (boss3->GetDeathFlag())
 		{
 			boss_flag = false;
 			stage_level += 1;
 			time_count = 60.0f;
 			object_manager->DestroyGameObject(boss3);
+		}
+		//ボス死亡時画面内に残ったものを爆発
+		if (boss3->GetBoss3Hp() <= 0)
+		{
+			for (GameObject* obj : scene_objects_list)
+			{
+				eObjectType type = obj->GetCollision().object_type;
+				if (obj != boss3 && type == eEnemy || type == eEnemyShot)
+				{
+					obj->KeepDeathLocation();
+				}
+			}
+		}
+		else
+		{
+			for (GameObject* obj : scene_objects_list)
+			{
+				obj->SetDeathLocation();
+			}
 		}
 	}
 
