@@ -2,7 +2,9 @@
 
 Boss3::Boss3() :
 	images(),
-	atack_interval(0.0f)
+	atack_interval(0.0f),
+	shot_timer_2(0.0f),
+	shot_cooldown_2(0.0f)
 {
 	// ƒRƒŠƒWƒ‡ƒ“Ý’è
 	collision.is_blocking = true;
@@ -19,7 +21,7 @@ Boss3::Boss3() :
 	is_mobility = true;
 
 	//Å‘åHPÝ’è
-	max_hp = 750;
+	max_hp = 10000;
 	hp = float(max_hp);
 
 	//‰æ‘œ“Ç‚Ýž‚Ý
@@ -42,6 +44,8 @@ void Boss3::Initialize()
 {
 	atack_pattern = 0;
 	atack_interval = 0.6f;
+
+	shot_cooldown_2 = 0.25f;
 }
 
 void Boss3::Update(float delta_seconds)
@@ -58,6 +62,7 @@ void Boss3::Update(float delta_seconds)
 
 	//ŽžŠÔŒo‰ß
 	shot_timer += delta_seconds;
+
 
 	EnemyShot* shot;
 
@@ -107,6 +112,29 @@ void Boss3::Update(float delta_seconds)
 		shot_timer = 0.0f;
 	}
 
+
+
+	if (atack_pattern == 102)
+	{
+		shot_timer_2 += delta_seconds;
+
+		if (hp > 0 && shot_timer_2 >= shot_cooldown_2)
+		{
+			shot_timer_2 = 0.0f;
+
+			shot = object_manager->CreateGameObject<EnemyShot>(location);
+			shot->SetShotType(eEnemy2);
+			shot = object_manager->CreateGameObject<EnemyShot>(location);
+			shot->SetShotType(eEnemy3);
+		}
+
+	}
+
+
+
+
+
+
 	//Ž€
 	if (hp <= 0.0f)
 	{
@@ -123,14 +151,7 @@ void Boss3::Update(float delta_seconds)
 
 void Boss3::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
-	if (image != -1)
-	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, transparency);
-		DrawRotaGraphF(location.x + 50, location.y, 1.0f, ƒÎ / 2, images[0], TRUE);
-		DrawRotaGraphF(location.x, location.y, 2.75f, ƒÎ / 2, images[1], TRUE);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	}
-
+	//—\‘ªü
 	if (atack_pattern == 99 || atack_pattern == 101)
 	{
 		int upper_left_x = 0;
@@ -142,6 +163,15 @@ void Boss3::Draw(const Vector2D& screen_offset, bool flip_flag) const
 		DrawBox(upper_left_x, upper_left_y, lower_right_x, lower_right_y, GetColor(255, 0, 0), TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
+	//
+	if (image != -1)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, transparency);
+		DrawRotaGraphF(location.x + 50, location.y, 1.0f, ƒÎ / 2, images[0], TRUE);
+		DrawRotaGraphF(location.x, location.y, 2.35f, ƒÎ / 2, images[1], TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
+
 
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);

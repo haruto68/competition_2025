@@ -2,7 +2,7 @@
 
 Enemy5::Enemy5() :
 	shot_num(0),
-	cool_down_2(2.0f),
+	cool_down_2(3.0f),
 	cool_down_2_count(0.0f)
 {
 	//リソース管理インスタンス取得
@@ -52,9 +52,9 @@ void Enemy5::Update(float delta_seconds)
 	Movement(delta_seconds);
 	Animation();
 
-	float shot_cooldown = 0.4f;
+	float shot_cooldown = 0.8f;
 
-	int shot_num_max = 3;
+	int shot_num_max = 2;
 
 	//時間経過
 	shot_timer += delta_seconds;

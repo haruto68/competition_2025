@@ -4,6 +4,7 @@
 
 GameObject::GameObject() :
 	location(0.0f),
+	death_location(0.0f),
 	speed(0),
 	image(NULL),
 	transparency(255),
@@ -91,6 +92,18 @@ const unsigned char GameObject::GetZLayer() const
 const bool GameObject::GetMobility() const
 {
 	return is_mobility;
+}
+
+//死亡座標設定処理
+void GameObject::SetDeathLocation(Vector2D location)
+{
+	this->death_location = location;
+}
+
+//死亡座標取得処理
+Vector2D GameObject::GetDeathLocation()
+{
+	return this->death_location;
 }
 
 //プレイヤー座標設定処理
