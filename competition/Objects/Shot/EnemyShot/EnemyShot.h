@@ -10,6 +10,7 @@ private:
 	float screen_velocity;		// ƒXƒNƒŠ[ƒ“ˆÚ“®—Ê
 
 	int shot_image[3];
+	int laser_images[5];
 
 	float caveat_time;
 

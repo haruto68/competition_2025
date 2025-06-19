@@ -4,6 +4,7 @@
 EnemyShot::EnemyShot() :
 	screen_velocity(0.0),
 	shot_image(),
+	laser_images(),
 	caveat_time(0.0f),
 	old_velocity(0.0f)
 {
@@ -19,7 +20,7 @@ EnemyShot::EnemyShot() :
 	collision.hit_object_type.push_back(eObjectType::ePlayer);
 	// ‰æ‘œÝ’è
 	// ƒŒƒCƒ„[Ý’è
-	z_layer = 3;
+	z_layer = 1;
 	// ‰Â“®«Ý’è
 	is_mobility = true;
 
@@ -28,6 +29,12 @@ EnemyShot::EnemyShot() :
 	shot_image[1] = rm->GetImages("Resource/Images/enemy_shot/shot2.png")[0];
 	shot_image[2] = rm->GetImages("Resource/Images/enemy_shot/shot3.png")[0];
 	
+	laser_images[0]= rm->GetImages("Resource/Images/GameMaker/Player/Weapon/Laser/Projectile_Player_Laser1.png")[0];
+	laser_images[1]= rm->GetImages("Resource/Images/GameMaker/Player/Weapon/Laser/Projectile_Player_Laser2.png")[0];
+	laser_images[2]= rm->GetImages("Resource/Images/GameMaker/Player/Weapon/Laser/Projectile_Player_Laser3.png")[0];
+	laser_images[3]= rm->GetImages("Resource/Images/GameMaker/Player/Weapon/Laser/Projectile_Player_Laser4.png")[0];
+	laser_images[4]= rm->GetImages("Resource/Images/GameMaker/Player/Weapon/Laser/Projectile_Player_Laser5.png")[0];
+
 }
 
 EnemyShot::~EnemyShot()
@@ -58,7 +65,7 @@ void EnemyShot::Update(float delta_seconds)
 		collision.box_size = Vector2D(1280, 30);
 		if (birth_count > caveat_time)
 		{
-			velocity.x = -6.0f;
+			velocity.x = -3.0f;
 		}
 	}
 }
@@ -87,14 +94,17 @@ void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 		image = shot_image[1];
 		break;
 	case eEnemy15:
-		image = -1; if (birth_count < caveat_time)
+		image = -1;
+		if (birth_count < caveat_time)
 		{
 			//—\‘ªü
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 175);
 			DrawBox(0, location.y - (collision.box_size.y / 2), 1280, location.y + (collision.box_size.y / 2), GetColor(255, 0, 0), TRUE);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
-		DrawBox(location.x - 640, location.y - (collision.box_size.y / 2), location.x + 640, location.y + (collision.box_size.y / 2), GetColor(205, 205, 205), TRUE);
+
+		//DrawBox(location.x - 640, location.y - (collision.box_size.y / 2), location.x + 640, location.y + (collision.box_size.y / 2), GetColor(205, 205, 205), TRUE);
+		
 		break;
 	default:
 		image = shot_image[1];
@@ -104,6 +114,12 @@ void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	if (image != -1)
 	{
 		DrawRotaGraph(location.x, location.y, 1.5, 0, image,TRUE);
+	}
+
+	if (shot_type == eShotType::eEnemy15)
+	{
+		DrawRotaGraph(location.x, location.y, 6.0, -(ƒÎ / 2), laser_images[0], TRUE);
+		DrawBox(location.x - 640, location.y - (collision.box_size.y / 2), location.x + 640, location.y + (collision.box_size.y / 2), GetColor(255, 0, 0), false);
 	}
 	
 }
@@ -283,6 +299,9 @@ void EnemyShot::Movement(float delta_seconds)
 		break;
 	case eEnemy15:
 		break;
+	case eEnemy16:
+
+			break;
 	default:
 		break;
 	}

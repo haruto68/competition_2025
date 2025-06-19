@@ -7,6 +7,7 @@ class GameObject
 {
 protected:
 	Vector2D location;				//座標
+	Vector2D death_location;		//死亡座標
 	float speed;
 	Collision collision;			//コリジョン
 	int image;						//画像
@@ -37,6 +38,8 @@ public:
 	const unsigned char GetZLayer() const;		//レイヤー取得処理
 	const bool GetMobility() const;				//可動性取得処理
 
+	void SetDeathLocation(Vector2D);			//死亡座標設定処理
+	Vector2D GetDeathLocation();				//死亡座標取得処理
 
 	void SetPlayerLocation(Vector2D location);	//プレイヤー座標設定処理
 	void SetPlayerStats(PlayerStats stats);		//プレイヤーステータス設定処理
