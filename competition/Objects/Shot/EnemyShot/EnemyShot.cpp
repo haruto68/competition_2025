@@ -300,7 +300,7 @@ void EnemyShot::Movement(float delta_seconds)
 	case eEnemy15:
 		break;
 	case eEnemy16:
-
+		velocity.x = -2.5f;
 			break;
 	default:
 		break;
