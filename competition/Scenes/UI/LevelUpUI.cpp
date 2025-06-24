@@ -200,6 +200,11 @@ void LevelUpUI::Draw(bool up_grade, bool now_stats) const
 
 void LevelUpUI::Finalize()
 {
+	// İ’è‚µ‚½ƒtƒHƒ“ƒg‚ğíœ‚·‚é
+	for (int i = 0; i < 3; i++)
+	{
+		DeleteFontToHandle(font_size[i]);
+	}
 
 }
 
