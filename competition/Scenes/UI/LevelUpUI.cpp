@@ -186,14 +186,14 @@ void LevelUpUI::Draw(bool up_grade, bool now_stats) const
 
 		y += font * 6 + 15;
 		// ショット
-		DrawStringToHandle(10, y + (font * 1), "--shot--", GetColor(255, 255, 255), font_size[0]);
+		DrawStringToHandle(10, y + (font * 1), "--SHOT--", GetColor(255, 255, 255), font_size[0]);
 		// クールタイム
-		DrawStringToHandle(10, y + (font * 2), "COOL_TIME", GetColor(255, 255, 255), font_size[0]);
+		DrawStringToHandle(10, y + (font * 2), "COOLTIME", GetColor(255, 255, 255), font_size[0]);
 		snprintf(buf, sizeof(buf), "%.2f", player_stats.shot_speed);
 		DrawStringToHandle(60, y + (font * 3), buf, GetColor(255, 255, 255), font_size[0]);
 		// 弾の当たり判定
-		DrawStringToHandle(10, y + (font * 4), "HIT_RANGE", GetColor(255, 255, 255), font_size[0]);
-		snprintf(buf, sizeof(buf), "%.2f", player_stats.shot_speed);
+		DrawStringToHandle(10, y + (font * 4), "HITRANGE", GetColor(255, 255, 255), font_size[0]);
+		snprintf(buf, sizeof(buf), "%.2f", player_stats.player_shot_hitrange_up);
 		DrawStringToHandle(60, y + (font * 5), buf, GetColor(255, 255, 255), font_size[0]);
 	}
 }

@@ -3,7 +3,7 @@
 #include"../../Objects/GameObjectManager.h"
 
 #define TIME_SPEED	(1.0f)
-#define TIME_SPEED	(60.0f)
+// #define TIME_SPEED	(60.0f)
 
 InGameScene::InGameScene() :
 	object_manager(nullptr),
@@ -15,7 +15,7 @@ InGameScene::InGameScene() :
 	level_up_ui(),
 	hp_ui(),
 	level_ui(),
-	stage_level(3),
+	stage_level(1),
 	back_ground_image(),
 	back_ground_location(0),
 	planets_image(),
@@ -401,7 +401,7 @@ void InGameScene::Draw() const
 	SetFontSize(40);
 	// DrawFormatString(570, 20, GetColor(255, 255, 255), "Stage");
 	// DrawStringToHandle(570, 20, "Stage", GetColor(255, 255, 255), font_name[1]);
-	DrawStringToHandle(570, 20, "Stage", GetColor(255, 255, 255), font[0]);
+	DrawStringToHandle(570, 20, "STAGE", GetColor(255, 255, 255), font[0]);
 	int level_color = 0;
 	if (stage_level == 1)
 		level_color = GetColor(50, 255, 50);

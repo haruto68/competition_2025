@@ -205,10 +205,10 @@ void ResultScene::Draw() const
 	// }
 	// 
 	// // アイコンの描画
-	 for (int i = 0; i < 6; i++)
-	 {
-	 	DrawRotaGraphF(125 + (i * 200), 400, 0.5, 0, power_icon[i], TRUE);
-	 }
+	// for (int i = 0; i < 6; i++)
+	// {
+	// 	DrawRotaGraphF(125 + (i * 200), 400, 0.5, 0, power_icon[i], TRUE);
+	// }
 	// 
 	// // 強化した値を設定する描画
 	// /*パワー*/
