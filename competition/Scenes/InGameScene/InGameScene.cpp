@@ -3,7 +3,7 @@
 #include"../../Objects/GameObjectManager.h"
 
 #define TIME_SPEED	(1.0f)
-//#define TIME_SPEED	(60.0f)
+#define TIME_SPEED	(60.0f)
 
 InGameScene::InGameScene() :
 	object_manager(nullptr),
@@ -15,7 +15,7 @@ InGameScene::InGameScene() :
 	level_up_ui(),
 	hp_ui(),
 	level_ui(),
-	stage_level(1),
+	stage_level(3),
 	back_ground_image(),
 	back_ground_location(0),
 	planets_image(),

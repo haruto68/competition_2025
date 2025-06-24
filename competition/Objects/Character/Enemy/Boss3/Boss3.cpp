@@ -90,6 +90,7 @@ void Boss3::Update(float delta_seconds)
 			//突進
 		case 99:
 			atack_pattern = 100;
+			atack_interval = 3.0f;
 			break;
 		case 100:
 			break;
@@ -250,10 +251,15 @@ void Boss3::Movement(float delta_seconds)
 				velocity.y = -0.7f;
 		}
 
+		//プレイヤーY座標追跡
+		//velocity.y = Tracking(location, Vector2D(location.x, player_location.y)).y * 0.7;
+		
 
 		if (atack_pattern == 99)
 		{
-			velocity.y = 0.0f;
+			//プレイヤーY座標追跡
+			velocity.y = Tracking(location, Vector2D(location.x, player_location.y)).y * 0.7;
+			//velocity.y = 0.0f;
 			velocity.x = 2.0f;
 		}
 		if(atack_pattern == 100)
@@ -265,6 +271,11 @@ void Boss3::Movement(float delta_seconds)
 				velocity.x = 0.0f;
 				atack_pattern = 101;
 			}
+		}
+
+		if (atack_pattern == 101)
+		{
+			velocity.y = 0.0f;
 		}
 		if (atack_pattern == 102)
 		{
