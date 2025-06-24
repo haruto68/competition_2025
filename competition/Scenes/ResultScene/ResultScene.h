@@ -24,20 +24,22 @@ public:
 	int sounds_effect[2];
 	int back_ground_image;
 	Vector2D back_ground_location;		// 背景座標
-
+	int power_icon[6];					// 強化	アイコン
+	int window;							// 枠
 	// リザルトシーンからのスコアの情報を入れる変数
 	int level;
 	int stagelevel;
-	//int power;
+	int power;
+	int speed;
 	//int hp;
-	//int speed;
 	//int cool_time;
 	//int hit_range;
 	//int three_way;
 	Score* score;
 	RankingScene* ranking;
 
-	std::vector<int> font_name;					// フォント設定
+	// std::vector<int> font_name;					// フォント設定
+	int font[5];								// フォントの設定
 
 	virtual void Initialize() override;
 	virtual eSceneType Update(const float& delta_second);

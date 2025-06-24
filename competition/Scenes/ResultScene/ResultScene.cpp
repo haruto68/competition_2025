@@ -3,7 +3,21 @@
 #include"../../Resource/ResourceManager.h"
 //#define DEBUG 1
 
-ResultScene::ResultScene(): m_selectedbutton(selectedbutton::Title), menu_num(0), is_button(true), back_ground_sound(0), score(0)			//初期はタイトル選択
+ResultScene::ResultScene() : 
+	m_selectedbutton(selectedbutton::Title), //初期はタイトル選択
+	menu_num(0), 
+	is_button(true), 
+	back_ground_sound(0), 
+	score(0), 
+	back_ground_image(), 
+	ranking(), 
+	font(), 		
+	window(),
+	power_icon(),
+	level(0),
+	stagelevel(0),
+	power(0),
+	speed(0)
 {
 	// //リソース管理インスタンス取得
 	// ResourceManager* rm = ResourceManager::GetInstance();
@@ -49,13 +63,27 @@ void ResultScene::Initialize()
 	// ranking->Initialize();
 
 	// フォントの登録
-	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 70, 6));
-	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 40, 6));
-	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 50, 6));
-	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 100, 6));
-	font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 80, 6));
+	// font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 70, 6));
+	// font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 40, 6));
+	// font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 50, 6));
+	// font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 100, 6));
+	// font_name.push_back(CreateFontToHandle("魔導太丸ゴシック", 80, 6));
 
+	font[0] = CreateFontToHandle("魔導太丸ゴシック", 40, 6);
+	font[1] = CreateFontToHandle("魔導太丸ゴシック", 50, 6);
+	font[2] = CreateFontToHandle("魔導太丸ゴシック", 70, 6);
+	font[3] = CreateFontToHandle("魔導太丸ゴシック", 80, 6);
+	font[4] = CreateFontToHandle("魔導太丸ゴシック", 100, 6);
 
+	// power_icon[0] = rm->GetImages("Resource/Images/UpGrade_Icon/hp.png")[0];
+	power_icon[0] = rm->GetImages("Resource/Images/UpGrade_Icon/power.png")[0];
+	power_icon[1] = rm->GetImages("Resource/Images/UpGrade_Icon/speed.png")[0];
+	power_icon[2] = rm->GetImages("Resource/Images/UpGrade_Icon/shot_speed.png")[0];
+	power_icon[3] = rm->GetImages("Resource/Images/UpGrade_Icon/shot_size.png")[0];
+	power_icon[4] = rm->GetImages("Resource/Images/UpGrade_Icon/three_way.png")[0];
+	power_icon[5] = rm->GetImages("Resource/Images/UpGrade_Icon/drone.png")[0];
+
+	window = rm->GetImages("Resource/Images/LevelUpUi/Table_01.png")[0];
 }
 
 eSceneType ResultScene::Update(const float& delta_second)
@@ -65,6 +93,9 @@ eSceneType ResultScene::Update(const float& delta_second)
 
 	stagelevel = score->GetStageLevel();
 	level = score->GetPlayerLevel();
+	power = score->GetPlayerPower();
+	speed = score->GetPlayerSpeed();
+
 	//入力情報の更新
 	input->Update();
 
@@ -140,34 +171,66 @@ void ResultScene::Draw() const
 
 	//DrawBox(50, 20, 1230, 550, 0xffffff, TRUE);
 	// DrawFormatString(50, 20, 0xffffff, "Result");
-	DrawStringToHandle(50, 20, "RESULT", GetColor(255, 255, 255), font_name[2]);
+	// DrawStringToHandle(50, 20, "RESULT", GetColor(255, 255, 255), font_name[2]);
+	DrawStringToHandle(50, 20, "RESULT", GetColor(255, 255, 255), font[1]);
 
 
 	// DrawFormatString(50, 80, 0xffffff, "到達したステージ");
-	DrawStringToHandle(50, 80, "到達したステージ", GetColor(255, 255, 255), font_name[2]);
+	// DrawStringToHandle(50, 80, "到達したステージ", GetColor(255, 255, 255), font_name[2]);
+	DrawStringToHandle(50, 80, "到達したステージ", GetColor(255, 255, 255), font[1]);
 
 	snprintf(buf, sizeof(buf), "%d", stagelevel);
 	// DrawFormatString(1200, 80, 0xffffff, "%d", stagelevel);		// 到達したレベルを描画する
-	DrawStringToHandle(1200, 80, buf, GetColor(255, 255, 255), font_name[2]);
+	// DrawStringToHandle(1200, 80, buf, GetColor(255, 255, 255), font_name[2]);
+	DrawStringToHandle(800, 80, buf, GetColor(255, 255, 255), font[1]);
 
 	// DrawFormatString(50, 140, 0xffffff, "現在のレベル");
-	DrawStringToHandle(50, 140, "現在のレベル", GetColor(255, 255, 255), font_name[2]);
+	// DrawStringToHandle(50, 140, "現在のレベル", GetColor(255, 255, 255), font_name[2]);
+	DrawStringToHandle(50, 140, "最高レベル", GetColor(255, 255, 255), font[1]);
 
 	snprintf(buf, sizeof(buf), "%d", level);
 	// DrawFormatString(1200, 140, 0xffffff, "%d", level);		// プレイヤーの現在の死亡時のレベルを描画する
-	DrawStringToHandle(1200, 140, buf, GetColor(255, 255, 255), font_name[2]);
+	// DrawStringToHandle(1200, 140, buf, GetColor(255, 255, 255), font_name[2]);
+	DrawStringToHandle(800, 140, buf, GetColor(255, 255, 255), font[1]);
+
+
+	// 強化した内容を描画する
+	// DrawStringToHandle(50, 200, "アップグレードした内容", GetColor(255, 255, 255), font[1]);
+	// 
+	// 
+	// // 外枠の描画
+	// for (int i = 0; i < 6; i++)
+	// {
+	// 	DrawRotaGraphF(125 + (i * 200), 450, 0.5, 0, window, TRUE);
+	// }
+	// 
+	// // アイコンの描画
+	 for (int i = 0; i < 6; i++)
+	 {
+	 	DrawRotaGraphF(125 + (i * 200), 400, 0.5, 0, power_icon[i], TRUE);
+	 }
+	// 
+	// // 強化した値を設定する描画
+	// /*パワー*/
+	// snprintf(buf, sizeof(buf), "×%d", power);
+	// DrawStringToHandle(90, 500, buf, GetColor(255, 255, 255), font[1]);
+	// /*プレイヤーのスピード*/
+	// snprintf(buf, sizeof(buf), "×%d", speed);
+	// DrawStringToHandle(290, 500, buf, GetColor(255, 255, 255), font[1]);
 
 	// エンドボタン
 	int endColor = (m_selectedbutton == selectedbutton::Title) ? GetColor(255, 0, 0) : GetColor(128, 128, 128);
 	//DrawBox(25, 600, 325, 700, 0xffffff, TRUE);
 	// DrawFormatString(25, 630, endColor, "Title");		// タイトルボタンに変更
-	DrawStringToHandle(25, 630, "Title", GetColor(255, 0, 0), font_name[2]);
+	// DrawStringToHandle(25, 630, "Title", GetColor(255, 0, 0), font_name[2]);
+	DrawStringToHandle(25, 630, "Title", GetColor(255, 0, 0), font[1]);
 
 	// タイトルボタン
 	int titleColor = (m_selectedbutton == selectedbutton::End) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
 	//DrawBox(955, 600, 1255, 700, 0xffffff, TRUE);
 	// DrawFormatString(955, 630, titleColor, "End");		// エンドボタンに変更
-	DrawStringToHandle(955, 630, "End", GetColor(255, 255, 255), font_name[2]);
+	// DrawStringToHandle(955, 630, "End", GetColor(255, 255, 255), font_name[2]);
+	DrawStringToHandle(955, 630, "End", GetColor(255, 255, 255), font[1]);
 
 
 		switch (menu_num)
@@ -185,10 +248,26 @@ void ResultScene::Draw() const
 
 void ResultScene::Finalize()
 {
-	ranking->SetRank(stagelevel);
+	// ranking->SetRank(stagelevel);
+	
 	//StopSoundMem()
+
+	// 設定したフォントを削除する
+	// for (int i = 0; i < 5; i++)
+	// {
+	// 	DeleteFontToHandle(font[i]);
+	// }
+
+	// 設定した画像を削除する
+	/*for (int i = 0; i < 6; i++)
+	{
+		DeleteGraph(power_icon[i]);
+	}*/
+	// DeleteGraph(window);
+
 	StopSoundMem(back_ground_sound);
 	score->Finalize();
+
 }
 
 eSceneType ResultScene::GetNowSceneType()const
