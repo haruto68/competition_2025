@@ -253,10 +253,10 @@ void ResultScene::Finalize()
 	//StopSoundMem()
 
 	// İ’è‚µ‚½ƒtƒHƒ“ƒg‚ğíœ‚·‚é
-	// for (int i = 0; i < 5; i++)
-	// {
-	// 	DeleteFontToHandle(font[i]);
-	// }
+	for (int i = 0; i < 5; i++)
+	{
+		DeleteFontToHandle(font[i]);
+	}
 
 	// İ’è‚µ‚½‰æ‘œ‚ğíœ‚·‚é
 	/*for (int i = 0; i < 6; i++)
