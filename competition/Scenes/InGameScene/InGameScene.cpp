@@ -336,8 +336,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 		// ƒvƒŒƒCƒ„[‚Ìî•ñ‚ðŽæ“¾‚·‚é
 		//score->SetPlayerStats(player->GetPlayerStats().player_level, player->GetPlayerStats().life_count, player->GetPlayerStats().attack_power, player->GetPlayerStats().move_speed, player->GetPlayerStats().shot_speed, player->GetPlayerStats().player_shot_hitrange_up, player->GetPlayerStats().threeway_flag);
 		score->SetPlayerLevel(player->GetPlayerStats().player_level);
-		score->SetPlayerLevel(player->GetPlayerStats().attack_power);
-		score->SetPlayerLevel(player->GetPlayerStats().move_speed);
+		score->SetPlayerPower(player->GetPlayerStats().attack_power);
+		score->SetPlayerSpeed(player->GetPlayerStats().move_speed);
 		return eSceneType::eResult;
 	}	
 
