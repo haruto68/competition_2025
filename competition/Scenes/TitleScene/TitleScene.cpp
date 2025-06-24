@@ -134,8 +134,8 @@ eSceneType TitleScene::Update(const float& delta_second)
 				help = true;
 			break;
 		case 2:
-			PlaySoundMem(sounds_effect[0], DX_PLAYTYPE_BACK, TRUE);
-			return eSceneType::eRanking;
+			PlaySoundMem(sounds_effect[0], DX_PLAYTYPE_NORMAL, TRUE);
+			return eSceneType::eExit;
 		}
 	}
 
@@ -205,19 +205,19 @@ void TitleScene::Draw() const
 			DrawCircle(465, 473, 7, 0xff0000, TRUE);
 			DrawStringToHandle(480, 450, "Game Start", GetColor(255, 0, 0), font[2]);
 			DrawStringToHandle(480, 540, "Help", GetColor(255, 0, 255), font[0]);
-			DrawStringToHandle(480, 630, "Ranking", GetColor(255, 0, 255), font[0]);
+			DrawStringToHandle(480, 630, "End", GetColor(255, 0, 255), font[0]);
 			break;
 		case 1:
 			DrawCircle(465, 563, 7, 0xff0000, TRUE);
 			DrawStringToHandle(480, 450, "Game Start", GetColor(255, 0, 255), font[0]);
 			DrawStringToHandle(480, 540, "Help", GetColor(255, 0, 0), font[2]);
-			DrawStringToHandle(480, 630, "Ranking", GetColor(255, 0, 255), font[0]);
+			DrawStringToHandle(480, 630, "End", GetColor(255, 0, 255), font[0]);
 			break;
 		case 2:
 			DrawCircle(465, 653, 7, 0xff0000, TRUE);
 			DrawStringToHandle(480, 450, "Game Start", GetColor(255, 0, 255), font[0]);
 			DrawStringToHandle(480, 540, "Help", GetColor(255, 0, 255), font[0]);
-			DrawStringToHandle(480, 630, "Ranking", GetColor(255, 0, 0), font[2]);
+			DrawStringToHandle(480, 630, "End", GetColor(255, 0, 0), font[2]);
 			break;
 		default:
 			break;
