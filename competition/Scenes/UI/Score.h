@@ -8,15 +8,16 @@ class Score
 protected:
 
 private:
-	static int stagelevel;		
+	static int stagelevel;
+	static int level;
 	static int power;
 	static int hp;
 	static int speed;
 	static int cool_time;
 	static int hit_range;
-	static int three_way;
-	static int level;
-	static int bullet_speed;
+	static bool three_way;
+	static int drone;
+	// static int bullet_speed;
 
 	// ScoreData score = {};
 public:
@@ -81,7 +82,8 @@ public:
 	static void SetPlayerSpeed(int);
 	static void SetPlayerCoolTime(int);
 	static void SetPlayerHitRange(int);
-	static void SetPlayerThreeWay(int);
+	static void SetPlayerThreeWay(bool);
+	static void SetPlayerDrone(int);
 
 	// ƒvƒŒƒCƒ„[‚Ìî•ñ‚ğæ“¾‚·‚é
 	static int SetPlayerHp();
@@ -90,6 +92,7 @@ public:
 	static int GetPlayerSpeed();
 	static int GetPlayerCoolTime();
 	static int GetPlayerHitRange();
-	static int GetPlayerThreeWay();
+	static bool GetPlayerThreeWay();
+	static int GetPlayerDrone();
 
 };
