@@ -18,6 +18,8 @@ private:
 	float image_size;
 	std::vector<int> bullet_image;
 
+	int hit_sound;
+
 public:
 	PlayerShot();
 	~PlayerShot();

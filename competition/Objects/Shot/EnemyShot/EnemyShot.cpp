@@ -35,6 +35,7 @@ EnemyShot::EnemyShot() :
 	laser_images[3]= rm->GetImages("Resource/Images/GameMaker/Player/Weapon/Laser/Projectile_Player_Laser4.png")[0];
 	laser_images[4]= rm->GetImages("Resource/Images/GameMaker/Player/Weapon/Laser/Projectile_Player_Laser5.png")[0];
 
+	exp_num = 2;
 }
 
 EnemyShot::~EnemyShot()

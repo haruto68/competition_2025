@@ -7,6 +7,8 @@
 GameObject::GameObject() :
 	location(0.0f),
 	death_location(0.0f),
+	exp_num(0),
+	hp(1.0f),
 	speed(0),
 	image(NULL),
 	transparency(255),
@@ -85,6 +87,15 @@ void GameObject::Finalize()
 void GameObject::OnHitCollision(GameObject* hit_object)
 {
 
+}
+
+float GameObject::GetHp()
+{
+	return this->hp;
+}
+void GameObject::SetHp(float h)
+{
+	this->hp = h;
 }
 
 //座標取得処理
@@ -168,16 +179,19 @@ Vector2D GameObject::Tracking(Vector2D A, Vector2D B)
 
 }
 
-//オブジェクトマネージャー設定処理
+//インスタンス確認処理
 const GameObjectManager* GameObject::CheckInstance() const
 {
 	return object_manager;
 }
+
+//インスタンス設定処理
 void GameObject::SetInstance(GameObjectManager* instance)
 {
 	object_manager = instance;
 }
 
+//爆発処理
 void GameObject::Explosion(float delta_second)
 {
 	death_timer += delta_second;
@@ -192,18 +206,27 @@ void GameObject::Explosion(float delta_second)
 		}
 		else
 		{
-			object_manager->CreateGameObject<ExperiencePoints>(location);
+			for (int i = 0; i < exp_num; i++)
+			{
+				Vector2D loc = death_location;
+				loc.x += rand() % 80 - 40;
+				loc.y += rand() % 80 - 40;
+				object_manager->CreateGameObject<ExperiencePoints>(loc);
+			}
+
 			object_manager->DestroyGameObject(this);
 		}
 	}
 }
 
+//爆発フラグ取得処理
 bool GameObject::GetExplosionFlag()
 {
 	return this->explosion_flag;
 }
 
+//爆発描画
 void GameObject::DrawExplosion() const
 {
-	DrawRotaGraphF(location.x, location.y, 0.5, 0.0, explosions[anim_num], TRUE, false);
+	DrawRotaGraphF(death_location.x, death_location.y, 0.5, 0.0, explosions[anim_num], TRUE, false);
 }
