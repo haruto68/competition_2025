@@ -101,4 +101,6 @@ private:
 	void Spawn3();											//雑魚生成3
 	void BossManager();										//ボス生成管理処理
 
+	//リソース管理インスタンス取得
+	ResourceManager* rm = ResourceManager::GetInstance();
 };
