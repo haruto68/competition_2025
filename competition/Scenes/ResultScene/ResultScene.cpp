@@ -19,7 +19,10 @@ ResultScene::ResultScene() :
 	power(),
 	speed(),
 	cool_time(),
-	hit_range()
+	hit_range(),
+	three_way(),
+	drone(),
+	is_drone()
 {
 	// //リソース管理インスタンス取得
 	// ResourceManager* rm = ResourceManager::GetInstance();
@@ -87,13 +90,16 @@ void ResultScene::Initialize()
 
 	window = rm->GetImages("Resource/Images/LevelUpUi/Table_01.png")[0];
 
-	// プレイヤーが取った強化内容を確認する		// こっちに書いたほうがいいかも
-	// stagelevel = score->GetStageLevel();
-	// level = score->GetPlayerLevel();
-	// power = score->GetPlayerPower() - 1;				// 元のパワーが1だったため
-	// speed = (score->GetPlayerSpeed() / 5) - 19;			// 一回強化すると100増えるため＊二回目からは5ずつ増加する
-	// cool_time = (0.3 - score->GetPlayerCoolTime()) / 0.02;		// 元の速さが0.3fでそこから0.2ずつ減少(計算がちがうから後から変更する)
+	stagelevel = score->GetStageLevel();
+	level = score->GetPlayerLevel();
 
+	// プレイヤーが取った強化内容を確認する
+	power = (score->GetPlayerPower() - 1);				// 元のパワーが1だったため
+	speed = ((score->GetPlayerSpeed() / 5) - 19);			// 一回強化すると100増えるため＊二回目からは5ずつ増加する
+	// cool_time = ((0.3 - score->GetPlayerCoolTime()) / 0.02);		// 元の速さが0.3fでそこから0.2ずつ減少(恐らく間違っているというか計算が違う)
+	hit_range = (score->GetPlayerHitRange() / 2);			// 一回取得するごとに2.0ずつ増加するため
+	three_way = (score->GetPlayerThreeWay());				// 一回きりだから取得したらbool型(取得したか、取得していないか)
+	drone = (score->GetPlayerDrone());						// ドローンを選択した時にdrone_countを参照しているため、複数になっても何個取得したら確認可能けど破壊されたものもカウントする
 }
 
 eSceneType ResultScene::Update(const float& delta_second)
@@ -107,10 +113,26 @@ eSceneType ResultScene::Update(const float& delta_second)
 	// power = score->GetPlayerPower() - 1;				// 元のパワーが1だったため
 	// speed = (score->GetPlayerSpeed() / 5) - 19;			// 一回強化すると100増えるため＊二回目からは5ずつ増加する
 	// cool_time = (0.3 - score->GetPlayerCoolTime()) / 0.02;		// 元の速さが0.3fでそこから0.2ずつ減少(計算がちがうから後から変更する)
+	// hit_range = score->GetPlayerCoolTime();
 
+	/*プレイヤーの情報がマイナスをいった時、値を0にする*/
 	if (speed < 0)
 	{
 		speed = 0;
+	}
+
+	if (power < 0)
+	{
+		power = 0;
+	}
+
+	if (drone > 0)
+	{
+		is_drone = true;
+	}
+	else
+	{
+		is_drone = false;
 	}
 
 	//入力情報の更新
@@ -199,7 +221,7 @@ void ResultScene::Draw() const
 	snprintf(buf, sizeof(buf), "%d", stagelevel);
 	// DrawFormatString(1200, 80, 0xffffff, "%d", stagelevel);		// 到達したレベルを描画する
 	// DrawStringToHandle(1200, 80, buf, GetColor(255, 255, 255), font_name[2]);
-	DrawStringToHandle(800, 80, buf, GetColor(255, 255, 255), font[1]);
+	DrawStringToHandle(550, 80, buf, GetColor(255, 255, 255), font[1]);
 
 	// DrawFormatString(50, 140, 0xffffff, "現在のレベル");
 	// DrawStringToHandle(50, 140, "現在のレベル", GetColor(255, 255, 255), font_name[2]);
@@ -208,39 +230,57 @@ void ResultScene::Draw() const
 	snprintf(buf, sizeof(buf), "%d", level);
 	// DrawFormatString(1200, 140, 0xffffff, "%d", level);		// プレイヤーの現在の死亡時のレベルを描画する
 	// DrawStringToHandle(1200, 140, buf, GetColor(255, 255, 255), font_name[2]);
-	DrawStringToHandle(800, 140, buf, GetColor(255, 255, 255), font[1]);
+	DrawStringToHandle(550, 140, buf, GetColor(255, 255, 255), font[1]);
 
 
 	// 強化した内容を描画する
-	// DrawStringToHandle(50, 200, "アップグレードした内容", GetColor(255, 255, 255), font[1]);
-	// 
-	// 
-	// // 外枠の描画
-	// for (int i = 0; i < 6; i++)
-	// {
-	// 	DrawRotaGraphF(125 + (i * 200), 450, 0.5, 0, window, TRUE);
-	// }
-	// 
-	// // アイコンの描画
-	// for (int i = 0; i < 6; i++)
-	// {
-	// 	DrawRotaGraphF(125 + (i * 200), 400, 0.5, 0, power_icon[i], TRUE);
-	// }
-	// 
-	// // 強化した値を設定する描画
-	// /*パワー*/
-	// snprintf(buf, sizeof(buf), "×%d", power);
-	// DrawStringToHandle(90, 500, buf, GetColor(255, 255, 255), font[1]);
-	// /*プレイヤーのスピード*/
-	// snprintf(buf, sizeof(buf), "×%d", speed);
-	// DrawStringToHandle(290, 500, buf, GetColor(255, 255, 255), font[1]);
-	// /*プレイヤーの弾のスピード(クールタイム)*/
-	// snprintf(buf, sizeof(buf), "×%d", cool_time);
-	// DrawStringToHandle(490, 500, buf, GetColor(255, 255, 255), font[1]);
-	// /*プレイヤーの弾の当たり判定*/
-	// snprintf(buf, sizeof(buf), "×%d", hit_range);
-	// DrawStringToHandle(690, 500, buf, GetColor(255, 255, 255), font[1]);
-
+	DrawStringToHandle(50, 200, "アップグレードした内容", GetColor(255, 255, 255), font[1]);
+	
+	
+	// 外枠の描画
+	for (int i = 0; i < 6; i++)
+	{
+		DrawRotaGraphF(125 + (i * 200), 450, 0.5, 0, window, TRUE);
+	}
+	
+	// アイコンの描画
+	for (int i = 0; i < 6; i++)
+	{
+		DrawRotaGraphF(125 + (i * 200), 400, 0.5, 0, power_icon[i], TRUE);
+	}
+	
+	// 強化した値を設定する描画
+	/*パワー*/
+	snprintf(buf, sizeof(buf), "×%d", power);
+	DrawStringToHandle(90, 500, buf, GetColor(255, 255, 255), font[1]);
+	/*プレイヤーのスピード*/
+	snprintf(buf, sizeof(buf), "×%d", speed);
+	DrawStringToHandle(290, 500, buf, GetColor(255, 255, 255), font[1]);
+	/*プレイヤーの弾のスピード(クールタイム)*/
+	snprintf(buf, sizeof(buf), "×%d", cool_time);
+	DrawStringToHandle(490, 500, buf, GetColor(255, 255, 255), font[1]);
+	/*プレイヤーの弾の当たり判定*/
+	snprintf(buf, sizeof(buf), "×%d", hit_range);
+	DrawStringToHandle(690, 500, buf, GetColor(255, 255, 255), font[1]);
+	/*3ウェイ弾を取得したか*/
+	if (three_way == true)
+	{
+		DrawStringToHandle(890, 500, "×1", GetColor(255, 255, 255), font[1]);
+	}
+	else
+	{
+		DrawStringToHandle(890, 500, "×0", GetColor(255, 255, 255), font[1]);
+	}
+	/*ドローンを取得したかどうか*/		// 取得した数だからドローンが破壊されても1カウントされている
+	if (is_drone == true)
+	{
+		snprintf(buf, sizeof(buf), "×%d", drone);
+		DrawStringToHandle(1090, 500, buf, GetColor(255, 255, 255), font[1]);
+	}
+	else
+	{
+		DrawStringToHandle(1090, 500, "×0", GetColor(255, 255, 255), font[1]);
+	}
 
 	// エンドボタン
 	int endColor = (m_selectedbutton == selectedbutton::Title) ? GetColor(255, 0, 0) : GetColor(128, 128, 128);

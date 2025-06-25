@@ -33,8 +33,11 @@ public:
 	int speed;
 	int cool_time;
 	int hit_range;
-	//int three_way;
+	bool three_way;
+	bool drone;
 	//int hp;
+
+	bool is_drone;				// ƒhƒ[ƒ“‚ªæ“¾‚³‚ê‚Ä‚¢‚½‚©
 
 	Score* score;
 	RankingScene* ranking;
