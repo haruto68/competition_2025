@@ -340,6 +340,9 @@ eSceneType InGameScene::Update(const float& delta_second)
 		score->SetPlayerPower(player->GetPlayerStats().attack_power);
 		score->SetPlayerSpeed(player->GetPlayerStats().move_speed);
 		score->SetPlayerCoolTime(player->GetPlayerStats().shot_speed);
+		score->SetPlayerHitRange(player->GetPlayerStats().player_shot_hitrange_up);
+		score->SetPlayerThreeWay(player->GetPlayerStats().threeway_flag);
+		score->SetPlayerDrone(player->GetPlayerStats().drone_count);
 		return eSceneType::eResult;
 	}	
 
@@ -443,8 +446,8 @@ void InGameScene::Draw() const
 		// DrawFormatString(475, 680, GetColor(125, 0, 175), "Y_button to UpGrade");
 		// DrawStringToHandle(475, 680, "Y_button to UpGrade", GetColor(0, 0, 0), font_name[1]);
 		// DrawStringToHandle(475, 681, "Y_button to UpGrade", GetColor(125, 0, 175), font_name[1]);
-		DrawStringToHandle(475, 680, "Y_button to UpGrade", GetColor(0, 0, 0), font[0]);
-		DrawStringToHandle(475, 681, "Y_button to UpGrade", GetColor(125, 0, 175), font[0]);
+		DrawStringToHandle(475, 680, "Press Y to Upgrade", GetColor(0, 0, 0), font[0]);
+		DrawStringToHandle(475, 681, "Press Y to Upgrade", GetColor(125, 0, 175), font[0]);
 		if(up_grade_stock > 1)
 		{
 			// DrawFormatString(900, 680, GetColor(0, 0, 0), "Å~ %d", up_grade_stock);
