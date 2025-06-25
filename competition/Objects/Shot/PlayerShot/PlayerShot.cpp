@@ -4,8 +4,10 @@
 PlayerShot::PlayerShot() :
 	screen_velocity(0.0f),
 	Color(),
+	attack_power(0.0f),
 	Shotmode(),
-	image_size(0.0f)
+	image_size(0.0f),
+	hit_sound(0)
 {
 
 }
@@ -33,6 +35,9 @@ void PlayerShot::Initialize()
 
 	bullet_image = rm->GetImages("Resource/Images/player/player_bullet.png", 1, 1, 1, 16, 16);
 	image = bullet_image[0];
+
+	hit_sound = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
+	ChangeVolumeSoundMem(120, hit_sound);
 }
 
 void PlayerShot::Update(float delta_seconds)

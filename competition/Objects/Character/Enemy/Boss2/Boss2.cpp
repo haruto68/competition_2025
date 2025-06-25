@@ -30,6 +30,8 @@ Boss2::Boss2() : images()
 	images[4] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip2_Upgraded.png")[0];
 	images[5] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip2_Upgraded_Tilt1.png")[0];
 	images[6] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip2_Upgraded_Tilt2.png")[0];
+
+	exp_num = 0;
 }
 
 Boss2::~Boss2()

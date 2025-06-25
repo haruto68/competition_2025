@@ -3,7 +3,7 @@
 #include"../../Objects/GameObjectManager.h"
 
 #define TIME_SPEED	(1.0f)
-// #define TIME_SPEED	(60.0f)
+//#define TIME_SPEED	(60.0f)
 
 InGameScene::InGameScene() :
 	object_manager(nullptr),
@@ -63,6 +63,14 @@ InGameScene::InGameScene() :
 	bgm[0] = rm->GetSounds("Resource/Sounds/BGM/InGame/GameMain_Stage1.mp3");
 	bgm[1] = rm->GetSounds("Resource/Sounds/BGM/InGame/GameMain_Upgrade.mp3");
 
+
+	//‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
+	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
+	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.mp3");
+	ChangeVolumeSoundMem(0, soundseffect[0]);
+	ChangeVolumeSoundMem(200, soundseffect[1]);
+	ChangeVolumeSoundMem(150, soundseffect[2]);
 }
 
 InGameScene::~InGameScene()
@@ -188,6 +196,28 @@ eSceneType InGameScene::Update(const float& delta_second)
 				
 			}
 			//”š”­
+			if (dark_alpha <= 0 && obj->GetHp() <= 0.0f)
+			{
+				if(!obj->GetExplosionFlag())
+				{
+					if (obj != boss1 && obj != boss2 && obj != boss3)
+					{
+						obj->KeepDeathLocation();
+					}
+
+					if(CheckSoundMem(soundseffect[0]))
+					{
+						StopSoundMem(soundseffect[0]);
+					}
+
+					PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
+					
+				}
+			}
+			if(obj->GetHp() > 0.0f)
+			{
+				obj->SetDeathLocation();
+			}
 			if (obj->GetExplosionFlag())
 			{
 				obj->Explosion(delta_second);
@@ -316,7 +346,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	if (((input->GetKeyUp(KEY_INPUT_L) ||
 		input->GetButtonDown(XINPUT_BUTTON_Y))
 		&& time_stop == false)
-		/*&& up_grade_stock > 0*/ && dark_alpha <= 0
+		&& up_grade_stock > 0 && dark_alpha <= 0
 		&& player->GetPlayerStats().life_count > 0)
 	{
 		level_up_flg = true;
@@ -378,7 +408,7 @@ void InGameScene::Draw() const
 		c++;
 	}
 	//ƒIƒuƒWƒFƒNƒg”•`‰æ
-	//DrawFormatString(1100, 100, GetColor(255, 255, 255), "%d", c);
+	DrawFormatString(1100, 100, GetColor(255, 255, 255), "%d", c);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -864,15 +894,12 @@ void InGameScene::BossManager()
 				eObjectType type = obj->GetCollision().object_type;
 				if (obj != boss1 && type == eEnemy || type == eEnemyShot)
 				{
-					obj->KeepDeathLocation();
+					obj->SetHp(0.0f);
 				}
 			}
-		}
-		else
-		{
-			for (GameObject* obj : scene_objects_list)
+			if (CheckSoundMem(soundseffect[2]) == 1)
 			{
-				obj->SetDeathLocation();
+				StopSoundMem(soundseffect[2]);
 			}
 		}
 	}
@@ -900,15 +927,12 @@ void InGameScene::BossManager()
 				eObjectType type = obj->GetCollision().object_type;
 				if (obj != boss2 && type == eEnemy || type == eEnemyShot)
 				{
-					obj->KeepDeathLocation();
+					obj->SetHp(0.0f);
 				}
 			}
-		}
-		else
-		{
-			for (GameObject* obj : scene_objects_list)
+			if (CheckSoundMem(soundseffect[2]) == 1)
 			{
-				obj->SetDeathLocation();
+				StopSoundMem(soundseffect[2]);
 			}
 		}
 	}
@@ -936,15 +960,12 @@ void InGameScene::BossManager()
 				eObjectType type = obj->GetCollision().object_type;
 				if (obj != boss3 && type == eEnemy || type == eEnemyShot)
 				{
-					obj->KeepDeathLocation();
+					obj->SetHp(0.0f);
 				}
 			}
-		}
-		else
-		{
-			for (GameObject* obj : scene_objects_list)
+			if (CheckSoundMem(soundseffect[2]) == 1)
 			{
-				obj->SetDeathLocation();
+				StopSoundMem(soundseffect[2]);
 			}
 		}
 	}
@@ -957,11 +978,13 @@ void InGameScene::BossManager()
 		{
 			dark_alpha++;
 		}
+
 		if (stage_level == 2 && boss1 != nullptr &&
 			boss2->GetBoss2Hp() <= 0 && boss2->GetBoss2DeathCount() < 4.0f)
 		{
 			dark_alpha++;
 		}
+
 		if (stage_level == 3 && boss3 != nullptr &&
 			boss3->GetBoss3Hp() <= 0 && boss3->GetBoss3DeathCount() < 4.0f)
 		{
