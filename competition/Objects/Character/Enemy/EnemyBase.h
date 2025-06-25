@@ -24,6 +24,8 @@ public:
 
 	int soundseffect[2];
 
+	int sound_volume[2] = { 200,200 };
+
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
 

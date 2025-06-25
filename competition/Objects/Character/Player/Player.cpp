@@ -54,6 +54,10 @@ void Player::Initialize()
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/PlayerDamege.mp3");
 	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/Player_dead.mp3");
 	soundseffect[3] = rm->GetSounds("Resource/Sounds/SoundsEffect/Player/Exp_get.mp3");
+	ChangeVolumeSoundMem(150, soundseffect[0]);
+	ChangeVolumeSoundMem(200, soundseffect[1]);
+	ChangeVolumeSoundMem(200, soundseffect[2]);
+	ChangeVolumeSoundMem(100, soundseffect[3]);
 
 	//‰æ‘œ“Ç‚Ýž‚Ý
 	normal_image = rm->GetImages("Resource/Images/player/player.png", 1, 1, 1, 32, 32);
