@@ -482,12 +482,12 @@ void InGameScene::Draw() const
 			case 0:
 				// DrawStringToHandle(500, 350, "B A C K", GetColor(255, 255, 255), font_name[4]);
 				// DrawStringToHandle(475, 500, "T I T L E", GetColor(255, 255, 255), font_name[1]);
-				DrawStringToHandle(500, 350, "B A C K", GetColor(255, 255, 255), font[3]);
-				DrawStringToHandle(475, 500, "T I T L E", GetColor(255, 255, 255), font[0]);
+				DrawStringToHandle(515, 350, "B A C K", GetColor(255, 255, 255), font[3]);
+				DrawStringToHandle(565, 500, "T I T L E", GetColor(255, 255, 255), font[0]);
 				break;
 			case 1:
-				DrawStringToHandle(500, 350, "B A C K", GetColor(255, 255, 255), font[0]);
-				DrawStringToHandle(475, 500, "T I T L E", GetColor(255, 255, 255), font[3]);
+				DrawStringToHandle(580, 350, "B A C K", GetColor(255, 255, 255), font[0]);
+				DrawStringToHandle(480, 500, "T I T L E", GetColor(255, 255, 255), font[3]);
 				break;
 			default:
 				break;
