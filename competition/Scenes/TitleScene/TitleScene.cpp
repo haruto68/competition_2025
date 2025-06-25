@@ -73,6 +73,11 @@ void TitleScene::Initialize()
 	font[2] = CreateFontToHandle("–‚“±‘¾ŠÛƒSƒVƒbƒN", 60, 6);
 	font[3] = CreateFontToHandle("–‚“±‘¾ŠÛƒSƒVƒbƒN", 70, 6);
 	font[4] = CreateFontToHandle("–‚“±‘¾ŠÛƒSƒVƒbƒN", 150, 6);
+
+
+	//‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
+	rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
+	rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 }
 
 eSceneType TitleScene::Update(const float& delta_second)

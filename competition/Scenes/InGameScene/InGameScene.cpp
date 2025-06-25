@@ -113,6 +113,7 @@ void InGameScene::Initialize()
 	font[2] = CreateFontToHandle("魔導太丸ゴシック", 70, 6);
 	font[3] = CreateFontToHandle("魔導太丸ゴシック", 80, 6);
 	font[4] = CreateFontToHandle("魔導太丸ゴシック", 100, 6);
+
 }
 
 eSceneType InGameScene::Update(const float& delta_second)

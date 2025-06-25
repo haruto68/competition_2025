@@ -33,13 +33,15 @@ void Enemy2::Initialize()
 	// âºÉeÉLÇÃë¨Ç≥
 	speed = 200.0f;
 
-	hp = 2.0;
-	
-	// âπåπéÊìæ(0: ìGÇ™îjâÛéûÇÃâπ 1: ìGÇ™íeÇåÇÇ¡ÇΩéûÇÃâπ)
+	hp = 2.0f;
+
+	//âπåπéÊìæ(0: ìGÇ™îjâÛéûÇÃâπ 1: ìGÇ™íeÇåÇÇ¡ÇΩéûÇÃâπ)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.wav");
 	ChangeVolumeSoundMem(sound_volume[0], soundseffect[0]);
 	ChangeVolumeSoundMem(sound_volume[1], soundseffect[1]);
+	ChangeVolumeSoundMem(sound_volume[2], soundseffect[2]);
 }
 
 void Enemy2::Update(float delta_seconds)
@@ -63,7 +65,7 @@ void Enemy2::Update(float delta_seconds)
 		else
 			shot->SetShotType(eEnemy3);
 
-		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
+		//PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 
 		//É^ÉCÉ}Å[ÉäÉZÉbÉg
 		shot_timer = 0.0f;
@@ -120,6 +122,13 @@ void Enemy2::OnHitCollision(GameObject* hit_object)
 	case ePlayerShot:
 		hp -= player_stats.attack_power / 2;
 		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
+		if (hp <= 0.0f)
+		{
+			StopSoundMem(soundseffect[0]);
+			PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
+			object_manager->CreateGameObject<ExperiencePoints>(this->location);
+			object_manager->DestroyGameObject(this);
+		}
 		break;
 	case eEnemyShot:
 		break;
@@ -127,13 +136,6 @@ void Enemy2::OnHitCollision(GameObject* hit_object)
 		break;
 	default:
 		break;
-	}
-	if (hp <= 0.0)
-	{
-		object_manager->CreateGameObject< ExperiencePoints>(this->location);
-		object_manager->DestroyGameObject(this);
-		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
-		// PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
 	}
 }
 

@@ -39,11 +39,13 @@ void Enemy5::Initialize()
 	// ‰¼ƒeƒL‚Ì‘¬‚³
 	speed = 200.0f;
 
-	// ‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
+	//‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.wav");
 	ChangeVolumeSoundMem(sound_volume[0], soundseffect[0]);
 	ChangeVolumeSoundMem(sound_volume[1], soundseffect[1]);
+	ChangeVolumeSoundMem(sound_volume[2], soundseffect[2]);
 
 	hp = 9.0f;
 
