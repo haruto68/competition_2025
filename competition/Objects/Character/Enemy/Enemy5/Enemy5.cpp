@@ -35,7 +35,6 @@ void Enemy5::Initialize()
 {
 	//　仮敵2のサイズ(大きさ)
 	collision.box_size = Vector2D(20.0f, 20.0f);
-	//box_size = Vector2D(20.0fs, 20.0f);
 	// 仮テキの速さ
 	speed = 200.0f;
 
@@ -126,11 +125,14 @@ void Enemy5::OnHitCollision(GameObject* hit_object)
 	default:
 		break;
 	}
-	if (hp <= 0.0)
+
+	if (hp <= 0.0f)
 	{
-		object_manager->CreateGameObject< ExperiencePoints>(this->location);
+		StopSoundMem(soundseffect[0]);
+		PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
+		object_manager->CreateGameObject<ExperiencePoints>(this->location);
+		object_manager->CreateGameObject<ExperiencePoints>(this->location);
 		object_manager->DestroyGameObject(this);
-		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 	}
 }
 

@@ -57,15 +57,10 @@ void Enemy2::Update(float delta_seconds)
 	if (shot_timer >= shot_cooldown)
 	{
 		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
-		// shot->SetShotType(eEnemy3);
-		// PlaySoundMem(soundseffect1, DX_PLAYTYPE_BACK, TRUE);
-		// PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);s
 		if (!trans)
 			shot->SetShotType(eEnemy2);
 		else
 			shot->SetShotType(eEnemy3);
-
-		//PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 
 		//タイマーリセット
 		shot_timer = 0.0f;
@@ -88,23 +83,10 @@ void Enemy2::Draw(const Vector2D&, bool) const
 		}
 		DrawRotaGraphF(location.x, location.y, 1.0f, angle, image, TRUE);
 	}
-	
-
-	//// 仮(白い四角を描画する)
-	//Vector2D t1 = location - (collision.box_size / 2.0f);
-	//Vector2D br = location + (collision.box_size / 2.0f);
-	//// 青色の四角を描画
-	//DrawBoxAA(t1.x, t1.y, br.x, br.y, GetColor(0, 255, 255), TRUE);
-	//SetFontSize(15);
-	//DrawString(location.x,location.y, "2", GetColor(0, 0, 0), TRUE);
 }
 
 void Enemy2::Finalize()
 {
-	// DeleteSoundMem(soundseffect1);
-	// DeleteSoundMem(soundseffect);
-	// DeleteSoundMem(soundseffect[0]);
-	// DeleteSoundMem(soundseffect[1]);
 }
 
 void Enemy2::OnHitCollision(GameObject* hit_object)
@@ -122,13 +104,6 @@ void Enemy2::OnHitCollision(GameObject* hit_object)
 	case ePlayerShot:
 		hp -= player_stats.attack_power / 2;
 		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
-		if (hp <= 0.0f)
-		{
-			StopSoundMem(soundseffect[0]);
-			PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
-			object_manager->CreateGameObject<ExperiencePoints>(this->location);
-			object_manager->DestroyGameObject(this);
-		}
 		break;
 	case eEnemyShot:
 		break;
@@ -136,6 +111,14 @@ void Enemy2::OnHitCollision(GameObject* hit_object)
 		break;
 	default:
 		break;
+	}
+
+	if (hp <= 0.0f)
+	{
+		StopSoundMem(soundseffect[0]);
+		PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
+		object_manager->CreateGameObject<ExperiencePoints>(this->location);
+		object_manager->DestroyGameObject(this);
 	}
 }
 

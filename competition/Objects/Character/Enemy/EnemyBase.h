@@ -30,7 +30,4 @@ public:
 
 	int hp_bar1 = rm->GetImages("Resource/Images/HPUi/Boss_HP_Bar_1.png")[0];
 	int hp_bar2 = rm->GetImages("Resource/Images/HPUi/Boss_HP_Bar_3.png")[0];
-
-	// int soundseffect = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
-	// int soundseffect1 = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 };
