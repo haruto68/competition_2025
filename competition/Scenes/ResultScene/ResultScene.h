@@ -31,10 +31,11 @@ public:
 	int stagelevel;
 	int power;
 	int speed;
-	//int hp;
-	//int cool_time;
-	//int hit_range;
+	int cool_time;
+	int hit_range;
 	//int three_way;
+	//int hp;
+
 	Score* score;
 	RankingScene* ranking;
 
@@ -48,4 +49,7 @@ public:
 
 public:
 	virtual eSceneType GetNowSceneType() const override;
+
+public:
+	// void PlayerDataCalculate();				// プレイヤーの情報を計算する処理
 };

@@ -339,6 +339,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		score->SetPlayerLevel(player->GetPlayerStats().player_level);
 		score->SetPlayerPower(player->GetPlayerStats().attack_power);
 		score->SetPlayerSpeed(player->GetPlayerStats().move_speed);
+		score->SetPlayerCoolTime(player->GetPlayerStats().shot_speed);
 		return eSceneType::eResult;
 	}	
 
