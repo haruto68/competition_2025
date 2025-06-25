@@ -181,7 +181,7 @@ void LevelUpUI::Draw(bool up_grade, bool now_stats) const
 		DrawStringToHandle(60, y + (font * 4), buf, GetColor(255, 255, 255), font_size[0]);
 		// スピード
 		DrawStringToHandle(10, y + (font * 5), "SPEED", GetColor(255, 255, 255), font_size[0]);
-		snprintf(buf, sizeof(buf), "%.2f", player_stats.move_speed);
+		snprintf(buf, sizeof(buf), "%.2f", 200.0f + player_stats.move_speed);
 		DrawStringToHandle(60, y + (font * 6), buf, GetColor(255, 255, 255), font_size[0]);
 
 		y += font * 6 + 15;
@@ -193,7 +193,7 @@ void LevelUpUI::Draw(bool up_grade, bool now_stats) const
 		DrawStringToHandle(60, y + (font * 3), buf, GetColor(255, 255, 255), font_size[0]);
 		// 弾の当たり判定
 		DrawStringToHandle(10, y + (font * 4), "HITRANGE", GetColor(255, 255, 255), font_size[0]);
-		snprintf(buf, sizeof(buf), "%.2f", player_stats.player_shot_hitrange_up);
+		snprintf(buf, sizeof(buf), "%.2f", 5.0f + player_stats.player_shot_hitrange_up);
 		DrawStringToHandle(60, y + (font * 5), buf, GetColor(255, 255, 255), font_size[0]);
 	}
 }
