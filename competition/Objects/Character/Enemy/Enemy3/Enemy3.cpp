@@ -57,10 +57,6 @@ void Enemy3::Draw(const Vector2D& screeen_offset, bool file_flag) const
 
 void Enemy3::Finalize()
 {
-	// DeleteSoundMem(soundseffect);
-	// DeleteSoundMem(soundseffect1);
-	// DeleteSoundMem(soundseffect[0]);
-	// DeleteSoundMem(soundseffect[1]);
 }
 
 void Enemy3::OnHitCollision(GameObject* hit_object)
@@ -86,12 +82,13 @@ void Enemy3::OnHitCollision(GameObject* hit_object)
 	default:
 		break;
 	}
-	if (hp <= 0.0)
+
+	if (hp <= 0.0f)
 	{
-		object_manager->CreateGameObject< ExperiencePoints>(this->location);
+		StopSoundMem(soundseffect[0]);
+		PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
+		object_manager->CreateGameObject<ExperiencePoints>(this->location);
 		object_manager->DestroyGameObject(this);
-		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
-		// PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
 	}
 }
 

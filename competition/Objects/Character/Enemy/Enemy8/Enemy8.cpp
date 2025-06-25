@@ -115,11 +115,15 @@ void Enemy8::OnHitCollision(GameObject* hit_object)
 	default:
 		break;
 	}
-	if (hp <= 0.0)
+
+	if (hp <= 0.0f)
 	{
-		object_manager->CreateGameObject< ExperiencePoints>(this->location);
+		StopSoundMem(soundseffect[0]);
+		PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
+		object_manager->CreateGameObject<ExperiencePoints>(this->location);
+		object_manager->CreateGameObject<ExperiencePoints>(this->location);
+		object_manager->CreateGameObject<ExperiencePoints>(this->location);
 		object_manager->DestroyGameObject(this);
-		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 	}
 }
 
