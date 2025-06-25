@@ -16,8 +16,10 @@ ResultScene::ResultScene() :
 	power_icon(),
 	level(0),
 	stagelevel(0),
-	power(0),
-	speed(0)
+	power(),
+	speed(),
+	cool_time(),
+	hit_range()
 {
 	// //リソース管理インスタンス取得
 	// ResourceManager* rm = ResourceManager::GetInstance();
@@ -59,7 +61,7 @@ void ResultScene::Initialize()
 	ChangeVolumeSoundMem(100, back_ground_sound);
 	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_BACK, TRUE);
 
-	ranking = new RankingScene();
+	// ranking = new RankingScene();
 	// ranking->Initialize();
 
 	// フォントの登録
@@ -84,6 +86,14 @@ void ResultScene::Initialize()
 	power_icon[5] = rm->GetImages("Resource/Images/UpGrade_Icon/drone.png")[0];
 
 	window = rm->GetImages("Resource/Images/LevelUpUi/Table_01.png")[0];
+
+	// プレイヤーが取った強化内容を確認する		// こっちに書いたほうがいいかも
+	// stagelevel = score->GetStageLevel();
+	// level = score->GetPlayerLevel();
+	// power = score->GetPlayerPower() - 1;				// 元のパワーが1だったため
+	// speed = (score->GetPlayerSpeed() / 5) - 19;			// 一回強化すると100増えるため＊二回目からは5ずつ増加する
+	// cool_time = (0.3 - score->GetPlayerCoolTime()) / 0.02;		// 元の速さが0.3fでそこから0.2ずつ減少(計算がちがうから後から変更する)
+
 }
 
 eSceneType ResultScene::Update(const float& delta_second)
@@ -91,10 +101,17 @@ eSceneType ResultScene::Update(const float& delta_second)
 	//入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
 
-	stagelevel = score->GetStageLevel();
-	level = score->GetPlayerLevel();
-	power = score->GetPlayerPower();
-	speed = score->GetPlayerSpeed();
+	// プレイヤーが取った強化内容を確認する
+	// stagelevel = score->GetStageLevel();
+	// level = score->GetPlayerLevel();
+	// power = score->GetPlayerPower() - 1;				// 元のパワーが1だったため
+	// speed = (score->GetPlayerSpeed() / 5) - 19;			// 一回強化すると100増えるため＊二回目からは5ずつ増加する
+	// cool_time = (0.3 - score->GetPlayerCoolTime()) / 0.02;		// 元の速さが0.3fでそこから0.2ずつ減少(計算がちがうから後から変更する)
+
+	if (speed < 0)
+	{
+		speed = 0;
+	}
 
 	//入力情報の更新
 	input->Update();
@@ -217,6 +234,13 @@ void ResultScene::Draw() const
 	// /*プレイヤーのスピード*/
 	// snprintf(buf, sizeof(buf), "×%d", speed);
 	// DrawStringToHandle(290, 500, buf, GetColor(255, 255, 255), font[1]);
+	// /*プレイヤーの弾のスピード(クールタイム)*/
+	// snprintf(buf, sizeof(buf), "×%d", cool_time);
+	// DrawStringToHandle(490, 500, buf, GetColor(255, 255, 255), font[1]);
+	// /*プレイヤーの弾の当たり判定*/
+	// snprintf(buf, sizeof(buf), "×%d", hit_range);
+	// DrawStringToHandle(690, 500, buf, GetColor(255, 255, 255), font[1]);
+
 
 	// エンドボタン
 	int endColor = (m_selectedbutton == selectedbutton::Title) ? GetColor(255, 0, 0) : GetColor(128, 128, 128);
