@@ -44,6 +44,10 @@ void Enemy1::Initialize()
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.wav");
+	ChangeVolumeSoundMem(sound_volume[0], soundseffect[0]);
+	ChangeVolumeSoundMem(sound_volume[1], soundseffect[1]);
+	ChangeVolumeSoundMem(sound_volume[2], soundseffect[2]);
+	
 }
 
 void Enemy1::Update(float delta_seconds)
@@ -62,7 +66,6 @@ void Enemy1::Update(float delta_seconds)
 		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
 		shot->SetShotType(eEnemy1);
 		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
-		// PlaySoundMem(soundseffect1, DX_PLAYTYPE_BACK, TRUE);
 
 		//タイマーリセット
 		shot_timer = 0.0f;
@@ -99,19 +102,10 @@ void Enemy1::Draw(const Vector2D& screeen_offset, bool file_flag) const
 	{
 		DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
 	}
-	// 仮(白い四角を描画する)
-	/*Vector2D t1 = location - (collision.box_size / 2.0f);
-	Vector2D br = location + (collision.box_size / 2.0f);
-	DrawBoxAA(t1.x, t1.y, br.x, br.y, GetColor(255, 255, 255), TRUE);
-	DrawString(t1.x, t1.y, "1", GetColor(0, 0, 0), TRUE);*/
 }
 
 void Enemy1::Finalize()
 {
-	// DeleteSoundMem(soundseffect);
-	// DeleteSoundMem(soundseffect1);
-	// DeleteSoundMem(soundseffect[0]);
-	// DeleteSoundMem(soundseffect[1]);
 }
 
 void Enemy1::OnHitCollision(GameObject* hit_object)
@@ -127,10 +121,8 @@ void Enemy1::OnHitCollision(GameObject* hit_object)
 	case eEnemy:
 		break;
 	case ePlayerShot:
-		object_manager->CreateGameObject< ExperiencePoints>(this->location);
-		object_manager->DestroyGameObject(this);
 		hp -= player_stats.attack_power / 2;
-		PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
+		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eEnemyShot:
 		break;
@@ -138,6 +130,14 @@ void Enemy1::OnHitCollision(GameObject* hit_object)
 		break;
 	default:
 		break;
+	}
+
+	if (hp <= 0.0f)
+	{
+		StopSoundMem(soundseffect[0]);
+		PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
+		object_manager->CreateGameObject<ExperiencePoints>(this->location);
+		object_manager->DestroyGameObject(this);
 	}
 }
 

@@ -23,12 +23,11 @@ public:
 	bool death_flag = false;	//死
 
 	int soundseffect[3];
+	int sound_volume[3] = { 200,200,200 };
+
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
 
 	int hp_bar1 = rm->GetImages("Resource/Images/HPUi/Boss_HP_Bar_1.png")[0];
 	int hp_bar2 = rm->GetImages("Resource/Images/HPUi/Boss_HP_Bar_3.png")[0];
-
-	// int soundseffect = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
-	// int soundseffect1 = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 };

@@ -20,9 +20,13 @@ Enemy7::Enemy7()
 	// ‰Â“®«Ý’è
 	is_mobility = true;
 
-	// ‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
+	//‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
+	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.wav");
+	ChangeVolumeSoundMem(sound_volume[0], soundseffect[0]);
+	ChangeVolumeSoundMem(sound_volume[1], soundseffect[1]);
+	ChangeVolumeSoundMem(sound_volume[2], soundseffect[2]);
 
 	image = rm->GetImages("Resource/Images/enemy/ship21.png")[0];
 }
@@ -128,11 +132,15 @@ void Enemy7::OnHitCollision(GameObject* hit_object)
 	default:
 		break;
 	}
-	if (hp <= 0.0)
+
+	if (hp <= 0.0f)
 	{
-		object_manager->CreateGameObject< ExperiencePoints>(this->location);
+		StopSoundMem(soundseffect[0]);
+		PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
+		object_manager->CreateGameObject<ExperiencePoints>(this->location);
+		object_manager->CreateGameObject<ExperiencePoints>(this->location);
+		object_manager->CreateGameObject<ExperiencePoints>(this->location);
 		object_manager->DestroyGameObject(this);
-		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 	}
 }
 
