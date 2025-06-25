@@ -62,7 +62,7 @@ void Enemy2::Update(float delta_seconds)
 		else
 			shot->SetShotType(eEnemy3);
 
-		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
+		//PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
 
 		//タイマーリセット
 		shot_timer = 0.0f;
@@ -118,15 +118,17 @@ void Enemy2::OnHitCollision(GameObject* hit_object)
 		break;
 	case ePlayerShot:
 		hp -= player_stats.attack_power / 2;
+		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 		if (hp <= 0.0f)
 		{
+			StopSoundMem(soundseffect[0]);
 			PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
 			object_manager->CreateGameObject<ExperiencePoints>(this->location);
 			object_manager->DestroyGameObject(this);
 		}
 		else if(hp > 0.0f)
-		{
-			PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
+		{/*
+			PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);*/
 		}
 		break;
 	case eEnemyShot:
