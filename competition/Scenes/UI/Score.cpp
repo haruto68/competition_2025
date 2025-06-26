@@ -6,7 +6,7 @@
  int Score::power = 0;
  int Score::hp = 0;
  int Score::speed = 0;
- int Score::cool_time = 0;
+ float Score::cool_time = 0;
  int Score::hit_range = 0;
  bool Score::three_way = false;
  int  Score::drone = 0;
@@ -62,10 +62,9 @@ void Score::SetPlayerSpeed(int p_speed)
 	speed = p_speed;
 }
 
-void Score::SetPlayerCoolTime(int p_cooltime)
+void Score::SetPlayerCoolTime(float p_cooltime)
 {
-	cool_time = (p_cooltime + 1);
-	// cool_time = (p_cooltime * 100);
+	cool_time = ((0.30 - p_cooltime) * 100);
 }
 
 void Score::SetPlayerHitRange(int p_hitrange)
@@ -103,7 +102,7 @@ int Score::GetPlayerSpeed()
 	return speed;
 }
 
-int Score::GetPlayerCoolTime()
+float Score::GetPlayerCoolTime()
 {
 	return cool_time;
 }

@@ -13,7 +13,7 @@ private:
 	static int power;
 	static int hp;
 	static int speed;
-	static int cool_time;
+	static float cool_time;
 	static int hit_range;
 	static bool three_way;
 	static int drone;
@@ -80,7 +80,7 @@ public:
 	static void SetPlayerHp(int);
 	static void SetPlayerPower(int);
 	static void SetPlayerSpeed(int);
-	static void SetPlayerCoolTime(int);
+	static void SetPlayerCoolTime(float);
 	static void SetPlayerHitRange(int);
 	static void SetPlayerThreeWay(bool);
 	static void SetPlayerDrone(int);
@@ -90,7 +90,7 @@ public:
 	static int GetPlayerLevel();
 	static int GetPlayerPower();
 	static int GetPlayerSpeed();
-	static int GetPlayerCoolTime();
+	static float GetPlayerCoolTime();
 	static int GetPlayerHitRange();
 	static bool GetPlayerThreeWay();
 	static int GetPlayerDrone();
