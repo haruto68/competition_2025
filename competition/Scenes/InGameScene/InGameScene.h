@@ -73,6 +73,8 @@ public:
 	int soundseffect[10];						//SE
 	int dark_alpha;								//画面暗転アルファ値
 	int pause_cursor;							//ポーズカーソル番号
+	bool se_flg;
+	int hp_bar[2];
 
 	// std::vector<int> font_name;					// フォント設定
 	int font[5];									// フォント設定

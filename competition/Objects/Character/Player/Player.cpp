@@ -221,7 +221,7 @@ void Player::OnHitCollision(GameObject* hit_object)
 	default:
 		break;
 	}
-	//player_stats.life_count = 3.0f;//デバッグ用無敵
+	player_stats.life_count = 6.0f;//デバッグ用無敵
 }
 
 Vector2D Player::GetScreenVelocity()

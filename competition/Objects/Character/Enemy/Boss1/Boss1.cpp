@@ -114,22 +114,6 @@ void Boss1::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	}
 
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
-	// åªç›ÇÃHPÇÃÉoÅ[ÇÃï`âÊ
-	if(ratio != 0)
-	{
-		DrawRotaGraph(100, 670, 1.0, 0, hp_bar1, 1, 0);
-	}
-	for (int i = 0; i < ratio; i++)
-	{
-		DrawRotaGraph((105 + (i * 11)), 670, 1.0, 0, hp_bar2, 1, 0);
-	}
-	if (ratio != 0)
-	{
-		SetFontSize(26);
-		DrawFormatString(7, 657, GetColor(255, 0, 255), "BOSS");
-	}
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void Boss1::Finalize()

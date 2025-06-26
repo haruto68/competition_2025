@@ -94,6 +94,15 @@ void ExperiencePoints::Movement(float delta_seconds)
 
 	//ˆÊ’uÀ•W‚ğ‰Á‘¬“x•ªŒ¸‚ç‚·
 	location += velocity * speed * delta_seconds;
+
+	if (location.y < 95)
+	{
+		location.y = 95;
+	}
+	if (location.y > 665)
+	{
+		location.y = 665;
+	}
 }
 
 void ExperiencePoints::Animation()
