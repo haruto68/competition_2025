@@ -90,13 +90,13 @@ void ResultScene::Initialize()
 
 	window = rm->GetImages("Resource/Images/LevelUpUi/Table_01.png")[0];
 
-	stagelevel = score->GetStageLevel();
+	stagelevel = (score->GetStageLevel() * 100) / MAX_STAGE;
 	level = score->GetPlayerLevel();
 
 	// プレイヤーが取った強化内容を確認する
 	power = (score->GetPlayerPower() - 1);				// 元のパワーが1だったため
 	speed = ((score->GetPlayerSpeed() / 5) - 19);			// 一回強化すると100増えるため＊二回目からは5ずつ増加する
-	// cool_time = ((0.3 - score->GetPlayerCoolTime()) / 0.02);		// 元の速さが0.3fでそこから0.2ずつ減少(恐らく間違っているというか計算が違う)
+	cool_time = score->GetPlayerCoolTime();			// 値を取得できていない
 	hit_range = (score->GetPlayerHitRange() / 2);			// 一回取得するごとに2.0ずつ増加するため
 	three_way = (score->GetPlayerThreeWay());				// 一回きりだから取得したらbool型(取得したか、取得していないか)
 	drone = (score->GetPlayerDrone());						// ドローンを選択した時にdrone_countを参照しているため、複数になっても何個取得したら確認可能けど破壊されたものもカウントする
@@ -216,9 +216,9 @@ void ResultScene::Draw() const
 
 	// DrawFormatString(50, 80, 0xffffff, "到達したステージ");
 	// DrawStringToHandle(50, 80, "到達したステージ", GetColor(255, 255, 255), font_name[2]);
-	DrawStringToHandle(50, 80, "到達したステージ", GetColor(255, 255, 255), font[1]);
+	DrawStringToHandle(50, 80, "到達度", GetColor(255, 255, 255), font[1]);
 
-	snprintf(buf, sizeof(buf), "%d", stagelevel);
+	snprintf(buf, sizeof(buf), "%d％", stagelevel);
 	// DrawFormatString(1200, 80, 0xffffff, "%d", stagelevel);		// 到達したレベルを描画する
 	// DrawStringToHandle(1200, 80, buf, GetColor(255, 255, 255), font_name[2]);
 	DrawStringToHandle(550, 80, buf, GetColor(255, 255, 255), font[1]);
@@ -251,35 +251,36 @@ void ResultScene::Draw() const
 	
 	// 強化した値を設定する描画
 	/*パワー*/
-	snprintf(buf, sizeof(buf), "×%d", power);
-	DrawStringToHandle(90, 500, buf, GetColor(255, 255, 255), font[1]);
+	snprintf(buf, sizeof(buf), "Lv %d", power);
+	DrawStringToHandle(75, 500, buf, GetColor(255, 255, 255), font[1]);
 	/*プレイヤーのスピード*/
-	snprintf(buf, sizeof(buf), "×%d", speed);
-	DrawStringToHandle(290, 500, buf, GetColor(255, 255, 255), font[1]);
+	snprintf(buf, sizeof(buf), "Lv %d", speed);
+	DrawStringToHandle(275, 500, buf, GetColor(255, 255, 255), font[1]);
 	/*プレイヤーの弾のスピード(クールタイム)*/
-	snprintf(buf, sizeof(buf), "×%d", cool_time);
-	DrawStringToHandle(490, 500, buf, GetColor(255, 255, 255), font[1]);
+	snprintf(buf, sizeof(buf), "Lv %d", cool_time);
+	DrawStringToHandle(475, 500, buf, GetColor(255, 255, 255), font[1]);
 	/*プレイヤーの弾の当たり判定*/
-	snprintf(buf, sizeof(buf), "×%d", hit_range);
-	DrawStringToHandle(690, 500, buf, GetColor(255, 255, 255), font[1]);
+	snprintf(buf, sizeof(buf), "Lv %d", hit_range);
+	DrawStringToHandle(675, 500, buf, GetColor(255, 255, 255), font[1]);
 	/*3ウェイ弾を取得したか*/
 	if (three_way == true)
 	{
-		DrawStringToHandle(890, 500, "×1", GetColor(255, 255, 255), font[1]);
+		DrawStringToHandle(855, 500, "Lv MAX", GetColor(255, 255, 255), font[1]);
 	}
 	else
 	{
-		DrawStringToHandle(890, 500, "×0", GetColor(255, 255, 255), font[1]);
+		DrawStringToHandle(875, 500, "Lv 0", GetColor(255, 255, 255), font[1]);
 	}
 	/*ドローンを取得したかどうか*/		// 取得した数だからドローンが破壊されても1カウントされている
 	if (is_drone == true)
 	{
-		snprintf(buf, sizeof(buf), "×%d", drone);
-		DrawStringToHandle(1090, 500, buf, GetColor(255, 255, 255), font[1]);
+		// snprintf(buf, sizeof(buf), "LvMAX", drone);
+		// DrawStringToHandle(1090, 500, buf, GetColor(255, 255, 255), font[1]);
+		DrawStringToHandle(1055, 500, "Lv MAX", GetColor(255, 255, 255), font[1]);
 	}
 	else
 	{
-		DrawStringToHandle(1090, 500, "×0", GetColor(255, 255, 255), font[1]);
+		DrawStringToHandle(1075, 500, "Lv 0", GetColor(255, 255, 255), font[1]);
 	}
 
 	// エンドボタン

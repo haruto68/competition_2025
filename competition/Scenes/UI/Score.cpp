@@ -64,7 +64,8 @@ void Score::SetPlayerSpeed(int p_speed)
 
 void Score::SetPlayerCoolTime(int p_cooltime)
 {
-	cool_time = p_cooltime;
+	cool_time = (p_cooltime + 1);
+	// cool_time = (p_cooltime * 100);
 }
 
 void Score::SetPlayerHitRange(int p_hitrange)

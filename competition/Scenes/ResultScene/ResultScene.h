@@ -3,6 +3,8 @@
 #include"../UI/Score.h"
 #include"../RankingScene/RankingScene.h"
 
+#define MAX_STAGE		(3)			// 全体のステージ数
+
 class ResultScene : public SceneBase
 {
 protected:
