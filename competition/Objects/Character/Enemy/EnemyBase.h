@@ -11,7 +11,6 @@ public:
 	int image;					//画像
 	float radian = 0;			//角度
 
-	float hp;					//HP
 	int max_hp = 0;				//最大HP
 	int ratio = 100;			//HP割合
 
@@ -19,18 +18,15 @@ public:
 	float shot_cooldown = 1.5f;	//クールタイム
 	int atack_pattern = 0;		//攻撃パターン
 
-	float death_count = 7.0f;	//死ぬまでの時間
+	float death_count = 10.0f;	//死ぬまでの時間
 	bool death_flag = false;	//死
 
 	int soundseffect[3];
-	int sound_volume[3] = { 200,200,200 };
+	int sound_volume[3] = { 80,0,150 };
 
 	//リソース管理インスタンス取得
 	ResourceManager* rm = ResourceManager::GetInstance();
 
 	int hp_bar1 = rm->GetImages("Resource/Images/HPUi/Boss_HP_Bar_1.png")[0];
 	int hp_bar2 = rm->GetImages("Resource/Images/HPUi/Boss_HP_Bar_3.png")[0];
-
-	// int soundseffect = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
-	// int soundseffect1 = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 };

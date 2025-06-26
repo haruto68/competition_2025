@@ -20,6 +20,8 @@ Enemy4::Enemy4()
 
 	//‰æ‘œ“Ç‚Ýž‚Ý
 	image = rm->GetImages("Resource/Images/enemy/ship4.png")[0];
+
+	exp_num = 2;
 }
 
 Enemy4::~Enemy4()
@@ -37,7 +39,7 @@ void Enemy4::Initialize()
 	//‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
-	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.wav");
+	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.mp3");
 	ChangeVolumeSoundMem(sound_volume[0], soundseffect[0]);
 	ChangeVolumeSoundMem(sound_volume[1], soundseffect[1]);
 	ChangeVolumeSoundMem(sound_volume[2], soundseffect[2]);
@@ -65,24 +67,6 @@ void Enemy4::Update(float delta_seconds)
 {
 	Movement(delta_seconds);
 	Animation();
-
-
-	//if (is_first_Enemy && spawn_index < 2)
-	//{
-	//	timar += delta_seconds;
-
-	//	if (timar >= 0.5f)
-	//	{
-	//		timar = 0.0f;
-	//		spawn_index++;
-
-	//		/*‚¸‚ç‚µ‚Äo‚·*/
-	//		/*Vector2D spawn_offset(30.0f * spawn_index, 0.0f);
-	//		Enemy4* new_enemy = object_manager->CreateGameObject<Enemy4>(location + spawn_offset);
-
-	//		new_enemy->setClone();*/
-	//	}
-	//}
 }
 
 void Enemy4::Draw(const Vector2D& screeen_offset, bool file_flag) const
@@ -91,19 +75,10 @@ void Enemy4::Draw(const Vector2D& screeen_offset, bool file_flag) const
 	{
 		DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
 	}
-
-	// //‰¼(”’‚¢ŽlŠp‚ð•`‰æ‚·‚é)
-	//Vector2D t1 = location - (collision.box_size / 2.0f);
-	//Vector2D br = location + (collision.box_size / 2.0f);
-	//DrawBoxAA(t1.x, t1.y, br.x, br.y, GetColor(255, 255, 255), TRUE);
-	//DrawString(t1.x, t1.y, "3", GetColor(0, 0, 0), TRUE);
 }
 
 void Enemy4::Finalize()
 {
-	// DeleteSoundMem(soundseffect);
-	// DeleteSoundMem(soundseffect[0]);
-	// DeleteSoundMem(soundseffect[1]);
 }
 
 void Enemy4::OnHitCollision(GameObject* hit_object)
@@ -129,45 +104,7 @@ void Enemy4::OnHitCollision(GameObject* hit_object)
 	default:
 		break;
 	}
-	if (hp <= 0.0)
-	{
-		object_manager->CreateGameObject< ExperiencePoints>(this->location);
-		object_manager->DestroyGameObject(this);
-		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
-		// PlaySoundMem(soundseffect, DX_PLAYTYPE_BACK, TRUE);
-	}
 }
-
-//void Enemy4::Movement(float delta_seconds)
-//{
-//	if (move_point >= point.size())
-//		return;
-//
-//	Vector2D taget = point[move_point];
-//	Vector2D direction = taget - location;
-//
-//	if (direction.Length() < 5.0f)
-//	{
-//		move_point++;
-//		return;
-//	}
-//
-//	/*if (location.x > old_player_location.x)
-//	{
-//		velocity = Tracking(location, old_player_location) * 2;
-//		old_velocity = velocity;
-//	}
-//	else
-//		velocity = old_velocity;*/
-//
-//
-//	direction.Normalize();
-//	velocity = direction;
-//	
-//
-//	location += velocity * delta_seconds;
-//}
-
 
 void Enemy4::Movement(float delta_seconds)
 {

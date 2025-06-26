@@ -8,6 +8,8 @@ class GameObject
 protected:
 	Vector2D location;				//座標
 	Vector2D death_location;		//死亡座標
+	int exp_num;					//経験値
+	float hp;						//HP
 	float speed;
 	Collision collision;			//コリジョン
 	int image;						//画像
@@ -22,10 +24,10 @@ protected:
 	class GameObjectManager* object_manager;
 
 	// 死亡時
-	int explosions[12];
-	float death_timer;
-	int anim_num;
-	bool explosion_flag;
+	int explosions[12];				//爆発画像
+	float death_timer;				//死亡タイマー
+	int anim_num;					//アニメ数
+	bool explosion_flag;			//爆発フラグ
 
 public:
 	GameObject();
@@ -37,24 +39,26 @@ public:
 	virtual void Draw(const Vector2D&, bool) const;
 	virtual void Finalize();
 
-	virtual void OnHitCollision(GameObject*);	//当たり判定通知処理
-	const Vector2D& GetLocation() const;		//座標取得処理
-	void SetLocation(const Vector2D);			//座標設定処理
-	const Collision& GetCollision() const;		//コリジョン取得処理
-	const unsigned char GetZLayer() const;		//レイヤー取得処理
-	const bool GetMobility() const;				//可動性取得処理
+	virtual void OnHitCollision(GameObject*);		//当たり判定通知処理
+	float GetHp();									//HP取得処理
+	void SetHp(float);
+	const Vector2D& GetLocation() const;			//座標取得処理
+	void SetLocation(const Vector2D);				//座標設定処理
+	const Collision& GetCollision() const;			//コリジョン取得処理
+	const unsigned char GetZLayer() const;			//レイヤー取得処理
+	const bool GetMobility() const;					//可動性取得処理
 
-	void SetDeathLocation();					//死亡座標設定処理
-	void KeepDeathLocation();					//死亡座標固定処理
+	void SetDeathLocation();						//死亡座標設定処理
+	void KeepDeathLocation();						//死亡座標固定処理
 
-	void SetPlayerLocation(Vector2D location);	//プレイヤー座標設定処理
-	void SetPlayerStats(PlayerStats stats);		//プレイヤーステータス設定処理
-	Vector2D Tracking(Vector2D A, Vector2D B);	//AがBを追尾する処理
+	void SetPlayerLocation(Vector2D location);		//プレイヤー座標設定処理
+	void SetPlayerStats(PlayerStats stats);			//プレイヤーステータス設定処理
+	Vector2D Tracking(Vector2D A, Vector2D B);		//AがBを追尾する処理
 
 	const GameObjectManager* CheckInstance() const;	//インスタンス確認処理
 	void SetInstance(GameObjectManager* instance);	//インスタンス設定処理
 
-	void Explosion(float);
-	bool GetExplosionFlag();
-	void DrawExplosion() const;
+	void Explosion(float);							//爆発処理
+	bool GetExplosionFlag();						//爆発フラグ取得処理
+	void DrawExplosion() const;						//爆発描画
 };

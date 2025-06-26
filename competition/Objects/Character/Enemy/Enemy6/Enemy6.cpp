@@ -21,6 +21,8 @@ Enemy6::Enemy6()
 	is_mobility = true;
 
 	image = rm->GetImages("Resource/Images/enemy/ship1_col2.png")[0];
+
+	exp_num = 2;
 }
 
 Enemy6::~Enemy6()
@@ -44,7 +46,7 @@ void Enemy6::Initialize()
 	//‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
-	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.wav");
+	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.mp3");
 	ChangeVolumeSoundMem(sound_volume[0], soundseffect[0]);
 	ChangeVolumeSoundMem(sound_volume[1], soundseffect[1]);
 	ChangeVolumeSoundMem(sound_volume[2], soundseffect[2]);
@@ -128,12 +130,6 @@ void Enemy6::OnHitCollision(GameObject* hit_object)
 		break;
 	default:
 		break;
-	}
-	if (hp <= 0.0)
-	{
-		object_manager->CreateGameObject< ExperiencePoints>(this->location);
-		object_manager->DestroyGameObject(this);
-		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 	}
 }
 

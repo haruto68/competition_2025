@@ -22,6 +22,8 @@ Enemy1::Enemy1()
 
 	//‰æ‘œ“Ç‚Ýž‚Ý
 	image = rm->GetImages("Resource/Images/enemy/ship1.png")[0];
+
+	exp_num = 1;
 }
 
 Enemy1::~Enemy1()
@@ -43,7 +45,7 @@ void Enemy1::Initialize()
 	//‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
-	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.wav");
+	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.mp3");
 	ChangeVolumeSoundMem(sound_volume[0], soundseffect[0]);
 	ChangeVolumeSoundMem(sound_volume[1], soundseffect[1]);
 	ChangeVolumeSoundMem(sound_volume[2], soundseffect[2]);
@@ -66,7 +68,6 @@ void Enemy1::Update(float delta_seconds)
 		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
 		shot->SetShotType(eEnemy1);
 		PlaySoundMem(soundseffect[1], DX_PLAYTYPE_BACK, TRUE);
-		// PlaySoundMem(soundseffect1, DX_PLAYTYPE_BACK, TRUE);
 
 		//ƒ^ƒCƒ}[ƒŠƒZƒbƒg
 		shot_timer = 0.0f;
@@ -103,19 +104,10 @@ void Enemy1::Draw(const Vector2D& screeen_offset, bool file_flag) const
 	{
 		DrawRotaGraphF(location.x, location.y, 1.0f, 0.0f, image, TRUE);
 	}
-	// ‰¼(”’‚¢ŽlŠp‚ð•`‰æ‚·‚é)
-	/*Vector2D t1 = location - (collision.box_size / 2.0f);
-	Vector2D br = location + (collision.box_size / 2.0f);
-	DrawBoxAA(t1.x, t1.y, br.x, br.y, GetColor(255, 255, 255), TRUE);
-	DrawString(t1.x, t1.y, "1", GetColor(0, 0, 0), TRUE);*/
 }
 
 void Enemy1::Finalize()
 {
-	// DeleteSoundMem(soundseffect);
-	// DeleteSoundMem(soundseffect1);
-	// DeleteSoundMem(soundseffect[0]);
-	// DeleteSoundMem(soundseffect[1]);
 }
 
 void Enemy1::OnHitCollision(GameObject* hit_object)
@@ -131,10 +123,8 @@ void Enemy1::OnHitCollision(GameObject* hit_object)
 	case eEnemy:
 		break;
 	case ePlayerShot:
-		object_manager->CreateGameObject< ExperiencePoints>(this->location);
-		object_manager->DestroyGameObject(this);
 		hp -= player_stats.attack_power / 2;
-		PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
+		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eEnemyShot:
 		break;
