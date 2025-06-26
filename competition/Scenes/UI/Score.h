@@ -90,7 +90,7 @@ public:
 	static int GetPlayerLevel();
 	static int GetPlayerPower();
 	static int GetPlayerSpeed();
-	static float GetPlayerCoolTime();
+	static int GetPlayerCoolTime();
 	static int GetPlayerHitRange();
 	static bool GetPlayerThreeWay();
 	static int GetPlayerDrone();

@@ -94,12 +94,17 @@ void ResultScene::Initialize()
 	level = score->GetPlayerLevel();
 
 	// プレイヤーが取った強化内容を確認する
-	power = (score->GetPlayerPower() - 1);				// 元のパワーが1だったため
-	speed = ((score->GetPlayerSpeed() / 5) - 19);			// 一回強化すると100増えるため＊二回目からは5ずつ増加する
+	// power = (score->GetPlayerPower() - 1);				// 元のパワーが1だったため
+	power = score->GetPlayerPower();
+	// speed = ((score->GetPlayerSpeed() / 5) - 19);			// 一回強化すると100増えるため＊二回目からは5ずつ増加する
+	speed = score->GetPlayerSpeed();
 	cool_time = score->GetPlayerCoolTime();			// 値を取得できていない
-	hit_range = (score->GetPlayerHitRange() / 2);			// 一回取得するごとに2.0ずつ増加するため
-	three_way = (score->GetPlayerThreeWay());				// 一回きりだから取得したらbool型(取得したか、取得していないか)
-	drone = (score->GetPlayerDrone());						// ドローンを選択した時にdrone_countを参照しているため、複数になっても何個取得したら確認可能けど破壊されたものもカウントする
+	hit_range = score->GetPlayerHitRange();			// 一回取得するごとに2.0ずつ増加するため
+	three_way = score->GetPlayerThreeWay();				// 一回きりだから取得したらbool型(取得したか、取得していないか)
+	drone = score->GetPlayerDrone();						// ドローンを選択した時にdrone_countを参照しているため、複数になっても何個取得したら確認可能けど破壊されたものもカウントする
+
+	// test
+	// test = score->GetPlayerCoolTime();
 }
 
 eSceneType ResultScene::Update(const float& delta_second)
@@ -182,6 +187,9 @@ eSceneType ResultScene::Update(const float& delta_second)
 
 		}
 	}
+
+	// 全体の進捗度で色を変える
+
 	return GetNowSceneType();
 }
 

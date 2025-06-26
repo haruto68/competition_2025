@@ -54,22 +54,22 @@ void Score::SetPlayerHp(int p_hp)
 
 void Score::SetPlayerPower(int p_power)
 {
-	power = p_power;
+	power = (p_power - 1);
 }
 
 void Score::SetPlayerSpeed(int p_speed)
 {
-	speed = p_speed;
+	speed = ((p_speed / 5) - 19);
 }
 
 void Score::SetPlayerCoolTime(float p_cooltime)
 {
-	cool_time = ((0.30 - p_cooltime) * 100);
+	cool_time = p_cooltime;
 }
 
 void Score::SetPlayerHitRange(int p_hitrange)
 {
-	hit_range = p_hitrange;
+	hit_range = (p_hitrange / 2);
 }
 
 void Score::SetPlayerThreeWay(bool p_threeway)
@@ -102,7 +102,7 @@ int Score::GetPlayerSpeed()
 	return speed;
 }
 
-float Score::GetPlayerCoolTime()
+int Score::GetPlayerCoolTime()
 {
 	return cool_time;
 }
