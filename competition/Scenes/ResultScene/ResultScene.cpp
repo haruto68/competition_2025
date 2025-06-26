@@ -23,7 +23,8 @@ ResultScene::ResultScene() :
 	three_way(),
 	drone(),
 	is_drone(false),
-	is_max(false)
+	is_max(false),
+	color()
 {
 	// //リソース管理インスタンス取得
 	// ResourceManager* rm = ResourceManager::GetInstance();

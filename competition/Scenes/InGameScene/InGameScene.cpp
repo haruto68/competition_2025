@@ -380,7 +380,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		score->SetPlayerThreeWay(player->GetPlayerStats().threeway_flag);
 		score->SetPlayerDrone(player->GetPlayerStats().drone_count);
 		return eSceneType::eResult;
-	}	
+	}
 
 	//ƒQ[ƒ€‚ðI—¹
 	if (input->GetKeyUp(KEY_INPUT_ESCAPE))
