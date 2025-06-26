@@ -37,6 +37,10 @@ private:
 	int death_image_count;
 	float death_animation_interval;
 
+	float animation_timer;
+	int animation_frame_index;
+	float animation_interval;
+
 
 public:
 

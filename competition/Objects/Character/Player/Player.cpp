@@ -20,7 +20,10 @@ Player::Player() :
 	death_image_index(0),
 	death_image_count(9),
 	death_animation_interval(0.175f),
-	death_animation_finished(false)
+	death_animation_finished(false),
+	animation_timer(0.0f),
+	animation_frame_index(8),
+	animation_interval(0.1f)
 {
 
 }
@@ -60,7 +63,7 @@ void Player::Initialize()
 	ChangeVolumeSoundMem(100, soundseffect[3]);
 
 	//画像読み込み
-	normal_image = rm->GetImages("Resource/Images/player/player.png", 1, 1, 1, 32, 32);
+	normal_image = rm->GetImages("Resource/Images/player/Enemy Vehicles/Big Enemy 1/spr_plane_enemy_big_5.png", 12, 4, 3, 32, 32);
 	dead_image = rm->GetImages("Resource/Images/player/Player_death_image.png", 9, 3, 3, 32, 30);
 
 	if (dead_image[0] == 0)
@@ -68,7 +71,7 @@ void Player::Initialize()
 		DxLib_End();
 	}
 
-	image = normal_image[0];
+	image = normal_image[8];
 }
 
 void Player::Update(float delta_seconds)
@@ -147,16 +150,17 @@ void Player::Update(float delta_seconds)
 void Player::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
 
-	if (is_visible == true)
+	if (is_visible == true && is_dead == false)
 	{
 		if (image != -1)
 		{
-			DrawRotaGraphF(location.x, location.y, 2.0f, velocity.y / 7, image, TRUE);
+			DrawRotaGraphF(location.x, location.y, 2.0f, π/2, image, TRUE);
 		}
+
 	}
 	else if (is_dead == true)
 	{
-		if (image != -1)
+		if (image != -1 && death_image_index > 0)
 		{
 			DrawRotaGraphF(location.x, location.y, 2.0f, 0.0f, image, TRUE);
 		}
@@ -187,6 +191,7 @@ void Player::OnHitCollision(GameObject* hit_object)
 		invincible_timer = 1.0f;
 		if (player_stats.life_count == 0)
 		{
+			image = dead_image[0];
 			PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
 		}
 		else if (player_stats.life_count > 0)
@@ -412,6 +417,57 @@ void Player::Movement(float delta_seconds)
 
 void Player::Animation(float delta_seconds)
 {
+	InputManager* input = InputManager::GetInstance();
+	Vector2D leftstick = InputManager::GetInstance()->GetLeftStick();
+
+	if (is_dead == false)
+	{
+		animation_timer += delta_seconds;
+
+		if (leftstick.y < -0.5f  || input->GetKey(KEY_INPUT_S))
+		{
+			// 下移動アニメーション
+			if (animation_timer >= animation_interval)
+			{
+				animation_frame_index++;
+				if (animation_frame_index > 3)
+				{
+					animation_frame_index = 0;
+				}
+				image = normal_image[animation_frame_index];
+				animation_timer -= animation_interval;
+			}
+		}
+		else if (leftstick.y > 0.5f || input->GetKey(KEY_INPUT_W))
+		{
+			// 上移動アニメーション
+			if (animation_timer >= animation_interval)
+			{
+				animation_frame_index++;
+				if (animation_frame_index > 7 || animation_frame_index < 4)
+				{
+					animation_frame_index = 4;
+				}
+				image = normal_image[animation_frame_index];
+				animation_timer -= animation_interval;
+			}
+		}
+		else
+		{
+			// アイドルアニメーション
+			if (animation_timer >= animation_interval)
+			{
+				animation_frame_index++;
+				if (animation_frame_index > 11 || animation_frame_index < 8)
+				{
+					animation_frame_index = 8;
+				}
+				image = normal_image[animation_frame_index];
+				animation_timer -= animation_interval;
+			}
+		}
+	}
+
 	// 爆発アニメーションの更新
 
 	if (player_stats.life_count <= 0)
@@ -496,6 +552,7 @@ void Player::StatsUp(ePowerUp powerup)
 		break;
 	case ePowerUp::eShotspeed:
 		SHOT_INTERVAL = Max(0.1f, SHOT_INTERVAL - 0.02f);  // 下限を0.02秒に制限
+		player_stats.shot_speed_cnt++;
 		break;
 	case ePowerUp::eThreeway:
 		player_stats.threeway_flag = true;
