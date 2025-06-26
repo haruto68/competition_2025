@@ -23,14 +23,6 @@ Enemy9::Enemy9() :
 	// ‰Â“®«Ý’è
 	is_mobility = true;
 
-	//‰¹Œ¹Žæ“¾(0: “G‚ª”j‰óŽž‚Ì‰¹ 1: “G‚ª’e‚ðŒ‚‚Á‚½Žž‚Ì‰¹)
-	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
-	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
-	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.mp3");
-	ChangeVolumeSoundMem(sound_volume[0], soundseffect[0]);
-	ChangeVolumeSoundMem(sound_volume[1], soundseffect[1]);
-	ChangeVolumeSoundMem(sound_volume[2], soundseffect[2]);
-
 	image = rm->GetImages("Resource/Images/enemy/ship22.png")[0];
 
 	exp_num = 5;
@@ -138,7 +130,7 @@ void Enemy9::OnHitCollision(GameObject* hit_object)
 		break;
 	case ePlayerShot:
 		hp -= player_stats.attack_power / 2;
-		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
+		//PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case eEnemyShot:
 		break;

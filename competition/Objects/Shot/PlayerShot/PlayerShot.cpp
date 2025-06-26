@@ -37,7 +37,7 @@ void PlayerShot::Initialize()
 	image = bullet_image[0];
 
 	hit_sound = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
-	ChangeVolumeSoundMem(120, hit_sound);
+	ChangeVolumeSoundMem(100, hit_sound);
 }
 
 void PlayerShot::Update(float delta_seconds)
@@ -72,6 +72,7 @@ void PlayerShot::OnHitCollision(GameObject* hit_object)
 		break;
 	case eEnemy:
 		object_manager->DestroyGameObject(this);
+		PlaySoundMem(hit_sound, DX_PLAYTYPE_BACK, TRUE);
 		break;
 	case ePlayerShot:
 		break;
