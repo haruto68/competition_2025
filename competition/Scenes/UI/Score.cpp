@@ -54,11 +54,13 @@ void Score::SetPlayerHp(int p_hp)
 
 void Score::SetPlayerPower(int p_power)
 {
+	// 元のパワーが1だったため
 	power = (p_power - 1);
 }
 
 void Score::SetPlayerSpeed(int p_speed)
 {
+	// 一回強化すると100増えるため＊二回目からは5ずつ増加する
 	speed = ((p_speed / 5) - 19);
 }
 
@@ -69,16 +71,21 @@ void Score::SetPlayerCoolTime(float p_cooltime)
 
 void Score::SetPlayerHitRange(int p_hitrange)
 {
+	// 一回取得するごとに2.0ずつ増加するため
 	hit_range = (p_hitrange / 2);
 }
 
 void Score::SetPlayerThreeWay(bool p_threeway)
 {
+	// 一回きりだから取得したらbool型(取得したか、取得していないか)
+	// 一回取得するとLvMAX
 	three_way = p_threeway;
 }
 
 void Score::SetPlayerDrone(int p_drone)
 {
+	// ドローンを選択した時にdrone_countを参照しているため、
+	// 複数になっても何個取得したら確認可能けど破壊されたものもカウントする(一回取得するとLvMAX)
 	drone = p_drone;
 }
 

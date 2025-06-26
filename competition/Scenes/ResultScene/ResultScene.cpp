@@ -22,7 +22,8 @@ ResultScene::ResultScene() :
 	hit_range(),
 	three_way(),
 	drone(),
-	is_drone()
+	is_drone(false),
+	is_max(false)
 {
 	// //リソース管理インスタンス取得
 	// ResourceManager* rm = ResourceManager::GetInstance();
@@ -94,31 +95,21 @@ void ResultScene::Initialize()
 	level = score->GetPlayerLevel();
 
 	// プレイヤーが取った強化内容を確認する
-	// power = (score->GetPlayerPower() - 1);				// 元のパワーが1だったため
+	// power = (score->GetPlayerPower() - 1);				
 	power = score->GetPlayerPower();
-	// speed = ((score->GetPlayerSpeed() / 5) - 19);			// 一回強化すると100増えるため＊二回目からは5ずつ増加する
+	// speed = ((score->GetPlayerSpeed() / 5) - 19);			
 	speed = score->GetPlayerSpeed();
-	cool_time = score->GetPlayerCoolTime();			// 値を取得できていない
-	hit_range = score->GetPlayerHitRange();			// 一回取得するごとに2.0ずつ増加するため
-	three_way = score->GetPlayerThreeWay();				// 一回きりだから取得したらbool型(取得したか、取得していないか)
-	drone = score->GetPlayerDrone();						// ドローンを選択した時にdrone_countを参照しているため、複数になっても何個取得したら確認可能けど破壊されたものもカウントする
+	cool_time = score->GetPlayerCoolTime();			
+	hit_range = score->GetPlayerHitRange();			
+	three_way = score->GetPlayerThreeWay();				
+	drone = score->GetPlayerDrone();						
 
-	// test
-	// test = score->GetPlayerCoolTime();
 }
 
 eSceneType ResultScene::Update(const float& delta_second)
 {
 	//入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
-
-	// プレイヤーが取った強化内容を確認する
-	// stagelevel = score->GetStageLevel();
-	// level = score->GetPlayerLevel();
-	// power = score->GetPlayerPower() - 1;				// 元のパワーが1だったため
-	// speed = (score->GetPlayerSpeed() / 5) - 19;			// 一回強化すると100増えるため＊二回目からは5ずつ増加する
-	// cool_time = (0.3 - score->GetPlayerCoolTime()) / 0.02;		// 元の速さが0.3fでそこから0.2ずつ減少(計算がちがうから後から変更する)
-	// hit_range = score->GetPlayerCoolTime();
 
 	/*プレイヤーの情報がマイナスをいった時、値を0にする*/
 	if (speed < 0)
@@ -131,6 +122,7 @@ eSceneType ResultScene::Update(const float& delta_second)
 		power = 0;
 	}
 
+	/*ドローンが取得されたか*/
 	if (drone > 0)
 	{
 		is_drone = true;
@@ -138,6 +130,16 @@ eSceneType ResultScene::Update(const float& delta_second)
 	else
 	{
 		is_drone = false;
+	}
+
+	/*プレイヤーの弾のクールタイムが上限に行かないようにする*/
+	if (cool_time < 11)
+	{
+		is_max = true;
+	}
+	else
+	{
+		is_max = false;
 	}
 
 	//入力情報の更新
@@ -266,7 +268,14 @@ void ResultScene::Draw() const
 	DrawStringToHandle(275, 500, buf, GetColor(255, 255, 255), font[1]);
 	/*プレイヤーの弾のスピード(クールタイム)*/
 	snprintf(buf, sizeof(buf), "Lv %d", cool_time);
-	DrawStringToHandle(475, 500, buf, GetColor(255, 255, 255), font[1]);
+	if (is_max != true)
+	{
+		DrawStringToHandle(455, 500, "Lv MAX", GetColor(255, 255, 255), font[1]);
+	}
+	else
+	{
+		DrawStringToHandle(475, 500, buf, GetColor(255, 255, 255), font[1]);
+	}
 	/*プレイヤーの弾の当たり判定*/
 	snprintf(buf, sizeof(buf), "Lv %d", hit_range);
 	DrawStringToHandle(675, 500, buf, GetColor(255, 255, 255), font[1]);

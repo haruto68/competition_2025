@@ -375,7 +375,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 		score->SetPlayerLevel(player->GetPlayerStats().player_level);
 		score->SetPlayerPower(player->GetPlayerStats().attack_power);
 		score->SetPlayerSpeed(player->GetPlayerStats().move_speed);
-		score->SetPlayerCoolTime(player->GetPlayerStats().shot_speed);
+		score->SetPlayerCoolTime(player->GetPlayerStats().shot_speed_cnt);
 		score->SetPlayerHitRange(player->GetPlayerStats().player_shot_hitrange_up);
 		score->SetPlayerThreeWay(player->GetPlayerStats().threeway_flag);
 		score->SetPlayerDrone(player->GetPlayerStats().drone_count);
