@@ -3,7 +3,7 @@
 #include"../UI/Score.h"
 #include"../RankingScene/RankingScene.h"
 
-#define MAX_STAGE		(3)			// 全体のステージ数
+#define MAX_STAGE		(4)			// 全体のステージ数
 
 class ResultScene : public SceneBase
 {
@@ -41,6 +41,7 @@ public:
 
 	bool is_drone;				// ドローンが取得されていたか
 	bool is_max;				// 上限に行ったか
+	int color;					// 色変更
 
 	Score* score;
 	RankingScene* ranking;
