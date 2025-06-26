@@ -3,7 +3,7 @@
 #include"../../Objects/GameObjectManager.h"
 
 #define TIME_SPEED	(1.0f)
-//#define TIME_SPEED	(60.0f)
+#define TIME_SPEED	(60.0f)
 
 InGameScene::InGameScene() :
 	object_manager(nullptr),
@@ -70,7 +70,7 @@ InGameScene::InGameScene() :
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.mp3");
-	ChangeVolumeSoundMem(150, soundseffect[1]);
+	ChangeVolumeSoundMem(130, soundseffect[1]);
 	ChangeVolumeSoundMem(150, soundseffect[2]);
 
 
