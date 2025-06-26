@@ -3,7 +3,7 @@
 #include"../../Objects/GameObjectManager.h"
 
 #define TIME_SPEED	(1.0f)
-//#define TIME_SPEED	(60.0f)
+#define TIME_SPEED	(60.0f)
 
 InGameScene::InGameScene() :
 	object_manager(nullptr),
@@ -36,6 +36,8 @@ InGameScene::InGameScene() :
 	dark_alpha(600),
 	pause_cursor(0),
 	score(),
+	se_flg(true),
+	hp_bar(),
 	font{}
 {
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
@@ -71,6 +73,10 @@ InGameScene::InGameScene() :
 	ChangeVolumeSoundMem(0, soundseffect[0]);
 	ChangeVolumeSoundMem(200, soundseffect[1]);
 	ChangeVolumeSoundMem(150, soundseffect[2]);
+
+
+	hp_bar[0] = rm->GetImages("Resource/Images/HPUi/Boss_HP_Bar_1.png")[0];
+	hp_bar[1] = rm->GetImages("Resource/Images/HPUi/Boss_HP_Bar_3.png")[0];
 }
 
 InGameScene::~InGameScene()
@@ -210,7 +216,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 						StopSoundMem(soundseffect[0]);
 					}
 
-					PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
+					if(dark_alpha <= 0)
+						PlaySoundMem(soundseffect[2], DX_PLAYTYPE_BACK, TRUE);
 					
 				}
 			}
@@ -436,7 +443,7 @@ void InGameScene::Draw() const
 	SetFontSize(40);
 	// DrawFormatString(570, 20, GetColor(255, 255, 255), "Stage");
 	// DrawStringToHandle(570, 20, "Stage", GetColor(255, 255, 255), font_name[1]);
-	DrawStringToHandle(570, 20, "STAGE", GetColor(255, 255, 255), font[0]);
+	DrawStringToHandle(570, 12, "STAGE", GetColor(255, 255, 255), font[0]);
 	int level_color = 0;
 	if (stage_level == 1)
 		level_color = GetColor(50, 255, 50);
@@ -452,13 +459,13 @@ void InGameScene::Draw() const
 	switch (stage_level)
 	{
 	case 1:
-		DrawStringToHandle(700, 15, buf, GetColor(50, 255, 50), font[1]);
+		DrawStringToHandle(700, 7, buf, GetColor(50, 255, 50), font[1]);
 		break;
 	case 2:
-		DrawStringToHandle(700, 15, buf, GetColor(255, 255, 50), font[1]);
+		DrawStringToHandle(700, 7, buf, GetColor(255, 255, 50), font[1]);
 		break;
 	case 3:
-		DrawStringToHandle(700, 15, buf, GetColor(255, 50, 50), font[1]);
+		DrawStringToHandle(700, 7, buf, GetColor(255, 50, 50), font[1]);
 		break;
 	default:
 		break;
@@ -489,6 +496,37 @@ void InGameScene::Draw() const
 			DrawStringToHandle(901, 681, buf, GetColor(125, 0, 175), font[0]);
 		}
 	}
+
+	int ratio = 0;
+	if(boss1 != nullptr && boss1->GetBoss1Hp() > 0)
+	{
+		ratio = boss1->GetBoss1Hp();
+	}
+	if (boss2 != nullptr && boss2->GetBoss2Hp() > 0)
+	{
+		ratio = boss2->GetBoss2Hp();
+	}
+	if (boss3 != nullptr && boss3->GetBoss3Hp() > 0)
+	{
+		ratio = boss3->GetBoss3Hp();
+	}
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+	// 現在のHPのバーの描画
+	if (ratio != 0)
+	{
+		DrawRotaGraph(400, 65, 1.0, 0, hp_bar[0], 1, 0);
+	}
+	for (int i = 0; i < ratio; i++)
+	{
+		DrawRotaGraph((405 + (i * 8)), 65, 1.0, 0, hp_bar[1], 1, 0);
+	}
+	if (ratio != 0)
+	{
+		SetFontSize(26);
+		DrawFormatString(307, 54, GetColor(255, 0, 255), "BOSS");
+	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	//ポーズ画面描画
 	if (time_stop == true && level_up_flg == false)
@@ -900,10 +938,6 @@ void InGameScene::BossManager()
 					obj->SetHp(0.0f);
 				}
 			}
-			if (CheckSoundMem(soundseffect[2]) == 1)
-			{
-				StopSoundMem(soundseffect[2]);
-			}
 		}
 	}
 	else if (stage_level == 2)
@@ -932,10 +966,6 @@ void InGameScene::BossManager()
 				{
 					obj->SetHp(0.0f);
 				}
-			}
-			if (CheckSoundMem(soundseffect[2]) == 1)
-			{
-				StopSoundMem(soundseffect[2]);
 			}
 		}
 	}
@@ -966,10 +996,6 @@ void InGameScene::BossManager()
 					obj->SetHp(0.0f);
 				}
 			}
-			if (CheckSoundMem(soundseffect[2]) == 1)
-			{
-				StopSoundMem(soundseffect[2]);
-			}
 		}
 	}
 
@@ -980,18 +1006,30 @@ void InGameScene::BossManager()
 			boss1->GetBoss1Hp() <= 0 && boss1->GetBoss1DeathCount() < 4.0f)
 		{
 			dark_alpha++;
+			if (CheckSoundMem(soundseffect[2]) == 1)
+			{
+				StopSoundMem(soundseffect[2]);
+			}
 		}
 
-		if (stage_level == 2 && boss1 != nullptr &&
+		if (stage_level == 2 && boss2 != nullptr &&
 			boss2->GetBoss2Hp() <= 0 && boss2->GetBoss2DeathCount() < 4.0f)
 		{
 			dark_alpha++;
+			if (CheckSoundMem(soundseffect[2]) == 1)
+			{
+				StopSoundMem(soundseffect[2]);
+			}
 		}
 
 		if (stage_level == 3 && boss3 != nullptr &&
 			boss3->GetBoss3Hp() <= 0 && boss3->GetBoss3DeathCount() < 4.0f)
 		{
 			dark_alpha++;
+			if (CheckSoundMem(soundseffect[2]) == 1)
+			{
+				StopSoundMem(soundseffect[2]);
+			}
 		}
 	}
 
