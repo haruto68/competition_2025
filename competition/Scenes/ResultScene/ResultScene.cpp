@@ -110,6 +110,7 @@ void ResultScene::Initialize()
 	is_check = true;
 
 	button_location = Vector2D((D_WIN_MAX_X / 4), 630);
+
 }
 
 eSceneType ResultScene::Update(const float& delta_second)

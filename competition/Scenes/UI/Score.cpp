@@ -1,6 +1,5 @@
 #include "Score.h"
 
-// ‘ã—p(\‘¢‘Ì‚Åì¬‰Â”\)
  int Score::stagelevel = 0;
  int Score::level = 0;
  int Score::power = 0;
