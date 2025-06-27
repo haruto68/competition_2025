@@ -318,7 +318,7 @@ void ResultScene::Draw() const
 
 	// DrawFormatString(50, 140, 0xffffff, "現在のレベル");
 	// DrawStringToHandle(50, 140, "現在のレベル", GetColor(255, 255, 255), font_name[2]);
-	DrawStringToHandle(50, 140, "最高レベル", GetColor(255, 255, 255), font[1]);
+	DrawStringToHandle(50, 140, "到達レベル", GetColor(255, 255, 255), font[1]);
 
 	snprintf(buf, sizeof(buf), "%d", level);
 	// DrawFormatString(1200, 140, 0xffffff, "%d", level);		// プレイヤーの現在の死亡時のレベルを描画する
