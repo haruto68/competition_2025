@@ -3,7 +3,7 @@
 #include"../../Resource/ResourceManager.h"
 #include <Windows.h>
 
-TitleScene::TitleScene() : menu_num(0), help(false), is_button(true), back_ground_sound(NULL), back_ground_image(), font{}
+TitleScene::TitleScene() : menu_num(0), help(false), is_button(true), back_ground_sound(NULL), back_ground_image(), font{}, color_phase(0.0f), color_speed(0.5f), current_r(255), current_g(0), current_b(255)
 {
 	//リソース管理インスタンス取得
 	// ResourceManager* rm = ResourceManager::GetInstance();
@@ -87,6 +87,7 @@ void TitleScene::Initialize()
 
 eSceneType TitleScene::Update(const float& delta_second)
 {
+
 	//入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
 
@@ -156,6 +157,8 @@ eSceneType TitleScene::Update(const float& delta_second)
 		is_button = true;
 	}
 
+	Animation(delta_second);
+
 	return GetNowSceneType();
 }
 
@@ -196,7 +199,7 @@ void TitleScene::Draw() const
 	
 	// タイトルの描画
 	// DrawStringToHandle(100, 175, "Nebula Striker", GetColor(255, 0, 255), title_name);
-	DrawStringToHandle(100, 175, "Nebula Striker", GetColor(255, 0, 255), font[4]);
+	DrawStringToHandle(100.0f, 175.0f, "Nebula Striker", GetColor(current_r, current_g, current_b), font[4]);
 
 	// 十字キーでカーソル移動
 	DrawRotaGraphF(ui_location[0].x, ui_location[0].y, 0.5, 0.0, ui_button[0], TRUE);
@@ -270,4 +273,65 @@ void TitleScene::Finalize()
 eSceneType TitleScene::GetNowSceneType()const
 {
 	return eSceneType::eTitle;
+}
+
+void TitleScene::Animation(const float& delta_second)
+{
+	color_phase += color_speed * delta_second; // 時間経過で位相を進める
+
+	// 位相が1.0を超えたら0に戻す（0.0～1.0の範囲に保つ）
+	if (color_phase >= 1.0f) // 等号を追加して1.0に達したらリセット
+	{
+		color_phase -= 1.0f;
+	}
+
+	// 0.0～1.0のcolor_phaseを6つのセグメントに分割して色を計算
+	float segment_phase = color_phase * 6.0f; // 0.0～6.0の範囲
+
+	if (segment_phase >= 0.0f && segment_phase < 1.0f)
+	{
+		// 赤 (R:255, G:0, B:0) から 黄 (R:255, G:255, B:0) へ
+		current_r = 255;
+		current_g = static_cast<int>(255 * segment_phase);
+		current_b = 0;
+	}
+	else if (segment_phase >= 1.0f && segment_phase < 2.0f)
+	{
+		// 黄 (R:255, G:255, B:0) から 緑 (R:0, G:255, B:0) へ
+		current_r = static_cast<int>(255 * (2.0f - segment_phase));
+		current_g = 255;
+		current_b = 0;
+	}
+	else if (segment_phase >= 2.0f && segment_phase < 3.0f)
+	{
+		// 緑 (R:0, G:255, B:0) から シアン (R:0, G:255, B:255) へ
+		current_r = 0;
+		current_g = 255;
+		current_b = static_cast<int>(255 * (segment_phase - 2.0f));
+	}
+	else if (segment_phase >= 3.0f && segment_phase < 4.0f)
+	{
+		// シアン (R:0, G:255, B:255) から 青 (R:0, G:0, B:255) へ
+		current_r = 0;
+		current_g = static_cast<int>(255 * (4.0f - segment_phase));
+		current_b = 255;
+	}
+	else if (segment_phase >= 4.0f && segment_phase < 5.0f)
+	{
+		// 青 (R:0, G:0, B:255) から マゼンタ (R:255, G:0, B:255) へ
+		current_r = static_cast<int>(255 * (segment_phase - 4.0f));
+		current_g = 0;
+		current_b = 255;
+	}
+	else // if (segment_phase >= 5.0f && segment_phase < 6.0f)
+	{
+		// マゼンタ (R:255, G:0, B:255) から 赤 (R:255, G:0, B:0) へ
+		current_r = 255;
+		current_g = 0;
+		current_b = static_cast<int>(255 * (6.0f - segment_phase));
+	}
+
+	current_r = max(0, min(255, current_r));
+	current_g = max(0, min(255, current_g));
+	current_b = max(0, min(255, current_b));
 }

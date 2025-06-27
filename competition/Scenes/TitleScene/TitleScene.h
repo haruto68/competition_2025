@@ -13,7 +13,7 @@ private:
 	int sounds_effect[2];	// Œø‰Ê‰¹
 	//int button_sound0;		// ‘I‘ğ‰¹
 	//int button_sound1;		// Œˆ’è‰¹
-	int back_ground_image;				// ”wŒi‰æ‘œ
+	int back_ground_image;				// ”wŒi‰æ‘œ4
 	Vector2D back_ground_location;		// ”wŒiÀ•W
 
 	// ƒtƒHƒ“ƒg‚Ì“o˜^
@@ -29,6 +29,11 @@ private:
 	std::vector<Vector2D> font_location;
 
 	int font[5];
+
+	float color_phase; // F•Ï‰»‚ÌˆÊ‘Ši0.0`1.0j
+	float color_speed; // F•Ï‰»‚Ì‘¬“x
+	int current_r, current_g, current_b; // Œ»İ‚ÌF¬•ª
+
 public:
 	TitleScene();
 	~TitleScene();
@@ -41,4 +46,6 @@ public:
 
 public:
 	virtual eSceneType GetNowSceneType() const override;
+
+	void Animation(const float& delta_second);
 };

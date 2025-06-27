@@ -251,6 +251,12 @@ void Player::Movement(float delta_seconds)
 {
 	// 移動スピード
 	float speed = 200.0 + player_stats.move_speed;
+
+	if (InputManager::GetInstance()->GetButton(9))
+	{
+		speed = 100.0f;
+	}
+
 	// 移動方向
 	Vector2D direction = 0.0f;
 	// 減速
@@ -411,8 +417,8 @@ void Player::Movement(float delta_seconds)
 		}
 	}
 
-	//位置座標を加速度分減らす
 	location += velocity * speed * delta_seconds;
+	//位置座標を加速度分減らす
 }
 
 void Player::Animation(float delta_seconds)
@@ -548,7 +554,15 @@ void Player::StatsUp(ePowerUp powerup)
 		player_stats.attack_power += 1.0f;		// 攻撃力アップ
 		break;
 	case ePowerUp::eSpeed:
-		player_stats.move_speed = Max(100.0f, player_stats.move_speed + 5.0f);		// 移動速度アップ
+		if (player_stats.move_speed >= 100.0f)
+		{
+
+		}
+		else
+		{
+			player_stats.move_speed = player_stats.move_speed + 20.0f;
+		}
+		//player_stats.move_speed = Max(100.0f, player_stats.move_speed + 5.0f);		// 移動速度アップ
 		break;
 	case ePowerUp::eShotspeed:
 		SHOT_INTERVAL = Max(0.1f, SHOT_INTERVAL - 0.02f);  // 下限を0.02秒に制限
