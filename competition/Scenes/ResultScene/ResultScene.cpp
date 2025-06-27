@@ -16,15 +16,17 @@ ResultScene::ResultScene() :
 	power_icon(),
 	level(0),
 	stagelevel(0),
-	power(),
-	speed(),
-	cool_time(),
-	hit_range(),
-	three_way(),
-	drone(),
+	power(0),
+	speed(0),
+	cool_time(0),
+	hit_range(0),
+	three_way(false),
+	drone(false),
 	is_drone(false),
 	is_max(false),
-	color()
+	is_check(false),
+	color(0),
+	button_location()
 {
 	// //リソース管理インスタンス取得
 	// ResourceManager* rm = ResourceManager::GetInstance();
@@ -103,8 +105,11 @@ void ResultScene::Initialize()
 	cool_time = score->GetPlayerCoolTime();			
 	hit_range = score->GetPlayerHitRange();			
 	three_way = score->GetPlayerThreeWay();				
-	drone = score->GetPlayerDrone();						
+	drone = score->GetPlayerDrone();
 
+	is_check = true;
+
+	button_location = Vector2D((D_WIN_MAX_X / 4), 630);
 }
 
 eSceneType ResultScene::Update(const float& delta_second)
@@ -112,36 +117,63 @@ eSceneType ResultScene::Update(const float& delta_second)
 	//入力機能インスタンス取得
 	InputManager* input = InputManager::GetInstance();
 
-	/*プレイヤーの情報がマイナスをいった時、値を0にする*/
-	if (speed < 0)
+	if (is_check == true)
 	{
-		speed = 0;
+		CheckData();
 	}
 
-	if (power < 0)
-	{
-		power = 0;
-	}
 
-	/*ドローンが取得されたか*/
-	if (drone > 0)
-	{
-		is_drone = true;
-	}
-	else
-	{
-		is_drone = false;
-	}
+	///*プレイヤーの情報がマイナスをいった時、値を0にする*/
+	//if (speed < 0)
+	//{
+	//	speed = 0;
+	//}
 
-	/*プレイヤーの弾のクールタイムが上限に行かないようにする*/
-	if (cool_time < 11)
-	{
-		is_max = true;
-	}
-	else
-	{
-		is_max = false;
-	}
+	//if (power < 0)
+	//{
+	//	power = 0;
+	//}
+
+	///*ドローンが取得されたか*/
+	//if (drone > 0)
+	//{
+	//	is_drone = true;
+	//}
+	//else
+	//{
+	//	is_drone = false;
+	//}
+
+	///*プレイヤーの弾のクールタイムが上限に行かないようにする*/
+	//if (cool_time < 11)
+	//{
+	//	is_max = true;
+	//}
+	//else
+	//{
+	//	is_max = false;
+	//}
+
+	//// 全体の進捗度で色を変える
+	//switch (stagelevel)
+	//{
+	//case 25:
+	//	color = 1;
+	//	break;
+	//case 50:
+	//	color = 2;
+	//	break;
+	//case 75:
+	//	color = 3;
+	//	break;
+	//case 100:
+	//	color = 4;
+	//	break;
+	//default:
+	//	color = 0;
+	//	break;
+	//}
+
 
 	//入力情報の更新
 	input->Update();
@@ -191,7 +223,6 @@ eSceneType ResultScene::Update(const float& delta_second)
 		}
 	}
 
-	// 全体の進捗度で色を変える
 
 	return GetNowSceneType();
 }
@@ -232,7 +263,27 @@ void ResultScene::Draw() const
 	snprintf(buf, sizeof(buf), "%d％", stagelevel);
 	// DrawFormatString(1200, 80, 0xffffff, "%d", stagelevel);		// 到達したレベルを描画する
 	// DrawStringToHandle(1200, 80, buf, GetColor(255, 255, 255), font_name[2]);
-	DrawStringToHandle(550, 80, buf, GetColor(255, 255, 255), font[1]);
+
+	switch (color)
+	{
+	case 1:
+		DrawStringToHandle(550, 80, buf, GetColor(0, 0, 255), font[1]);
+		break;
+	case 2:
+		DrawStringToHandle(550, 80, buf, GetColor(0, 255, 0), font[1]);
+		break;
+	case 3:
+		DrawStringToHandle(550, 80, buf, GetColor(255, 255, 0), font[1]);
+		break;
+	case 4:
+		DrawStringToHandle(550, 80, buf, GetColor(255, 0, 255), font[1]);
+		break;
+	default:
+		DrawStringToHandle(550, 80, buf, GetColor(255, 0, 0), font[1]);
+		break;
+	}
+
+	// DrawStringToHandle(550, 80, buf, GetColor(255, 255, 255), font[1]);
 
 	// DrawFormatString(50, 140, 0xffffff, "現在のレベル");
 	// DrawStringToHandle(50, 140, "現在のレベル", GetColor(255, 255, 255), font_name[2]);
@@ -306,20 +357,23 @@ void ResultScene::Draw() const
 	//DrawBox(25, 600, 325, 700, 0xffffff, TRUE);
 	// DrawFormatString(25, 630, endColor, "Title");		// タイトルボタンに変更
 	// DrawStringToHandle(25, 630, "Title", GetColor(255, 0, 0), font_name[2]);
-	DrawStringToHandle(25, 630, "Title", GetColor(255, 0, 0), font[1]);
+	// DrawStringToHandle(25, 630, "Title", GetColor(255, 0, 0), font[1]);
+	DrawStringToHandle(button_location.x, button_location.y, "Title", GetColor(255, 0, 0), font[1]);
 
 	// タイトルボタン
 	int titleColor = (m_selectedbutton == selectedbutton::End) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
 	//DrawBox(955, 600, 1255, 700, 0xffffff, TRUE);
 	// DrawFormatString(955, 630, titleColor, "End");		// エンドボタンに変更
 	// DrawStringToHandle(955, 630, "End", GetColor(255, 255, 255), font_name[2]);
-	DrawStringToHandle(955, 630, "End", GetColor(255, 255, 255), font[1]);
+	// DrawStringToHandle(955, 630, "End", GetColor(255, 255, 255), font[1]);
+	DrawStringToHandle((button_location.x * 3), button_location.y, "End", GetColor(255, 255, 255), font[1]);
 
 
 		switch (menu_num)
 		{
 		case 0:
-			DrawTriangle(5, 640, 5, 660, 25, 650, GetColor(255, 0, 0), TRUE);
+			// DrawTriangle(5, 640, 5, 660, 25, 650, GetColor(255, 0, 0), TRUE);
+			DrawTriangle((button_location.x - 20), 640, (button_location.x - 20), 660, button_location.x, 650, GetColor(255, 0, 0), TRUE);
 			break;
 		case 1:
 			DrawTriangle(935, 640, 935, 660, 955, 650, GetColor(255, 0, 0), TRUE);
@@ -341,19 +395,71 @@ void ResultScene::Finalize()
 		DeleteFontToHandle(font[i]);
 	}
 
-	// 設定した画像を削除する
-	/*for (int i = 0; i < 6; i++)
-	{
-		DeleteGraph(power_icon[i]);
-	}*/
-	// DeleteGraph(window);
 
 	StopSoundMem(back_ground_sound);
 	score->Finalize();
 
+	is_check = false;
 }
 
 eSceneType ResultScene::GetNowSceneType()const
 {
 	return eSceneType::eResult;
 }
+
+void ResultScene::CheckData()
+{
+	/*プレイヤーの情報がマイナスをいった時、値を0にする*/
+	if (speed < 0)
+	{
+		speed = 0;
+	}
+
+	if (power < 0)
+	{
+		power = 0;
+	}
+
+	/*ドローンが取得されたか*/
+	if (drone > 0)
+	{
+		is_drone = true;
+	}
+	else
+	{
+		is_drone = false;
+	}
+
+	/*プレイヤーの弾のクールタイムが上限に行かないようにする*/
+	if (cool_time < 10)
+	{
+		is_max = true;
+	}
+	else
+	{
+		is_max = false;
+	}
+
+	// 全体の進捗度で色を変える
+	switch (stagelevel)
+	{
+	case 25:
+		color = 1;
+		break;
+	case 50:
+		color = 2;
+		break;
+	case 75:
+		color = 3;
+		break;
+	case 100:
+		color = 4;
+		break;
+	default:
+		color = 0;
+		break;
+	}
+
+
+}
+

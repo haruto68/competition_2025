@@ -3,7 +3,7 @@
 #include"../UI/Score.h"
 #include"../RankingScene/RankingScene.h"
 
-#define MAX_STAGE		(4)			// 全体のステージ数
+#define MAX_STAGE		(4)			// ゲームの最大ステージ数
 
 class ResultScene : public SceneBase
 {
@@ -41,7 +41,9 @@ public:
 
 	bool is_drone;				// ドローンが取得されていたか
 	bool is_max;				// 上限に行ったか
+	bool is_check;				
 	int color;					// 色変更
+	Vector2D button_location;			// ボタンの座標
 
 	Score* score;
 	RankingScene* ranking;
@@ -58,5 +60,7 @@ public:
 	virtual eSceneType GetNowSceneType() const override;
 
 public:
-	// void PlayerDataCalculate();				// プレイヤーの情報を計算する処理
+	void CheckData();				// プレイヤーの情報がマイナスになっていないか確認する処理
+
+	// void Cursor();				// カーソルの処理
 };
