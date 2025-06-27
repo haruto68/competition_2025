@@ -82,17 +82,11 @@ void Boss3::Update(float delta_seconds)
 	shot_timer += delta_seconds;
 	shot_timer_3 += delta_seconds;
 
-
 	EnemyShot* shot;
 
 	//基本攻撃
 	if (hp > 0 && shot_timer >= atack_interval)
 	{
-		hp -= 10;
-		hp -= 10;
-		hp -= 10;
-
-
 		switch (atack_pattern)
 		{
 			//レーザー攻撃
@@ -245,6 +239,7 @@ void Boss3::Update(float delta_seconds)
 		else if(wave_change_count < 7)
 		{
 			wave_change_count += delta_seconds;
+			shot_wave_y = 380;
 		}
 		else
 		{

@@ -38,7 +38,7 @@ void Enemy9::Initialize()
 {
 	velocity.x = -1.0f;
 
-	hp = 20.0f;
+	hp = 35.0f;
 }
 
 void Enemy9::Update(float delta_seconds)
