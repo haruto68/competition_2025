@@ -362,7 +362,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	if (((input->GetKeyUp(KEY_INPUT_L) ||
 		input->GetButtonDown(XINPUT_BUTTON_Y))
 		&& time_stop == false)
-		/*&& up_grade_stock*/ > 0 && dark_alpha <= 0
+		&& up_grade_stock > 0 && dark_alpha <= 0
 		&& player->GetPlayerStats().life_count > 0)
 	{
 		level_up_flg = true;
