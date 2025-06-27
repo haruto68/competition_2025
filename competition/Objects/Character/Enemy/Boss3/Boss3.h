@@ -1,5 +1,7 @@
 #pragma once
 #include "../EnemyBase.h"
+#include "../Enemy10/Enemy10.h"
+#include "../Enemy11/Enemy11.h"
 
 class Boss3 : public EnemyBase
 {

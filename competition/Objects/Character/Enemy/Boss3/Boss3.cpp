@@ -81,7 +81,127 @@ void Boss3::Update(float delta_seconds)
 
 	EnemyShot* shot;
 
-	if (hp > 0 && shot_timer_3 >= shot_cooldown_3)
+	//基本攻撃
+	if (hp > 0 && shot_timer >= atack_interval)
+	{
+		switch (atack_pattern)
+		{
+			//レーザー攻撃
+		case 0:
+			break;
+		case 3:
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 640, location.y));
+			shot->SetShotType(eEnemy15);
+			atack_pattern = 4;
+			break;
+		case 7:
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 640, location.y));
+			shot->SetShotType(eEnemy15);
+			atack_pattern = 8;
+			break;
+		case 12:
+			//突進攻撃へ
+			atack_pattern = 99;
+			atack_interval = 2.0f;
+			break;
+
+			//突進
+		case 99:
+			atack_pattern = 100;
+			atack_interval = 3.0f;
+			break;
+		case 100:
+			break;
+		case 101:
+			atack_interval = 2.0f;
+			atack_pattern += 1;
+			break;
+		case 102:
+			break;
+		case 103:
+			atack_interval = 0.6f;
+			atack_pattern = 200;
+			break;
+
+		//雑魚敵
+		case 200:
+			//object_manager->CreateGameObject<Enemy10>(Vector2D(1280 + 40, location.y + 200));
+			//object_manager->CreateGameObject<Enemy10>(Vector2D(1280 + 40, location.y - 200));
+			atack_pattern += 1;
+			atack_interval = 0.2f;
+			break;
+		case 201:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 - 200));
+			atack_pattern += 1;
+			break;
+		case 202:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 - 150));
+			atack_pattern += 1;
+			break;
+		case 203:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 - 100));
+			atack_pattern += 1;
+			break;
+		case 204:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 - 50));
+			atack_pattern += 1;
+			break;
+		case 205:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380));
+			atack_pattern += 1;
+			break;
+		case 206:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 + 50));
+			atack_pattern += 1;
+			break;
+		case 207:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 + 100));
+			atack_pattern += 1;
+			break;
+		case 208:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 + 150));
+			atack_pattern += 1;
+			break;
+		case 209:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 + 200));
+			atack_pattern += 1;
+			break;
+		case 210:
+			//レーザー攻撃へ
+			atack_interval = 0.6f;
+			atack_pattern = 0;
+			break;
+
+		default:
+			atack_pattern += 1;
+			break;
+		}
+
+		//タイマーリセット
+		shot_timer = 0.0f;
+	}
+
+
+	//突進攻撃後戻りながら攻撃
+	if (atack_pattern == 102)
+	{
+		shot_timer_2 += delta_seconds;
+
+		if (hp > 0 && shot_timer_2 >= shot_cooldown_2)
+		{
+			shot_timer_2 = 0.0f;
+
+			shot = object_manager->CreateGameObject<EnemyShot>(location);
+			shot->SetShotType(eEnemy2);
+			shot = object_manager->CreateGameObject<EnemyShot>(location);
+			shot->SetShotType(eEnemy3);
+		}
+
+	}
+
+
+	//HPが8割以下でウェーブ攻撃
+	if (hp > 0 && ratio <= 80 && shot_timer_3 >= shot_cooldown_3)
 	{
 		shot_timer_3 = 0.0f;
 
@@ -110,76 +230,6 @@ void Boss3::Update(float delta_seconds)
 			shot_wave = 0;
 		}
 	}
-
-
-	//攻撃
-	if (hp > 0 && shot_timer >= atack_interval)
-	{
-		switch (atack_pattern)
-		{
-		case 0:
-			break;
-		case 3:
-			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 640, location.y));
-			shot->SetShotType(eEnemy15);
-			atack_pattern = 5;
-			break;
-		case 7:
-			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 640, location.y));
-			shot->SetShotType(eEnemy15);
-			atack_pattern = 9;
-		case 11:
-			atack_pattern = 99;
-			atack_interval = 2.0f;
-			break;
-
-			//突進
-		case 99:
-			atack_pattern = 100;
-			atack_interval = 3.0f;
-			break;
-		case 100:
-			break;
-		case 101:
-			atack_interval = 2.0f;
-			atack_pattern += 1;
-			break;
-		case 102:
-			break;
-		case 103:
-			atack_interval = 0.6f;
-			atack_pattern = 1;
-			break;
-		default:
-			atack_pattern += 1;
-			break;
-		}
-
-		//タイマーリセット
-		shot_timer = 0.0f;
-	}
-
-
-
-	if (atack_pattern == 102)
-	{
-		shot_timer_2 += delta_seconds;
-
-		if (hp > 0 && shot_timer_2 >= shot_cooldown_2)
-		{
-			shot_timer_2 = 0.0f;
-
-			shot = object_manager->CreateGameObject<EnemyShot>(location);
-			shot->SetShotType(eEnemy2);
-			shot = object_manager->CreateGameObject<EnemyShot>(location);
-			shot->SetShotType(eEnemy3);
-		}
-
-	}
-
-
-
-
 
 
 	//死
