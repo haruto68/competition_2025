@@ -43,6 +43,12 @@ public:
 	bool is_max;				// 上限に行ったか
 	bool is_check;				
 	int color;					// 色変更
+	bool is_cir;
+	bool is_flash;				// 点滅させる
+	float flash_timer;
+
+	int circle;				// (カーソル)円の座標
+
 	Vector2D button_location;			// ボタンの座標
 
 	Score* score;
@@ -62,5 +68,5 @@ public:
 public:
 	void CheckData();				// プレイヤーの情報がマイナスになっていないか確認する処理
 
-	// void Cursor();				// カーソルの処理
+	 void Cursor();				// カーソルの処理
 };

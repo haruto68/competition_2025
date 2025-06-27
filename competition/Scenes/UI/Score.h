@@ -11,9 +11,9 @@ private:
 	static int stagelevel;
 	static int level;
 	static int power;
-	static int hp;
+	//static int hp;
 	static int speed;
-	static float cool_time;
+	static int cool_time;
 	static int hit_range;
 	static bool three_way;
 	static int drone;
@@ -77,16 +77,16 @@ public:
 
 	// プレイヤーの情報を設定する
 	static void SetPlayerLevel(int);
-	static void SetPlayerHp(int);
+	//static void SetPlayerHp(int);
 	static void SetPlayerPower(int);
 	static void SetPlayerSpeed(int);
-	static void SetPlayerCoolTime(float);
+	static void SetPlayerCoolTime(int);
 	static void SetPlayerHitRange(int);
 	static void SetPlayerThreeWay(bool);
 	static void SetPlayerDrone(int);
 
 	// プレイヤーの情報を取得する
-	static int SetPlayerHp();
+	//static int SetPlayerHp();
 	static int GetPlayerLevel();
 	static int GetPlayerPower();
 	static int GetPlayerSpeed();

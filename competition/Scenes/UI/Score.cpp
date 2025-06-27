@@ -3,9 +3,9 @@
  int Score::stagelevel = 0;
  int Score::level = 0;
  int Score::power = 0;
- int Score::hp = 0;
+ // int Score::hp = 0;
  int Score::speed = 0;
- float Score::cool_time = 0;
+ int Score::cool_time = 0;
  int Score::hit_range = 0;
  bool Score::three_way = false;
  int  Score::drone = 0;
@@ -46,10 +46,10 @@ void Score::SetPlayerLevel(int p_level)
 	level = p_level;
 }
 
-void Score::SetPlayerHp(int p_hp)
-{
-	hp = p_hp;
-}
+//void Score::SetPlayerHp(int p_hp)
+//{
+//	hp = p_hp;
+//}
 
 void Score::SetPlayerPower(int p_power)
 {
@@ -63,7 +63,7 @@ void Score::SetPlayerSpeed(int p_speed)
 	speed = ((p_speed / 5) - 19);
 }
 
-void Score::SetPlayerCoolTime(float p_cooltime)
+void Score::SetPlayerCoolTime(int p_cooltime)
 {
 	cool_time = p_cooltime;
 }
@@ -88,10 +88,10 @@ void Score::SetPlayerDrone(int p_drone)
 	drone = p_drone;
 }
 
-int Score::SetPlayerHp()
-{
-	return hp;
-}
+//int Score::SetPlayerHp()
+//{
+//	return hp;
+//}
 
 int Score::GetPlayerLevel()
 {

@@ -26,7 +26,11 @@ ResultScene::ResultScene() :
 	is_max(false),
 	is_check(false),
 	color(0),
-	button_location()
+	button_location(),
+	circle(0),
+	is_cir(false),
+	is_flash(true),
+	flash_timer(0.0f)
 {
 	// //リソース管理インスタンス取得
 	// ResourceManager* rm = ResourceManager::GetInstance();
@@ -123,6 +127,21 @@ eSceneType ResultScene::Update(const float& delta_second)
 		CheckData();
 	}
 
+	// 点滅用タイマー処理（5秒ごとに表示/非表示を切り替え）
+	flash_timer += delta_second;
+	if (flash_timer >= 0.3f)
+	{
+		if (is_flash == true)				// 表示/非表示の切り替え
+		{
+			is_flash = false;
+		}
+		else
+		{
+			is_flash = true;
+		}
+		flash_timer = 0.0f;       // タイマーをリセット
+	}
+
 
 	///*プレイヤーの情報がマイナスをいった時、値を0にする*/
 	//if (speed < 0)
@@ -214,9 +233,9 @@ eSceneType ResultScene::Update(const float& delta_second)
 			return eSceneType::eTitle;
 			break;
 		case 1:
-			//ゲームを終了
+			//ゲームを終了			// リスタートにする
 			PlaySoundMem(sounds_effect[0], DX_PLAYTYPE_NORMAL, TRUE);
-			return eSceneType::eExit;
+			return eSceneType::eInGame;
 			break;
 		default:
 			break;
@@ -224,7 +243,18 @@ eSceneType ResultScene::Update(const float& delta_second)
 		}
 	}
 
+	if (menu_num == 0)
+	{
+		is_cir = true;
+		Cursor();
+	}
+	else
+	{
+		is_cir = false;
+		Cursor();
+	}
 
+	
 	return GetNowSceneType();
 }
 
@@ -359,7 +389,7 @@ void ResultScene::Draw() const
 	// DrawFormatString(25, 630, endColor, "Title");		// タイトルボタンに変更
 	// DrawStringToHandle(25, 630, "Title", GetColor(255, 0, 0), font_name[2]);
 	// DrawStringToHandle(25, 630, "Title", GetColor(255, 0, 0), font[1]);
-	DrawStringToHandle(button_location.x, button_location.y, "Title", GetColor(255, 0, 0), font[1]);
+	// DrawStringToHandle(button_location.x, button_location.y, "Title", GetColor(255, 0, 0), font[1]);
 
 	// タイトルボタン
 	int titleColor = (m_selectedbutton == selectedbutton::End) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
@@ -367,17 +397,39 @@ void ResultScene::Draw() const
 	// DrawFormatString(955, 630, titleColor, "End");		// エンドボタンに変更
 	// DrawStringToHandle(955, 630, "End", GetColor(255, 255, 255), font_name[2]);
 	// DrawStringToHandle(955, 630, "End", GetColor(255, 255, 255), font[1]);
-	DrawStringToHandle((button_location.x * 3), button_location.y, "End", GetColor(255, 255, 255), font[1]);
+	// DrawStringToHandle((button_location.x * 3), button_location.y, "End", GetColor(255, 255, 255), font[1]);
 
 
 		switch (menu_num)
 		{
 		case 0:
+			DrawStringToHandle(button_location.x, button_location.y, "TITLE", GetColor(255, 0, 0), font[1]);
+			DrawStringToHandle((button_location.x * 3), button_location.y, "RESTART", GetColor(255, 255, 255), font[1]);
 			// DrawTriangle(5, 640, 5, 660, 25, 650, GetColor(255, 0, 0), TRUE);
-			DrawTriangle((button_location.x - 20), 640, (button_location.x - 20), 660, button_location.x, 650, GetColor(255, 0, 0), TRUE);
+			if (is_flash == true)
+			{
+				DrawCircle(circle, 650, 10, GetColor(255, 0, 0), TRUE);
+			}
+			else
+			{
+				// DrawTriangle(tri1, 640, tri2, 660, tri3, 650, GetColor(255, 0, 0), FALSE); // 枠だけ
+				DrawCircle(circle, 650, 10, GetColor(200, 0, 0), TRUE);
+			}
 			break;
 		case 1:
-			DrawTriangle(935, 640, 935, 660, 955, 650, GetColor(255, 0, 0), TRUE);
+			DrawStringToHandle(button_location.x, button_location.y, "TITLE", GetColor(255, 255, 255), font[1]);
+			DrawStringToHandle((button_location.x * 3), button_location.y, "RESTART", GetColor(255, 0, 0), font[1]);
+			// DrawTriangle(935, 640, 935, 660, 955, 650, GetColor(255, 0, 0), TRUE);
+			if (is_flash == true)
+			{
+				// DrawTriangle(tri1, 640, tri2, 660, tri3, 650, GetColor(255, 0, 0), TRUE);  // 塗りつぶし
+				DrawCircle(circle, 650, 10, GetColor(255, 0, 0), TRUE);
+			}
+			else
+			{
+				// DrawTriangle(tri1, 640, tri2, 660, tri3, 650, GetColor(255, 0, 0), FALSE);  // 塗りつぶし
+				DrawCircle(circle, 650, 10, GetColor(200, 0, 0), TRUE);
+			}
 			break;
 		default:
 			break;
@@ -462,5 +514,18 @@ void ResultScene::CheckData()
 	}
 
 
+}
+
+void ResultScene::Cursor()
+{
+	if (is_cir == true)
+	{
+		circle = ((D_WIN_MAX_X / 4) - 20);
+	}
+	else
+	{
+		circle = (((D_WIN_MAX_X / 4) * 3) - 20);
+
+	}
 }
 
