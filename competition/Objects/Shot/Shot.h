@@ -23,7 +23,8 @@ enum eShotType
 	eEnemy13,	//自機下狙い(225.0f)
 	eEnemy14,	//自機狙い2
 	eEnemy15,	//レーザー1
-	eEnemy16	//真左加速
+	eEnemy16,	//真左加速
+	eEnemy17,	//ウェーブ用
 };
 
 class Shot : public GameObject
