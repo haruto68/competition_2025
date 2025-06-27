@@ -35,6 +35,12 @@ EnemyShot::EnemyShot() :
 	laser_images[3]= rm->GetImages("Resource/Images/GameMaker/Player/Weapon/Laser/Projectile_Player_Laser4.png")[0];
 	laser_images[4]= rm->GetImages("Resource/Images/GameMaker/Player/Weapon/Laser/Projectile_Player_Laser5.png")[0];
 
+	laser_images[0] = rm->GetImages("Resource/Images/GameMaker/Player/Weapon/Laser/size1/Projectile_Player_Laser1.png")[0];
+	laser_images[1] = rm->GetImages("Resource/Images/GameMaker/Player/Weapon/Laser/size1/Projectile_Player_Laser2.png")[0];
+	laser_images[2] = rm->GetImages("Resource/Images/GameMaker/Player/Weapon/Laser/size1/Projectile_Player_Laser3.png")[0];
+	laser_images[3] = rm->GetImages("Resource/Images/GameMaker/Player/Weapon/Laser/size1/Projectile_Player_Laser4.png")[0];
+	laser_images[4] = rm->GetImages("Resource/Images/GameMaker/Player/Weapon/Laser/size1/Projectile_Player_Laser5.png")[0];
+
 	exp_num = 2;
 }
 
@@ -63,11 +69,18 @@ void EnemyShot::Update(float delta_seconds)
 	if (shot_type == eShotType::eEnemy15)
 	{
 		caveat_time = 1.75f;
-		collision.box_size = Vector2D(1280, 30);
+		//collision.box_size = Vector2D(1280, 30);
+		collision.box_size = Vector2D(900, 30);
 		if (birth_count > caveat_time)
 		{
-			velocity.x = -3.0f;
+			velocity.x = -10.0f;
 		}
+	}
+
+
+	if (shot_type == eShotType::eEnemy17)
+	{
+		collision.box_size = Vector2D(20, 20);
 	}
 }
 
@@ -107,6 +120,12 @@ void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 		//DrawBox(location.x - 640, location.y - (collision.box_size.y / 2), location.x + 640, location.y + (collision.box_size.y / 2), GetColor(205, 205, 205), TRUE);
 		
 		break;
+	case eEnemy17:
+
+		DrawRotaGraph(location.x, location.y, 3.0, 0, shot_image[1], TRUE);
+		DrawBox(location.x - (collision.box_size.x / 2), location.y - (collision.box_size.y / 2), location.x + (collision.box_size.x / 2), location.y + (collision.box_size.y / 2), GetColor(255, 0, 0), false);
+
+		break;
 	default:
 		image = shot_image[1];
 		break;
@@ -119,8 +138,8 @@ void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 
 	if (shot_type == eShotType::eEnemy15)
 	{
-		DrawRotaGraph(location.x, location.y, 6.0, -(ƒÎ / 2), laser_images[0], TRUE);
-		DrawBox(location.x - 640, location.y - (collision.box_size.y / 2), location.x + 640, location.y + (collision.box_size.y / 2), GetColor(255, 0, 0), false);
+		DrawRotaGraph(location.x + 50, location.y, 6.0, -(ƒÎ / 2), this->image, TRUE);
+		DrawBox(location.x - (collision.box_size.x / 2), location.y - (collision.box_size.y / 2), location.x + (collision.box_size.x / 2), location.y + (collision.box_size.y / 2), GetColor(255, 0, 0), false);
 	}
 	
 }
@@ -303,6 +322,9 @@ void EnemyShot::Movement(float delta_seconds)
 	case eEnemy16:
 		velocity.x = -2.5f;
 			break;
+	case eEnemy17:
+		velocity.x = -1.5f;
+		break;
 	default:
 		break;
 	}
@@ -315,5 +337,23 @@ void EnemyShot::Movement(float delta_seconds)
 
 void EnemyShot::Animation()
 {
-
+	if (shot_type == eShotType::eEnemy15)
+	{
+		if (birth_count < 2.0f)
+		{
+			image = laser_images[0];
+		}
+		else if (birth_count < 2.05f)
+		{
+			image = laser_images[1];
+		}
+		else if (birth_count < 2.1f)
+		{
+			image = laser_images[3];
+		}
+		else if (birth_count < 2.15f)
+		{
+			image = laser_images[4];
+		}
+	}
 }

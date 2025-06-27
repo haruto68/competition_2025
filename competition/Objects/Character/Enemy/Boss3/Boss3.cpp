@@ -4,7 +4,11 @@ Boss3::Boss3() :
 	images(),
 	atack_interval(0.0f),
 	shot_timer_2(0.0f),
-	shot_cooldown_2(0.0f)
+	shot_cooldown_2(0.0f),
+	shot_timer_3(0.0f),
+	shot_cooldown_3(0.0f),
+	shot_wave(0),
+	shot_wave_y(0)
 {
 	// コリジョン設定
 	collision.is_blocking = true;
@@ -21,7 +25,7 @@ Boss3::Boss3() :
 	is_mobility = true;
 
 	//最大HP設定
-	max_hp = 10000;
+	max_hp = 2000;
 	hp = float(max_hp);
 
 	//画像読み込み
@@ -48,6 +52,9 @@ void Boss3::Initialize()
 	atack_interval = 0.6f;
 
 	shot_cooldown_2 = 0.25f;
+	shot_cooldown_3 = 0.375f;
+
+	shot_wave_y = 380;
 
 	ChangeVolumeSoundMem(bomb_sound_volume[0], bomb_sound[0]);
 	ChangeVolumeSoundMem(bomb_sound_volume[1], bomb_sound[1]);
@@ -69,9 +76,41 @@ void Boss3::Update(float delta_seconds)
 
 	//時間経過
 	shot_timer += delta_seconds;
+	shot_timer_3 += delta_seconds;
 
 
 	EnemyShot* shot;
+
+	if (hp > 0 && shot_timer_3 >= shot_cooldown_3)
+	{
+		shot_timer_3 = 0.0f;
+
+		shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 40, shot_wave_y - 250));
+		shot->SetShotType(eEnemy17);
+		shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 40, shot_wave_y + 250));
+		shot->SetShotType(eEnemy17);
+
+
+		int w = 75;
+		switch (shot_wave)
+		{
+		case 0:
+			shot_wave_y += w;
+			break;
+		case 1:
+			shot_wave_y -= w;
+			break;
+		}
+		if (shot_wave_y == 380 + w * 4)
+		{
+			shot_wave = 1;
+		}
+		if (shot_wave_y == 380 - w * 4)
+		{
+			shot_wave = 0;
+		}
+	}
+
 
 	//攻撃
 	if (hp > 0 && shot_timer >= atack_interval)
@@ -244,9 +283,14 @@ void Boss3::Movement(float delta_seconds)
 			else
 				velocity.y = -0.7f;
 		}
-
-		//プレイヤーY座標追跡
-		//velocity.y = Tracking(location, Vector2D(location.x, player_location.y)).y * 0.7;
+		if (location.y <= (65.0f + collision.box_size.y))
+		{
+			velocity.y = 1.0f;
+		}
+		if (location.y >= (680 - collision.box_size.y))
+		{
+			velocity.y = -1.0f;
+		}
 		
 
 		if (atack_pattern == 99)
