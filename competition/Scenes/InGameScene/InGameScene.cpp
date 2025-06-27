@@ -407,10 +407,10 @@ void InGameScene::Draw() const
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 175);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 130);
 	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE, back_ground_flag[0]);
-	DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE, TRUE);
+	DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE, back_ground_flag[1]);
 	if(stage_level == 3)
 	{
-		DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE, back_ground_flag[0]);
+		DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE, TRUE);
 		DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE, TRUE);
 	}
 
@@ -688,6 +688,7 @@ void InGameScene::BackGroundManager(const float& delta_second)
 	if (back_ground_location.x <= -(D_WIN_MAX_X / 2))
 	{
 		back_ground_location.x = D_WIN_MAX_X / 2;
+
 		if (back_ground_flag[0] == TRUE)
 		{
 			back_ground_flag[0] = FALSE;

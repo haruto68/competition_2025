@@ -37,7 +37,7 @@ void PlayerShot::Initialize()
 	image = bullet_image[0];
 
 	hit_sound = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
-	ChangeVolumeSoundMem(100, hit_sound);
+	ChangeVolumeSoundMem(80, hit_sound);
 }
 
 void PlayerShot::Update(float delta_seconds)

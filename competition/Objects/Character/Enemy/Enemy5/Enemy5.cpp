@@ -33,7 +33,7 @@ Enemy5::~Enemy5()
 void Enemy5::Initialize()
 {
 	//　仮敵2のサイズ(大きさ)
-	collision.box_size = Vector2D(20.0f, 20.0f);
+	collision.box_size = Vector2D(25.0f, 25.0f);
 	// 仮テキの速さ
 	speed = 200.0f;
 

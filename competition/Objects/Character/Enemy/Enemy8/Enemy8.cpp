@@ -38,7 +38,7 @@ void Enemy8::Initialize()
 {
 	//velocity.x = -1.0f;
 
-	hp = 17.0f;
+	hp = 25.0f;
 }
 
 void Enemy8::Update(float delta_seconds)
