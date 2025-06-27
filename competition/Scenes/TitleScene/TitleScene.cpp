@@ -250,8 +250,9 @@ void TitleScene::Draw() const
 		// test
 		DrawStringToHandle(10, 10, "HELP", GetColor(255, 0, 255), font[3]);
 		DrawStringToHandle(10, 210, "左スティック移動", GetColor(255, 0, 255), font[1]);
-		DrawStringToHandle(10, 310, "Bボタンで弾の発射", GetColor(255, 0, 255), font[1]);
-		DrawStringToHandle(10, 410, "Yボタンでアップグレード", GetColor(255, 0, 255), font[1]);
+		DrawStringToHandle(10, 310, "RBボタンと左スティック同時で移動速度を下げる", GetColor(255, 0, 255), font[1]);
+		DrawStringToHandle(10, 410, "Bボタンで弾の発射", GetColor(255, 0, 255), font[1]);
+		DrawStringToHandle(10, 510, "Yボタンでアップグレード", GetColor(255, 0, 255), font[1]);
 		DrawRotaGraphF(870, 685, 0.5, 0.0, ui_button[2], TRUE);
 		DrawStringToHandle(900, 660, "タイトルに戻る", 0xff00ff, font[1]);
 		// DrawStringToHandle(0, 400, "HELP", 0xfff00ff, help_font);
