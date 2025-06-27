@@ -65,7 +65,7 @@ void Enemy5::Update(float delta_seconds)
 	}
 
 	if (shot_timer >= shot_cooldown && shot_num <= shot_num_max
-		&& player_location.x < location.x)
+		&& player_location.x < location.x && !explosion_flag)
 	{
 		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
 		shot->SetShotType(eEnemy4);

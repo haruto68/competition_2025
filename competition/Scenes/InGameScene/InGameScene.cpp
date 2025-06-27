@@ -21,6 +21,7 @@ InGameScene::InGameScene() :
 	planets_image(),
 	pla1(),
 	pla2(),
+	back_ground_flag(),
 	enemy_random(1),
 	enemy_random_y(1),
 	pattern_timer(0),
@@ -49,9 +50,18 @@ InGameScene::InGameScene() :
 
 	//îwåi
 	back_ground_image[1] = rm->GetImages("Resource/Images/back_ground/universe_space02.png")[0];
+	/*back_ground_image[1] = rm->GetImages("Resource/Images/AI/ChatGPT.png")[0];
+	back_ground_image[1] = rm->GetImages("Resource/Images/AI/Copilot.png")[0];*/
 	back_ground_image[2] = rm->GetImages("Resource/Images/back_ground/universe_space03.png")[0];
+	//back_ground_image[2] = rm->GetImages("Resource/Images/AI2/ChatGPT.png")[0];
+	//back_ground_image[2] = rm->GetImages("Resource/Images/AI2/Copilot.png")[0];
 	back_ground_image[3] = rm->GetImages("Resource/Images/back_ground/universe_space05.png")[0];
+	/*back_ground_image[3] = rm->GetImages("Resource/Images/AI/ChatGPT.png")[0];
+	back_ground_image[3] = rm->GetImages("Resource/Images/AI/Copilot.png")[0];*/
 	back_ground_location = Vector2D(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2);
+
+	back_ground_flag[0] = TRUE;
+	back_ground_flag[1] = FALSE;
 
 	// òfêØ
 	planets_image[0] = rm->GetImages("Resource/Images/Planets/Planet1.png")[0];
@@ -352,7 +362,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	if (((input->GetKeyUp(KEY_INPUT_L) ||
 		input->GetButtonDown(XINPUT_BUTTON_Y))
 		&& time_stop == false)
-		&& up_grade_stock > 0 && dark_alpha <= 0
+		/*&& up_grade_stock*/ > 0 && dark_alpha <= 0
 		&& player->GetPlayerStats().life_count > 0)
 	{
 		level_up_flg = true;
@@ -395,9 +405,17 @@ void InGameScene::Draw() const
 {
 	// îwåiï`âÊ	
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 175);
-	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE);
-	DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 130);
+	DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE, back_ground_flag[0]);
+	DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE, TRUE);
+	if(stage_level == 3)
+	{
+		DrawRotaGraphF(back_ground_location.x, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE, back_ground_flag[0]);
+		DrawRotaGraphF(back_ground_location.x + D_WIN_MAX_X, back_ground_location.y, 1.0, 0.0, back_ground_image[stage_level], TRUE, TRUE);
+	}
+
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 
 	// òfêØï`âÊ
 	int bright = 125;
@@ -668,7 +686,19 @@ void InGameScene::BackGroundManager(const float& delta_second)
 	// îwåiÉãÅ[Év
 	back_ground_location.x -= 0.04f * delta_second * speed;
 	if (back_ground_location.x <= -(D_WIN_MAX_X / 2))
+	{
 		back_ground_location.x = D_WIN_MAX_X / 2;
+		if (back_ground_flag[0] == TRUE)
+		{
+			back_ground_flag[0] = FALSE;
+			back_ground_flag[1] = TRUE;
+		}
+		else
+		{
+			back_ground_flag[0] = TRUE;
+			back_ground_flag[1] = FALSE;
+		}
+	}
 	speed = 300;
 	// òfêØÉãÅ[Év1
 	pla1.x -= 0.5 * delta_second * speed;

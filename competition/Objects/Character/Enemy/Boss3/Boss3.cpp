@@ -8,7 +8,8 @@ Boss3::Boss3() :
 	shot_timer_3(0.0f),
 	shot_cooldown_3(0.0f),
 	shot_wave(0),
-	shot_wave_y(0)
+	shot_wave_y(0),
+	wave_change_count(0.0f)
 {
 	// コリジョン設定
 	collision.is_blocking = true;
@@ -39,6 +40,8 @@ Boss3::Boss3() :
 	images[5] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip3_Upgraded_Tilt1.png")[0];
 	images[6] = rm->GetImages("Resource/Images/GameMaker/Enemies/Ship/EnemyShip3_Upgraded_Tilt2.png")[0];
 
+	image = images[1];
+
 	exp_num = 0;
 }
 
@@ -52,6 +55,7 @@ void Boss3::Initialize()
 	atack_interval = 0.6f;
 
 	shot_cooldown_2 = 0.25f;
+	shot_cooldown_3 = 0.375f;
 	shot_cooldown_3 = 0.375f;
 
 	shot_wave_y = 380;
@@ -84,6 +88,11 @@ void Boss3::Update(float delta_seconds)
 	//基本攻撃
 	if (hp > 0 && shot_timer >= atack_interval)
 	{
+		hp -= 10;
+		hp -= 10;
+		hp -= 10;
+
+
 		switch (atack_pattern)
 		{
 			//レーザー攻撃
@@ -169,7 +178,7 @@ void Boss3::Update(float delta_seconds)
 		case 210:
 			//レーザー攻撃へ
 			atack_interval = 0.6f;
-			atack_pattern = 0;
+			atack_pattern = 1;
 			break;
 
 		default:
@@ -203,31 +212,69 @@ void Boss3::Update(float delta_seconds)
 	//HPが8割以下でウェーブ攻撃
 	if (hp > 0 && ratio <= 80 && shot_timer_3 >= shot_cooldown_3)
 	{
-		shot_timer_3 = 0.0f;
-
-		shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 40, shot_wave_y - 250));
-		shot->SetShotType(eEnemy17);
-		shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 40, shot_wave_y + 250));
-		shot->SetShotType(eEnemy17);
-
-
-		int w = 75;
-		switch (shot_wave)
+		if(ratio > 40)//HPが4割以上
 		{
-		case 0:
-			shot_wave_y += w;
-			break;
-		case 1:
-			shot_wave_y -= w;
-			break;
+			shot_cooldown_3 = 0.6f;
+			shot_timer_3 = 0.0f;
+
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 40, shot_wave_y - 250));
+			shot->SetShotType(eEnemy17);
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 40, shot_wave_y + 250));
+			shot->SetShotType(eEnemy17);
+
+			int w = 0;
+			w = 35;
+			switch (shot_wave)
+			{
+			case 0:
+				shot_wave_y += w;
+				break;
+			case 1:
+				shot_wave_y -= w;
+				break;
+			}
+			if (shot_wave_y == 380 + w * 4)
+			{
+				shot_wave = 1;
+			}
+			if (shot_wave_y == 380 - w * 4)
+			{
+				shot_wave = 0;
+			}
 		}
-		if (shot_wave_y == 380 + w * 4)
+		else if(wave_change_count < 7)
 		{
-			shot_wave = 1;
+			wave_change_count += delta_seconds;
 		}
-		if (shot_wave_y == 380 - w * 4)
+		else
 		{
-			shot_wave = 0;
+			shot_cooldown_3 = 0.3f;
+			shot_timer_3 = 0.0f;
+
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 40, shot_wave_y - 250));
+			shot->SetShotType(eEnemy18);
+			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 40, shot_wave_y + 250));
+			shot->SetShotType(eEnemy18);
+
+			int w = 0;
+			w = 75;
+			switch (shot_wave)
+			{
+			case 0:
+				shot_wave_y += w;
+				break;
+			case 1:
+				shot_wave_y -= w;
+				break;
+			}
+			if (shot_wave_y == 380 + w * 4)
+			{
+				shot_wave = 1;
+			}
+			if (shot_wave_y == 380 - w * 4)
+			{
+				shot_wave = 0;
+			}
 		}
 	}
 
@@ -248,24 +295,28 @@ void Boss3::Update(float delta_seconds)
 
 void Boss3::Draw(const Vector2D& screen_offset, bool flip_flag) const
 {
-	//予測線
-	if (atack_pattern == 99 || atack_pattern == 101)
+	if(ratio > 0)
 	{
-		int upper_left_x = 0;
-		int upper_left_y = location.y - collision.box_size.y / 2;
-		int lower_right_x = 1280;
-		int lower_right_y = location.y + collision.box_size.y / 2;
+		//予測線
+		if (atack_pattern == 99 || atack_pattern == 101)
+		{
+			int upper_left_x = 0;
+			int upper_left_y = location.y - collision.box_size.y / 2;
+			int lower_right_x = 1280;
+			int lower_right_y = location.y + collision.box_size.y / 2;
 
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 175);
-		DrawBox(upper_left_x, upper_left_y, lower_right_x, lower_right_y, GetColor(255, 0, 0), TRUE);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 175);
+			DrawBox(upper_left_x, upper_left_y, lower_right_x, lower_right_y, GetColor(255, 0, 0), TRUE);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
 	}
 	//
 	if (image != -1)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, transparency);
 		DrawRotaGraphF(location.x + 50, location.y, 1.0f, π / 2, images[0], TRUE);
-		DrawRotaGraphF(location.x, location.y, 2.35f, π / 2, images[1], TRUE);
+		//DrawRotaGraphF(location.x, location.y, 2.35f, π / 2, images[1], TRUE);
+		DrawRotaGraphF(location.x, location.y, 2.35f, π / 2, image, TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 }
@@ -349,6 +400,10 @@ void Boss3::Movement(float delta_seconds)
 			velocity.y = Tracking(location, Vector2D(location.x, player_location.y)).y * 0.7;
 			//velocity.y = 0.0f;
 			velocity.x = 2.0f;
+			if (image == images[1] && ratio <= 50)
+			{
+				image = images[4];
+			}
 		}
 		if(atack_pattern == 100)
 		{

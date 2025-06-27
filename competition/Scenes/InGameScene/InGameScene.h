@@ -57,6 +57,7 @@ public:
 	int planets_image[4];						//˜f¯‰æ‘œ
 	Planet pla1;								//˜f¯1
 	Planet pla2;								//˜f¯2
+	bool back_ground_flag[2];
 
 	int enemy_random;							//¶¬—”
 	int enemy_random_y;							//¶¬À•W—”
