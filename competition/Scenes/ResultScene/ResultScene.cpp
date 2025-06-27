@@ -471,7 +471,7 @@ eSceneType ResultScene::GetNowSceneType()const
 void ResultScene::CheckData()
 {
 	/*プレイヤーの情報がマイナスをいった時、値を0にする*/
-	if (speed > 5)
+	if (speed >= 5)
 	{
 		is_flg = true;
 	}
