@@ -4,7 +4,11 @@ Boss3::Boss3() :
 	images(),
 	atack_interval(0.0f),
 	shot_timer_2(0.0f),
-	shot_cooldown_2(0.0f)
+	shot_cooldown_2(0.0f),
+	shot_timer_3(0.0f),
+	shot_cooldown_3(0.0f),
+	shot_wave(0),
+	shot_wave_y(0)
 {
 	// コリジョン設定
 	collision.is_blocking = true;
@@ -21,7 +25,7 @@ Boss3::Boss3() :
 	is_mobility = true;
 
 	//最大HP設定
-	max_hp = 10000;
+	max_hp = 2000;
 	hp = float(max_hp);
 
 	//画像読み込み
@@ -48,6 +52,9 @@ void Boss3::Initialize()
 	atack_interval = 0.6f;
 
 	shot_cooldown_2 = 0.25f;
+	shot_cooldown_3 = 0.375f;
+
+	shot_wave_y = 380;
 
 	ChangeVolumeSoundMem(bomb_sound_volume[0], bomb_sound[0]);
 	ChangeVolumeSoundMem(bomb_sound_volume[1], bomb_sound[1]);
@@ -69,27 +76,31 @@ void Boss3::Update(float delta_seconds)
 
 	//時間経過
 	shot_timer += delta_seconds;
+	shot_timer_3 += delta_seconds;
 
 
 	EnemyShot* shot;
 
-	//攻撃
+	//基本攻撃
 	if (hp > 0 && shot_timer >= atack_interval)
 	{
 		switch (atack_pattern)
 		{
+			//レーザー攻撃
 		case 0:
 			break;
 		case 3:
 			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 640, location.y));
 			shot->SetShotType(eEnemy15);
-			atack_pattern = 5;
+			atack_pattern = 4;
 			break;
 		case 7:
 			shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 640, location.y));
 			shot->SetShotType(eEnemy15);
-			atack_pattern = 9;
-		case 11:
+			atack_pattern = 8;
+			break;
+		case 12:
+			//突進攻撃へ
 			atack_pattern = 99;
 			atack_interval = 2.0f;
 			break;
@@ -109,8 +120,58 @@ void Boss3::Update(float delta_seconds)
 			break;
 		case 103:
 			atack_interval = 0.6f;
-			atack_pattern = 1;
+			atack_pattern = 200;
 			break;
+
+		//雑魚敵
+		case 200:
+			//object_manager->CreateGameObject<Enemy10>(Vector2D(1280 + 40, location.y + 200));
+			//object_manager->CreateGameObject<Enemy10>(Vector2D(1280 + 40, location.y - 200));
+			atack_pattern += 1;
+			atack_interval = 0.2f;
+			break;
+		case 201:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 - 200));
+			atack_pattern += 1;
+			break;
+		case 202:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 - 150));
+			atack_pattern += 1;
+			break;
+		case 203:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 - 100));
+			atack_pattern += 1;
+			break;
+		case 204:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 - 50));
+			atack_pattern += 1;
+			break;
+		case 205:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380));
+			atack_pattern += 1;
+			break;
+		case 206:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 + 50));
+			atack_pattern += 1;
+			break;
+		case 207:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 + 100));
+			atack_pattern += 1;
+			break;
+		case 208:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 + 150));
+			atack_pattern += 1;
+			break;
+		case 209:
+			object_manager->CreateGameObject<Enemy11>(Vector2D(1280 + 40, 380 + 200));
+			atack_pattern += 1;
+			break;
+		case 210:
+			//レーザー攻撃へ
+			atack_interval = 0.6f;
+			atack_pattern = 0;
+			break;
+
 		default:
 			atack_pattern += 1;
 			break;
@@ -121,7 +182,7 @@ void Boss3::Update(float delta_seconds)
 	}
 
 
-
+	//突進攻撃後戻りながら攻撃
 	if (atack_pattern == 102)
 	{
 		shot_timer_2 += delta_seconds;
@@ -139,8 +200,36 @@ void Boss3::Update(float delta_seconds)
 	}
 
 
+	//HPが8割以下でウェーブ攻撃
+	if (hp > 0 && ratio <= 80 && shot_timer_3 >= shot_cooldown_3)
+	{
+		shot_timer_3 = 0.0f;
+
+		shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 40, shot_wave_y - 250));
+		shot->SetShotType(eEnemy17);
+		shot = object_manager->CreateGameObject<EnemyShot>(Vector2D(1280 + 40, shot_wave_y + 250));
+		shot->SetShotType(eEnemy17);
 
 
+		int w = 75;
+		switch (shot_wave)
+		{
+		case 0:
+			shot_wave_y += w;
+			break;
+		case 1:
+			shot_wave_y -= w;
+			break;
+		}
+		if (shot_wave_y == 380 + w * 4)
+		{
+			shot_wave = 1;
+		}
+		if (shot_wave_y == 380 - w * 4)
+		{
+			shot_wave = 0;
+		}
+	}
 
 
 	//死
@@ -244,9 +333,14 @@ void Boss3::Movement(float delta_seconds)
 			else
 				velocity.y = -0.7f;
 		}
-
-		//プレイヤーY座標追跡
-		//velocity.y = Tracking(location, Vector2D(location.x, player_location.y)).y * 0.7;
+		if (location.y <= (65.0f + collision.box_size.y))
+		{
+			velocity.y = 1.0f;
+		}
+		if (location.y >= (680 - collision.box_size.y))
+		{
+			velocity.y = -1.0f;
+		}
 		
 
 		if (atack_pattern == 99)

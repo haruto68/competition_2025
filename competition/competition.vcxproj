@@ -134,6 +134,8 @@
     <ClCompile Include="AppMain.cpp" />
     <ClCompile Include="Objects\Character\Enemy\Boss2\Boss2.cpp" />
     <ClCompile Include="Objects\Character\Enemy\Boss3\Boss3.cpp" />
+    <ClCompile Include="Objects\Character\Enemy\Enemy10\Enemy10.cpp" />
+    <ClCompile Include="Objects\Character\Enemy\Enemy11\Enemy11.cpp" />
     <ClCompile Include="Objects\Character\Enemy\Enemy4\Enemy4.cpp" />
     <ClCompile Include="Objects\Character\Enemy\Boss1\Boss1.cpp" />
     <ClCompile Include="Objects\Character\Enemy\Enemy2\Enemy2.cpp" />
@@ -172,6 +174,8 @@
   <ItemGroup>
     <ClInclude Include="Objects\Character\Enemy\Boss2\Boss2.h" />
     <ClInclude Include="Objects\Character\Enemy\Boss3\Boss3.h" />
+    <ClInclude Include="Objects\Character\Enemy\Enemy10\Enemy10.h" />
+    <ClInclude Include="Objects\Character\Enemy\Enemy11\Enemy11.h" />
     <ClInclude Include="Objects\Character\Enemy\Enemy4\Enemy4.h" />
     <ClInclude Include="Objects\Character\Enemy\Boss1\Boss1.h" />
     <ClInclude Include="Objects\Character\Enemy\Enemy2\Enemy2.h" />

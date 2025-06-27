@@ -38,6 +38,8 @@
     <ClCompile Include="Utility\InputManager.cpp" />
     <ClCompile Include="Utility\Singleton.cpp" />
     <ClCompile Include="Utility\Vector2D.cpp" />
+    <ClCompile Include="Objects\Character\Enemy\Enemy10\Enemy10.cpp" />
+    <ClCompile Include="Objects\Character\Enemy\Enemy11\Enemy11.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Objects\Character\Enemy\Boss2\Boss2.h" />
@@ -83,5 +85,7 @@
     <ClInclude Include="Utility\Singleton.h" />
     <ClInclude Include="Utility\Vector2D.h" />
     <ClInclude Include="Scenes\UI\ScoreData.h" />
+    <ClInclude Include="Objects\Character\Enemy\Enemy10\Enemy10.h" />
+    <ClInclude Include="Objects\Character\Enemy\Enemy11\Enemy11.h" />
   </ItemGroup>
 </Project>
