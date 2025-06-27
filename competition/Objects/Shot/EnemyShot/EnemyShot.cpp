@@ -121,10 +121,12 @@ void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 		
 		break;
 	case eEnemy17:
-
 		DrawRotaGraph(location.x, location.y, 3.0, 0, shot_image[1], TRUE);
-		DrawBox(location.x - (collision.box_size.x / 2), location.y - (collision.box_size.y / 2), location.x + (collision.box_size.x / 2), location.y + (collision.box_size.y / 2), GetColor(255, 0, 0), false);
-
+		//DrawBox(location.x - (collision.box_size.x / 2), location.y - (collision.box_size.y / 2), location.x + (collision.box_size.x / 2), location.y + (collision.box_size.y / 2), GetColor(255, 0, 0), false);
+		break;
+	case eEnemy18:
+		DrawRotaGraph(location.x, location.y, 3.0, 0, shot_image[1], TRUE);
+		//DrawBox(location.x - (collision.box_size.x / 2), location.y - (collision.box_size.y / 2), location.x + (collision.box_size.x / 2), location.y + (collision.box_size.y / 2), GetColor(255, 0, 0), false);
 		break;
 	default:
 		image = shot_image[1];
@@ -139,7 +141,7 @@ void EnemyShot::Draw(const Vector2D& screen_offset, bool flip_flag) const
 	if (shot_type == eShotType::eEnemy15)
 	{
 		DrawRotaGraph(location.x + 50, location.y, 6.0, -(ƒÎ / 2), this->image, TRUE);
-		DrawBox(location.x - (collision.box_size.x / 2), location.y - (collision.box_size.y / 2), location.x + (collision.box_size.x / 2), location.y + (collision.box_size.y / 2), GetColor(255, 0, 0), false);
+		//DrawBox(location.x - (collision.box_size.x / 2), location.y - (collision.box_size.y / 2), location.x + (collision.box_size.x / 2), location.y + (collision.box_size.y / 2), GetColor(255, 0, 0), false);
 	}
 	
 }
@@ -323,7 +325,10 @@ void EnemyShot::Movement(float delta_seconds)
 		velocity.x = -2.5f;
 			break;
 	case eEnemy17:
-		velocity.x = -1.5f;
+		velocity.x = -1.0f;
+		break;
+	case eEnemy18:
+		velocity.x = -1.6f;
 		break;
 	default:
 		break;
@@ -354,6 +359,10 @@ void EnemyShot::Animation()
 		else if (birth_count < 2.15f)
 		{
 			image = laser_images[4];
+		}
+		else
+		{
+			image = laser_images[0];
 		}
 	}
 }

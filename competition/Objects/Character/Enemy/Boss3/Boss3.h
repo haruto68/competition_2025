@@ -17,6 +17,8 @@ private:
     int shot_wave;
     int shot_wave_y;
 
+    float wave_change_count;
+
 public:
     Boss3();
     ~Boss3();

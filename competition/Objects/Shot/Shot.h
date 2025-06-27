@@ -25,6 +25,7 @@ enum eShotType
 	eEnemy15,	//レーザー1
 	eEnemy16,	//真左加速
 	eEnemy17,	//ウェーブ用
+	eEnemy18	//ウェーブ用
 };
 
 class Shot : public GameObject

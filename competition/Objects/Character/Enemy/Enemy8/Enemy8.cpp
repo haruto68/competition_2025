@@ -51,7 +51,7 @@ void Enemy8::Update(float delta_seconds)
 	shot_timer += delta_seconds;
 	shot_cooldown = 1.0f;
 
-	if (shot_timer >= shot_cooldown)
+	if (shot_timer >= shot_cooldown && !explosion_flag)
 	{
 		if (target == 0)
 		{

@@ -52,7 +52,7 @@ void Enemy9::Update(float delta_seconds)
 	shot_timer += delta_seconds;
 	shot_cooldown = 0.25f;
 
-	if (shot_timer >= shot_cooldown)
+	if (shot_timer >= shot_cooldown && !explosion_flag)
 	{
 		switch (target)
 		{

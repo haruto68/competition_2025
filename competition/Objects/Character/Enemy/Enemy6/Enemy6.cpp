@@ -53,7 +53,7 @@ void Enemy6::Update(float delta_seconds)
 	//ŽžŠÔŒo‰ß
 	shot_timer += delta_seconds;
 
-	if (shot_timer >= shot_cooldown)
+	if (shot_timer >= shot_cooldown && !explosion_flag)
 	{
 		EnemyShot* shot = object_manager->CreateGameObject<EnemyShot>(this->location);
 		shot->SetShotType(eEnemy16);

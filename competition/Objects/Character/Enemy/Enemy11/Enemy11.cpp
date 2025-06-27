@@ -22,7 +22,7 @@ Enemy11::Enemy11() :
 
 	image = rm->GetImages("Resource/Images/enemy/ship.png")[0];
 
-	exp_num = 3;
+	exp_num = 4;
 }
 
 Enemy11::~Enemy11()
@@ -53,7 +53,7 @@ void Enemy11::Initialize()
 
 	speed = 400.0f;
 
-	hp = 8.0;
+	hp = 5.0;
 }
 
 void Enemy11::Update(float delta_seconds)
