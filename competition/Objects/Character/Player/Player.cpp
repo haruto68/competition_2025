@@ -63,7 +63,7 @@ void Player::Initialize()
 	ChangeVolumeSoundMem(100, soundseffect[3]);
 
 	//‰æ‘œ“Ç‚Ýž‚Ý
-	normal_image = rm->GetImages("Resource/Images/player/Enemy Vehicles/Big Enemy 1/spr_plane_enemy_big_5.png", 12, 4, 3, 32, 32);
+	normal_image = rm->GetImages("Resource/Images/player/Enemy Vehicles/Big Enemy 1/spr_plane_enemy_big_4.png", 12, 4, 3, 32, 32);
 	dead_image = rm->GetImages("Resource/Images/player/Player_death_image.png", 9, 3, 3, 32, 30);
 
 	if (dead_image[0] == 0)
