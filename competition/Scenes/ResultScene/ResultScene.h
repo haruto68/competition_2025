@@ -39,6 +39,8 @@ public:
 	bool drone;
 	//int hp;
 
+	bool is_flg;
+
 	bool is_drone;				// ƒhƒ[ƒ“‚ªæ“¾‚³‚ê‚Ä‚¢‚½‚©
 	bool is_max;				// ãŒÀ‚És‚Á‚½‚©
 	bool is_check;				

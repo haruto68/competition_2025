@@ -59,8 +59,8 @@ void Score::SetPlayerPower(int p_power)
 
 void Score::SetPlayerSpeed(int p_speed)
 {
-	// ˆê‰ñ‹­‰»‚·‚é‚Æ100‘‚¦‚é‚½‚ß–“ñ‰ñ–Ú‚©‚ç‚Í5‚¸‚Â‘‰Á‚·‚é
-	speed = ((p_speed / 5) - 19);
+	// ˆê‰ñ‹­‰»‚·‚é‚Æ20‘‚¦‚é‚½‚ß
+	speed = ((p_speed / 20));
 }
 
 void Score::SetPlayerCoolTime(int p_cooltime)

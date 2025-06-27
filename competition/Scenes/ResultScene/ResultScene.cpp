@@ -30,7 +30,8 @@ ResultScene::ResultScene() :
 	circle(0),
 	is_cir(false),
 	is_flash(true),
-	flash_timer(0.0f)
+	flash_timer(0.0f),
+	is_flg(false)
 {
 	// //リソース管理インスタンス取得
 	// ResourceManager* rm = ResourceManager::GetInstance();
@@ -348,7 +349,14 @@ void ResultScene::Draw() const
 	DrawStringToHandle(75, 500, buf, GetColor(255, 255, 255), font[1]);
 	/*プレイヤーのスピード*/
 	snprintf(buf, sizeof(buf), "Lv %d", speed);
-	DrawStringToHandle(275, 500, buf, GetColor(255, 255, 255), font[1]);
+	if (is_flg == true)
+	{
+		DrawStringToHandle(255, 500, "Lv MAX", GetColor(255, 255, 255), font[1]);
+	}
+	else
+	{
+		DrawStringToHandle(275, 500, buf, GetColor(255, 255, 255), font[1]);
+	}
 	/*プレイヤーの弾のスピード(クールタイム)*/
 	snprintf(buf, sizeof(buf), "Lv %d", cool_time);
 	if (is_max != true)
@@ -463,9 +471,9 @@ eSceneType ResultScene::GetNowSceneType()const
 void ResultScene::CheckData()
 {
 	/*プレイヤーの情報がマイナスをいった時、値を0にする*/
-	if (speed < 0)
+	if (speed > 5)
 	{
-		speed = 0;
+		is_flg = true;
 	}
 
 	if (power < 0)
