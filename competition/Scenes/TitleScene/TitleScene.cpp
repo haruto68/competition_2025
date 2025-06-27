@@ -79,6 +79,10 @@ void TitleScene::Initialize()
 	rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 	rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.mp3");
+	rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/bomb1.mp3");
+	rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/bomb2.mp3");
+	rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/bomb3.mp3");
+	rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/bomb4.mp3");
 }
 
 eSceneType TitleScene::Update(const float& delta_second)

@@ -63,7 +63,7 @@ void Player::Initialize()
 	ChangeVolumeSoundMem(100, soundseffect[3]);
 
 	//画像読み込み
-	normal_image = rm->GetImages("Resource/Images/player/Enemy Vehicles/Big Enemy 1/spr_plane_enemy_big_5.png", 12, 4, 3, 32, 32);
+	normal_image = rm->GetImages("Resource/Images/player/Enemy Vehicles/Big Enemy 1/spr_plane_enemy_big_4.png", 12, 4, 3, 32, 32);
 	dead_image = rm->GetImages("Resource/Images/player/Player_death_image.png", 9, 3, 3, 32, 30);
 
 	if (dead_image[0] == 0)
@@ -226,7 +226,7 @@ void Player::OnHitCollision(GameObject* hit_object)
 	default:
 		break;
 	}
-	player_stats.life_count = 6.0f;//デバッグ用無敵
+	//player_stats.life_count = 6.0f;//デバッグ用無敵
 }
 
 Vector2D Player::GetScreenVelocity()

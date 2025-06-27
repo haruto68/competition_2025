@@ -46,7 +46,11 @@ void Boss2::Initialize()
 	else
 		velocity.y = 0.7f;
 
-	
+
+	ChangeVolumeSoundMem(bomb_sound_volume[0], bomb_sound[0]);
+	ChangeVolumeSoundMem(bomb_sound_volume[1], bomb_sound[1]);
+	ChangeVolumeSoundMem(bomb_sound_volume[2], bomb_sound[2]);
+	ChangeVolumeSoundMem(bomb_sound_volume[3], bomb_sound[3]);
 }
 
 void Boss2::Update(float delta_seconds)
@@ -157,7 +161,13 @@ void Boss2::OnHitCollision(GameObject* hit_object)
 		break;
 	case ePlayerShot:
 		hp -= player_stats.attack_power / 2;
-		PlaySoundMem(soundseffect[0], DX_PLAYTYPE_BACK, TRUE);
+		if (hp <= 0)
+		{
+			PlaySoundMem(bomb_sound[0], DX_PLAYTYPE_BACK, TRUE);
+			PlaySoundMem(bomb_sound[1], DX_PLAYTYPE_BACK, TRUE);
+			PlaySoundMem(bomb_sound[2], DX_PLAYTYPE_BACK, TRUE);
+			PlaySoundMem(bomb_sound[3], DX_PLAYTYPE_BACK, TRUE);
+		}
 		break;
 	case eEnemyShot:
 		break;

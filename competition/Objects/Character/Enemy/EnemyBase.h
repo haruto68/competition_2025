@@ -34,4 +34,13 @@ public:
 		rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3"),
 		rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.mp3")
 	};
+
+	int bomb_sound[4] =
+	{
+		rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/bomb1.mp3"),
+		rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/bomb2.mp3"),
+		rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/bomb3.mp3"),
+		rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/bomb4.mp3")
+	};
+	int bomb_sound_volume[4] = { 200,200,200,200 };
 };

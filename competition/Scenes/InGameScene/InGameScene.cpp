@@ -70,7 +70,7 @@ InGameScene::InGameScene() :
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.mp3");
-	ChangeVolumeSoundMem(150, soundseffect[1]);
+	ChangeVolumeSoundMem(130, soundseffect[1]);
 	ChangeVolumeSoundMem(150, soundseffect[2]);
 
 
@@ -352,7 +352,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	if (((input->GetKeyUp(KEY_INPUT_L) ||
 		input->GetButtonDown(XINPUT_BUTTON_Y))
 		&& time_stop == false)
-		/*&& up_grade_stock > 0*/ && dark_alpha <= 0
+		&& up_grade_stock > 0 && dark_alpha <= 0
 		&& player->GetPlayerStats().life_count > 0)
 	{
 		level_up_flg = true;
