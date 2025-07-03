@@ -39,7 +39,8 @@ InGameScene::InGameScene() :
 	score(),
 	se_flg(true),
 	hp_bar(),
-	font{}
+	font{},
+	button_sound{}
 {
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
@@ -80,6 +81,8 @@ InGameScene::InGameScene() :
 	soundseffect[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemybreak.mp3");
 	soundseffect[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemyshot.mp3");
 	soundseffect[2] = rm->GetSounds("Resource/Sounds/SoundsEffect/Enemy/enemy_dead_se.mp3");
+	button_sound[0] = rm->GetSounds("Resource/Sounds/SoundsEffect/Button/button_enter.mp3");
+	button_sound[1] = rm->GetSounds("Resource/Sounds/SoundsEffect/Button/button_select.mp3");
 	ChangeVolumeSoundMem(130, soundseffect[1]);
 	ChangeVolumeSoundMem(150, soundseffect[2]);
 
@@ -291,6 +294,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 					level_up_ui->cursor = 0;
 				else
 					level_up_ui->cursor = 1;
+				PlaySoundMem(button_sound[1], DX_PLAYTYPE_BACK, TRUE);
 			}
 			//カーソル右
 			if (input->GetKeyUp(KEY_INPUT_D) || input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
@@ -301,6 +305,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 					level_up_ui->cursor = 2;
 				else
 					level_up_ui->cursor = 0;
+				PlaySoundMem(button_sound[1], DX_PLAYTYPE_BACK, TRUE);
 			}
 			//カーソル決定
 			if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A))
@@ -313,6 +318,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 				level_up_flg = false;
 
 				up_grade_stock--;
+				PlaySoundMem(button_sound[0], DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else
@@ -322,12 +328,16 @@ eSceneType InGameScene::Update(const float& delta_second)
 			{
 				if (pause_cursor == 1)
 					pause_cursor = 0;
+
+				PlaySoundMem(button_sound[1], DX_PLAYTYPE_BACK, TRUE);
 			}
 			//カーソル下
 			if (input->GetKeyUp(KEY_INPUT_S) || input->GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 			{
 				if (pause_cursor == 0)
 					pause_cursor = 1;
+
+				PlaySoundMem(button_sound[1], DX_PLAYTYPE_BACK, TRUE);
 			}
 			//カーソル決定
 			if (input->GetKeyUp(KEY_INPUT_E) || input->GetButtonDown(XINPUT_BUTTON_A))
@@ -341,6 +351,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 				{
 					return eSceneType::eTitle;
 				}
+				PlaySoundMem(button_sound[0], DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 	}
